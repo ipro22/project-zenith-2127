@@ -173,9 +173,9 @@ export function FeaturesSection() {
                       whileInView={{ opacity: 1 }}
                       viewport={{ once: true }}
                     >
-                      6 мес.
+                      365
                     </motion.span>
-                    <span className="text-zinc-500 text-sm">гарантия</span>
+                    <span className="text-zinc-500 text-sm">дней гарантия</span>
                   </div>
                   <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
                     <motion.div

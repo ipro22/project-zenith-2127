@@ -95,7 +95,7 @@ export default function MacBookPage() {
             {/* Badges */}
             <div className="flex flex-wrap gap-3 mt-6">
               {[
-                { icon: Shield, text: "Гарантия 6 месяцев" },
+                { icon: Shield, text: "Гарантия 365 дней" },
                 { icon: Clock, text: "Срочный ремонт за 1 день" },
                 { icon: Phone, text: "Бесплатная диагностика" },
               ].map(({ icon: Icon, text }) => (

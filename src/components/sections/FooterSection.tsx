@@ -40,7 +40,7 @@ export function FooterSection() {
               </a>
               <span className="flex items-center gap-2 text-sm text-zinc-500">
                 <MapPin className="w-4 h-4" />
-                Барнаул, центр города
+                г. Барнаул, ул. Молодёжная 34, 1 этаж
               </span>
             </div>
           </div>

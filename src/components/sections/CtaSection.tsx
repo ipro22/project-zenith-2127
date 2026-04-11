@@ -7,7 +7,7 @@ export function CtaSection() {
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="font-display text-4xl md:text-5xl font-bold text-zinc-100 mb-6">Сдайте технику сегодня</h2>
         <p className="text-lg text-zinc-500 mb-10 text-balance">
-          Мы находимся в центре Барнаула. Приходите — диагностика бесплатно, ремонт в большинстве случаев за 1–2 часа.
+          Приходите по адресу: ул. Молодёжная 34, 1 этаж, Барнаул. Диагностика бесплатно, ремонт в большинстве случаев за 1–2 часа.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="tel:+79993231817">

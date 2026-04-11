@@ -102,7 +102,7 @@ export default function IPhonePage() {
             {/* Badges */}
             <div className="flex flex-wrap gap-3 mt-6">
               {[
-                { icon: Shield, text: "Гарантия 6 месяцев" },
+                { icon: Shield, text: "Гарантия 365 дней" },
                 { icon: Clock, text: "Ремонт за 1–2 часа" },
                 { icon: Phone, text: "Бесплатная диагностика" },
               ].map(({ icon: Icon, text }) => (
