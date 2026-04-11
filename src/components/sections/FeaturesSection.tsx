@@ -1,16 +1,16 @@
 import { motion } from "framer-motion"
-import { Zap, BarChart3, Layers, ArrowRight, Command } from "lucide-react"
+import { Zap, BarChart3, Layers, ArrowRight, ShieldCheck } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
-const integrationLogos = [
-  { name: "Tool 1" },
-  { name: "Tool 2" },
-  { name: "Tool 3" },
-  { name: "Tool 4" },
-  { name: "Tool 5" },
-  { name: "Tool 6" },
-  { name: "Tool 7" },
-  { name: "Tool 8" },
+const brands = [
+  { name: "Apple" },
+  { name: "Samsung" },
+  { name: "Xiaomi" },
+  { name: "Huawei" },
+  { name: "Sony" },
+  { name: "Honor" },
+  { name: "OnePlus" },
+  { name: "Realme" },
 ]
 
 export function FeaturesSection() {
@@ -25,17 +25,17 @@ export function FeaturesSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">Функции</p>
+          <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">Наши услуги</p>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-zinc-100 mb-4">
-            Все для вашего успеха
+            Всё для вашей техники
           </h2>
           <p className="text-zinc-500 max-w-xl mx-auto text-balance">
-            Мощные инструменты, которые помогут выпускать продукты быстрее.
+            Профессиональный ремонт, диагностика и продажа техники — в одном месте.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-          {/* Card 1 - Analytics (wider - 3 cols) */}
+          {/* Card 1 - Статистика ремонтов */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -53,10 +53,10 @@ export function FeaturesSection() {
                   >
                     <BarChart3 className="w-5 h-5 text-zinc-400 group-hover:text-zinc-200 transition-colors" />
                   </motion.div>
-                  <p className="font-heading font-semibold text-zinc-100">Дашборд в реальном времени</p>
+                  <p className="font-heading font-semibold text-zinc-100">Тысячи отремонтированных устройств</p>
                 </div>
                 <p className="text-zinc-500 text-sm mb-5">
-                  Отслеживайте важные метрики с настраиваемыми панелями.
+                  За 5 лет работы мы восстановили более 10 000 устройств Apple и других брендов.
                 </p>
                 <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 overflow-hidden">
                   <div className="flex items-center justify-between mb-4">
@@ -74,7 +74,7 @@ export function FeaturesSection() {
                         transition={{ delay: 0.5 }}
                       >
                         <div className="w-2 h-2 rounded-full bg-zinc-400" />
-                        <span className="text-xs text-zinc-500">Пользователи</span>
+                        <span className="text-xs text-zinc-500">Ремонты</span>
                       </motion.div>
                       <motion.div
                         className="flex items-center gap-1.5"
@@ -84,16 +84,16 @@ export function FeaturesSection() {
                         transition={{ delay: 0.6 }}
                       >
                         <div className="w-2 h-2 rounded-full bg-zinc-600" />
-                        <span className="text-xs text-zinc-500">Выручка</span>
+                        <span className="text-xs text-zinc-500">Довольные клиенты</span>
                       </motion.div>
                     </div>
                   </div>
                   {/* Animated metrics row */}
                   <div className="grid grid-cols-3 gap-3 mb-4">
                     {[
-                      { label: "Пользователи", value: "12,4 тыс", change: "+12%" },
-                      { label: "Выручка", value: "4,8 млн ₽", change: "+8%" },
-                      { label: "Конверсия", value: "3,2%", change: "+2%" },
+                      { label: "Ремонтов", value: "10 000+", change: "+15%" },
+                      { label: "Срок ремонта", value: "1 день", change: "в среднем" },
+                      { label: "Довольны", value: "98%", change: "клиентов" },
                     ].map((metric, i) => (
                       <motion.div
                         key={metric.label}
@@ -144,7 +144,7 @@ export function FeaturesSection() {
             </Card>
           </motion.div>
 
-          {/* Card 2 - Performance (narrower - 2 cols) */}
+          {/* Card 2 - Гарантия */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -160,11 +160,11 @@ export function FeaturesSection() {
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                   >
-                    <Zap className="w-5 h-5 text-zinc-400 group-hover:text-zinc-200 transition-colors" />
+                    <ShieldCheck className="w-5 h-5 text-zinc-400 group-hover:text-zinc-200 transition-colors" />
                   </motion.div>
-                  <p className="font-heading font-semibold text-zinc-100">Молниеносная скорость</p>
+                  <p className="font-heading font-semibold text-zinc-100">Гарантия на ремонт</p>
                 </div>
-                <p className="text-zinc-500 text-sm mb-5">Оптимизировано для скорости на любом масштабе.</p>
+                <p className="text-zinc-500 text-sm mb-5">Официальная гарантия на все виды работ и запчасти.</p>
                 <div className="mt-auto">
                   <div className="flex items-baseline gap-2 mb-3">
                     <motion.span
@@ -173,15 +173,15 @@ export function FeaturesSection() {
                       whileInView={{ opacity: 1 }}
                       viewport={{ once: true }}
                     >
-                      99.9%
+                      6 мес.
                     </motion.span>
-                    <span className="text-zinc-500 text-sm">аптайм</span>
+                    <span className="text-zinc-500 text-sm">гарантия</span>
                   </div>
                   <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-gradient-to-r from-zinc-500 to-zinc-300 rounded-full"
                       initial={{ width: "0%" }}
-                      whileInView={{ width: "99.9%" }}
+                      whileInView={{ width: "100%" }}
                       viewport={{ once: true }}
                       transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
                     />
@@ -191,7 +191,7 @@ export function FeaturesSection() {
             </Card>
           </motion.div>
 
-          {/* Card 3 - Keyboard shortcuts (narrower - 2 cols) */}
+          {/* Card 3 - Бесплатная диагностика */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -206,27 +206,23 @@ export function FeaturesSection() {
                     className="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center"
                     whileHover={{ y: -2 }}
                   >
-                    <Command className="w-5 h-5 text-zinc-400 group-hover:text-zinc-200 transition-colors" />
+                    <Zap className="w-5 h-5 text-zinc-400 group-hover:text-zinc-200 transition-colors" />
                   </motion.div>
-                  <p className="font-heading font-semibold text-zinc-100">Сначала клавиатура</p>
+                  <p className="font-heading font-semibold text-zinc-100">Бесплатная диагностика</p>
                 </div>
-                <p className="text-zinc-500 text-sm mb-5">Любое действие на расстоянии одной клавиши.</p>
-                <div className="flex justify-center gap-2 mt-auto">
-                  {["Cmd", "K"].map((key, i) => (
+                <p className="text-zinc-500 text-sm mb-5">Определим неисправность бесплатно и озвучим точную стоимость.</p>
+                <div className="flex flex-col gap-2 mt-auto">
+                  {["iPhone и iPad", "MacBook и iMac", "Samsung, Xiaomi и др."].map((item, i) => (
                     <motion.div
-                      key={key}
-                      className="flex items-center justify-center w-12 h-12 rounded-xl bg-zinc-800/80 border border-zinc-700/50 shadow-lg"
-                      initial={{ y: 0 }}
-                      animate={{ y: [0, -4, 0] }}
-                      transition={{
-                        duration: 1.5,
-                        delay: i * 0.15,
-                        repeat: Infinity,
-                        repeatDelay: 2,
-                      }}
-                      whileHover={{ scale: 1.1, y: -4 }}
+                      key={item}
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-zinc-800/50 border border-zinc-700/50"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.4 + i * 0.1 }}
                     >
-                      <span className="text-zinc-300 font-mono text-lg">{key}</span>
+                      <div className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
+                      <span className="text-zinc-300 text-sm">{item}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -234,7 +230,7 @@ export function FeaturesSection() {
             </Card>
           </motion.div>
 
-          {/* Card 4 - Integrations (wider - 3 cols) */}
+          {/* Card 4 - Поддерживаемые бренды */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -252,21 +248,21 @@ export function FeaturesSection() {
                   >
                     <Layers className="w-5 h-5 text-zinc-400 group-hover:text-zinc-200 transition-colors" />
                   </motion.div>
-                  <p className="font-heading font-semibold text-zinc-100">100+ интеграций</p>
+                  <p className="font-heading font-semibold text-zinc-100">Ремонтируем все популярные бренды</p>
                 </div>
-                <p className="text-zinc-500 text-sm mb-5">Подключайте инструменты, которыми пользуетесь ежедневно.</p>
-                <div className="grid grid-cols-8 gap-2 mt-auto">
-                  {integrationLogos.map((logo, i) => (
+                <p className="text-zinc-500 text-sm mb-5">Работаем с любой техникой — от флагманов до бюджетных моделей.</p>
+                <div className="grid grid-cols-4 gap-2 mt-auto">
+                  {brands.map((brand, i) => (
                     <motion.div
-                      key={logo.name}
+                      key={brand.name}
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.3, delay: 0.3 + i * 0.05 }}
-                      whileHover={{ scale: 1.15, y: -2 }}
-                      className="aspect-square rounded-lg border border-zinc-800 bg-zinc-800/50 flex items-center justify-center cursor-pointer"
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      className="aspect-auto rounded-lg border border-zinc-800 bg-zinc-800/50 flex items-center justify-center cursor-pointer px-2 py-2.5"
                     >
-                      <div className="w-5 h-5 rounded bg-zinc-700" />
+                      <span className="text-zinc-400 text-xs font-medium text-center">{brand.name}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -274,7 +270,7 @@ export function FeaturesSection() {
                   whileHover={{ x: 6 }}
                   className="mt-4 flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
                 >
-                  Все интеграции <ArrowRight className="w-4 h-4" />
+                  Все поддерживаемые модели <ArrowRight className="w-4 h-4" />
                 </motion.button>
               </CardContent>
             </Card>

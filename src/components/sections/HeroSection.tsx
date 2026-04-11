@@ -1,5 +1,5 @@
 import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
-import { Sparkles, ArrowRight } from "lucide-react"
+import { Shield, ArrowRight } from "lucide-react"
 
 export function HeroSection() {
   return (
@@ -9,35 +9,35 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-3xl mx-auto">
-        {/* Badge - customize your announcement */}
+        {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/80 border border-zinc-800 mb-8">
-          <Sparkles className="w-4 h-4 text-zinc-400" />
-          <span className="text-sm text-zinc-400">Встречайте v2.0 — теперь с ИИ</span>
+          <Shield className="w-4 h-4 text-zinc-400" />
+          <span className="text-sm text-zinc-400">Официальная гарантия на все работы</span>
         </div>
 
-        {/* Headline - customize your value proposition */}
+        {/* Headline */}
         <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          <span className="text-zinc-100 block">Создавай быстрее.</span>
+          <span className="text-zinc-100 block">Ремонт Apple</span>
           <span className="bg-gradient-to-r from-zinc-500 via-zinc-300 to-zinc-500 bg-clip-text text-transparent">
-            Запускай умнее.
+            быстро и надёжно.
           </span>
         </h1>
 
-        {/* Subheadline - describe your product */}
+        {/* Subheadline */}
         <p className="text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto mb-10 leading-relaxed text-balance">
-          Единая платформа, которая помогает командам создавать, развертывать и масштабировать продукты в 10 раз быстрее. Без сложностей, только результат.
+          Профессиональный сервисный центр по ремонту iPhone, iPad, MacBook и другой техники. Диагностика бесплатно, ремонт — в день обращения.
         </p>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="#pricing">
-            <LiquidCtaButton>Попробовать бесплатно</LiquidCtaButton>
+            <LiquidCtaButton>Записаться на ремонт</LiquidCtaButton>
           </a>
           <a
             href="#features"
             className="group flex items-center gap-2 px-6 py-3 text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors"
           >
-            <span>Как это работает</span>
+            <span>Наши услуги</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
           </a>
         </div>
@@ -67,7 +67,7 @@ export function HeroSection() {
                 className="w-10 h-10 rounded-full border-2 border-zinc-950 hover:-translate-y-1 transition object-cover z-[4]"
               />
               <img
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200"
+                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200"
                 alt="User avatar"
                 className="w-10 h-10 rounded-full border-2 border-zinc-950 hover:-translate-y-1 transition object-cover z-[5]"
               />
@@ -94,7 +94,7 @@ export function HeroSection() {
                 <span className="text-zinc-400 font-medium ml-1 text-sm">5.0</span>
               </div>
               <p className="text-sm text-zinc-500">
-                Нам доверяют <span className="text-zinc-300 font-medium">10 000+</span> разработчиков
+                Нам доверяют <span className="text-zinc-300 font-medium">3 000+</span> клиентов
               </p>
             </div>
           </div>
