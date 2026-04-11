@@ -24,14 +24,14 @@ export function Navbar() {
             </a>
           ))}
           <a
-            href="tel:+73852000000"
+            href="tel:+79993231817"
             className="ml-2 px-4 py-1.5 text-sm rounded-full bg-zinc-100 text-zinc-900 font-medium hover:bg-zinc-200 transition-colors"
           >
             Позвонить
           </a>
         </div>
         <a
-          href="tel:+73852000000"
+          href="tel:+79993231817"
           className="md:hidden px-4 py-1.5 text-sm rounded-full bg-zinc-100 text-zinc-900 font-medium hover:bg-zinc-200 transition-colors"
         >
           Позвонить

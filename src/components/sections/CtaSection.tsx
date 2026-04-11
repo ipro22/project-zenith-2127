@@ -10,7 +10,7 @@ export function CtaSection() {
           Мы находимся в центре Барнаула. Приходите — диагностика бесплатно, ремонт в большинстве случаев за 1–2 часа.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="tel:+73852000000">
+          <a href="tel:+79993231817">
             <LiquidCtaButton>Позвонить нам</LiquidCtaButton>
           </a>
           <a

@@ -150,7 +150,7 @@ export default function IPhonePage() {
             className="mt-12 text-center"
           >
             <p className="text-zinc-500 mb-6">Не нашли свою модель или вид ремонта? Позвоните — уточним стоимость.</p>
-            <a href="tel:+73852000000">
+            <a href="tel:+79993231817">
               <LiquidCtaButton>Позвонить и записаться</LiquidCtaButton>
             </a>
           </motion.div>

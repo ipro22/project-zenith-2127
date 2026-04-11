@@ -34,9 +34,9 @@ export function FooterSection() {
               Сервисный центр по ремонту Apple и другой техники в центре Барнаула.
             </p>
             <div className="mt-4 flex flex-col gap-2">
-              <a href="tel:+73852000000" className="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+              <a href="tel:+79993231817" className="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
                 <Phone className="w-4 h-4" />
-                +7 (3852) 00-00-00
+                +7 (999) 323-18-17
               </a>
               <span className="flex items-center gap-2 text-sm text-zinc-500">
                 <MapPin className="w-4 h-4" />
@@ -95,7 +95,7 @@ export function FooterSection() {
             <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors" aria-label="Instagram">
               <Instagram className="w-5 h-5" />
             </a>
-            <a href="tel:+73852000000" className="text-zinc-500 hover:text-zinc-300 transition-colors" aria-label="Телефон">
+            <a href="tel:+79993231817" className="text-zinc-500 hover:text-zinc-300 transition-colors" aria-label="Телефон">
               <Phone className="w-5 h-5" />
             </a>
           </div>
