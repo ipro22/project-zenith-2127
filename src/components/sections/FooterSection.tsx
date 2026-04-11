@@ -1,22 +1,22 @@
-import { Github, Twitter, Linkedin } from "lucide-react"
+import { Phone, MapPin, Instagram } from "lucide-react"
 
 const footerLinks = {
   product: [
-    { label: "Функции", href: "#features" },
-    { label: "Тарифы", href: "#pricing" },
-    { label: "Обновления", href: "#" },
-    { label: "Документация", href: "#" },
+    { label: "Ремонт iPhone", href: "/iphone" },
+    { label: "Ремонт MacBook", href: "/macbook" },
+    { label: "Другие устройства", href: "/other" },
+    { label: "Продажа техники", href: "#" },
   ],
   company: [
     { label: "О нас", href: "#" },
-    { label: "Блог", href: "#" },
-    { label: "Вакансии", href: "#" },
+    { label: "Отзывы", href: "#testimonials" },
     { label: "Контакты", href: "#" },
+    { label: "Адрес", href: "#" },
   ],
   legal: [
-    { label: "Приватность", href: "#" },
-    { label: "Условия", href: "#" },
-    { label: "Безопасность", href: "#" },
+    { label: "Политика конфиденциальности", href: "#" },
+    { label: "Условия обслуживания", href: "#" },
+    { label: "Гарантия", href: "#" },
   ],
 }
 
@@ -28,11 +28,21 @@ export function FooterSection() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <a href="/" className="font-display text-xl font-semibold text-zinc-100">
-              Velocite
+              iPro
             </a>
             <p className="mt-4 text-sm text-zinc-500 max-w-xs">
-              Создавай быстрее, запускай умнее. Платформа для современных команд.
+              Сервисный центр по ремонту Apple и другой техники в центре Барнаула.
             </p>
+            <div className="mt-4 flex flex-col gap-2">
+              <a href="tel:+73852000000" className="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+                <Phone className="w-4 h-4" />
+                +7 (3852) 00-00-00
+              </a>
+              <span className="flex items-center gap-2 text-sm text-zinc-500">
+                <MapPin className="w-4 h-4" />
+                Барнаул, центр города
+              </span>
+            </div>
           </div>
 
           {/* Product Links */}
@@ -80,16 +90,13 @@ export function FooterSection() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-zinc-600">© {new Date().getFullYear()} Velocite. Все права защищены.</p>
+          <p className="text-sm text-zinc-600">© {new Date().getFullYear()} iPro Барнаул. Все права защищены.</p>
           <div className="flex items-center gap-4">
-            <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors" aria-label="GitHub">
-              <Github className="w-5 h-5" />
+            <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors" aria-label="Instagram">
+              <Instagram className="w-5 h-5" />
             </a>
-            <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors" aria-label="Twitter">
-              <Twitter className="w-5 h-5" />
-            </a>
-            <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors" aria-label="LinkedIn">
-              <Linkedin className="w-5 h-5" />
+            <a href="tel:+73852000000" className="text-zinc-500 hover:text-zinc-300 transition-colors" aria-label="Телефон">
+              <Phone className="w-5 h-5" />
             </a>
           </div>
         </div>

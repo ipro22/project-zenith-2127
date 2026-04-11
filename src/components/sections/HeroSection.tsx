@@ -25,7 +25,7 @@ export function HeroSection() {
 
         {/* Subheadline */}
         <p className="text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto mb-10 leading-relaxed text-balance">
-          Профессиональный сервисный центр по ремонту iPhone, iPad, MacBook и другой техники. Диагностика бесплатно, ремонт — в день обращения.
+          Сервисный центр iPro в центре Барнаула — профессиональный ремонт iPhone, iPad, MacBook и другой техники. Диагностика бесплатно, ремонт — в день обращения.
         </p>
 
         {/* CTAs */}
@@ -94,7 +94,7 @@ export function HeroSection() {
                 <span className="text-zinc-400 font-medium ml-1 text-sm">5.0</span>
               </div>
               <p className="text-sm text-zinc-500">
-                Нам доверяют <span className="text-zinc-300 font-medium">3 000+</span> клиентов
+                Нам доверяют <span className="text-zinc-300 font-medium">3 000+</span> жителей Барнаула
               </p>
             </div>
           </div>
