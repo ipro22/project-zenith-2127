@@ -55,9 +55,7 @@ export function FeaturesSection() {
                   </motion.div>
                   <p className="font-heading font-semibold text-zinc-100">Тысячи отремонтированных устройств</p>
                 </div>
-                <p className="text-zinc-500 text-sm mb-5">
-                  За 5 лет работы мы восстановили более 10 000 устройств Apple и других брендов.
-                </p>
+                <p className="text-zinc-500 text-sm mb-5">За 10 лет работы мы восстановили более 10 000 устройств Apple и других брендов.</p>
                 <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 overflow-hidden">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex gap-1.5">
@@ -172,9 +170,7 @@ export function FeaturesSection() {
                       initial={{ opacity: 0 }}
                       whileInView={{ opacity: 1 }}
                       viewport={{ once: true }}
-                    >
-                      365
-                    </motion.span>
+                    >до 365</motion.span>
                     <span className="text-zinc-500 text-sm">дней гарантия</span>
                   </div>
                   <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">

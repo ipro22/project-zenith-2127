@@ -5,7 +5,7 @@ export function HeroSection() {
   return (
     <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-20 relative">
       {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/50 via-transparent to-transparent" />
+      <div className="absolute inset-0 from-zinc-900/50 via-transparent to-transparent bg-[#000000]" />
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-3xl mx-auto">
@@ -49,7 +49,7 @@ export function HeroSection() {
               <img
                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200"
                 alt="User avatar"
-                className="w-10 h-10 rounded-full border-2 border-zinc-950 hover:-translate-y-1 transition object-cover z-[1]"
+                className="w-10 h-10 rounded-full border-2 border-zinc-950 hover:-translate-y-1 transition z-[1] object-contain"
               />
               <img
                 src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200"
