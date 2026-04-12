@@ -213,7 +213,7 @@ export default function CalculatorPage() {
                             </div>
                             <span>{svc.name}</span>
                           </div>
-                          <span className="font-semibold tabular-nums">{svc.price.toLocaleString("ru-RU")} ₽</span>
+                          <span className="font-semibold tabular-nums">39 900₽</span>
                         </button>
                       )
                     })}
