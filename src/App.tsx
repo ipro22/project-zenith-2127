@@ -16,7 +16,10 @@ import PartnershipPage from "./pages/PartnershipPage";
 import AccountPage from "./pages/AccountPage";
 import DevicePage from "./pages/DevicePage";
 import DeviceModelPage from "./pages/DeviceModelPage";
+import CalculatorPage from "./pages/CalculatorPage";
+import ShopPage from "./pages/ShopPage";
 import NotFound from "./pages/NotFound";
+import { ContactWidget } from "./components/ContactWidget";
 
 const queryClient = new QueryClient();
 
@@ -37,11 +40,14 @@ const App = () => (
           <Route path="/warranty" element={<WarrantyPage />} />
           <Route path="/partnership" element={<PartnershipPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/calculator" element={<CalculatorPage />} />
+          <Route path="/shop" element={<ShopPage />} />
           <Route path="/device/:brandSlug" element={<DevicePage />} />
           <Route path="/device/:brandSlug/:modelSlug" element={<DeviceModelPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ContactWidget />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

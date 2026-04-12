@@ -89,9 +89,25 @@ export default function DeviceModelPage() {
                 ))}
               </div>
 
-              <a href="tel:+79993231817">
-                <LiquidCtaButton>Записаться на ремонт</LiquidCtaButton>
-              </a>
+              <div className="flex flex-wrap gap-2">
+                <a href="tel:+79993231817">
+                  <LiquidCtaButton>Записаться на ремонт</LiquidCtaButton>
+                </a>
+                <a
+                  href="tel:+79993231817"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-900 border border-zinc-700 text-zinc-300 text-sm hover:bg-zinc-800 transition-colors"
+                >
+                  <Icon name="Phone" size={15} />
+                  Позвонить
+                </a>
+                <a
+                  href="/calculator"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-900 border border-zinc-700 text-zinc-300 text-sm hover:bg-zinc-800 transition-colors"
+                >
+                  <Icon name="Calculator" size={15} />
+                  Рассчитать
+                </a>
+              </div>
             </motion.div>
           </div>
 

@@ -1,0 +1,16 @@
+{
+  "tests": [
+    {
+      "name": "Проверка OPTIONS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Ошибка без order_id",
+      "method": "GET",
+      "path": "/?order_id=",
+      "expectedStatus": 400
+    }
+  ]
+}

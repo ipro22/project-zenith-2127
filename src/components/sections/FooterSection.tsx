@@ -12,9 +12,10 @@ const footerLinks = {
     { label: "Ремонт Huawei/Honor", href: "/device/huawei" },
   ],
   company: [
+    { label: "Магазин техники", href: "/shop" },
+    { label: "Калькулятор ремонта", href: "/calculator" },
     { label: "О нас", href: "/about" },
     { label: "Контакты", href: "/contacts" },
-    { label: "Отзывы", href: "/#testimonials" },
     { label: "Сотрудничество", href: "/partnership" },
     { label: "Личный кабинет", href: "/account" },
   ],

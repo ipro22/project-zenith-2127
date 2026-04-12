@@ -3,12 +3,13 @@ import { Menu, X, Search, User } from "lucide-react"
 import { SearchDialog } from "@/components/SearchDialog"
 
 const navLinks = [
+  { href: "/device/iphone", label: "Ремонт" },
+  { href: "/shop", label: "Магазин" },
+  { href: "/calculator", label: "Калькулятор" },
   { href: "/about", label: "О нас" },
   { href: "/contacts", label: "Контакты" },
-  { href: "/#testimonials", label: "Отзывы" },
-  { href: "/privileges", label: "Привилегии" },
+  { href: "/privileges", label: "Бонусы" },
   { href: "/warranty", label: "Гарантия" },
-  { href: "/partnership", label: "Сотрудничество" },
 ]
 
 export function Navbar() {
