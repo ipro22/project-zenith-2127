@@ -30,7 +30,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed top-8 left-0 right-0 z-40 p-4">
+      <header className="fixed top-8 left-0 right-0 z-40 p-4 py-0">
         <nav className="max-w-6xl mx-auto flex items-center justify-between h-12 px-6 rounded-full bg-zinc-900/70 border border-zinc-800/50 backdrop-blur-md">
           <a href="/" className="flex items-center gap-2 shrink-0">
             <img
