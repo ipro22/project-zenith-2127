@@ -11,7 +11,7 @@
 
 export const siteConfig = {
   /** Логотип рядом с названием iPro в навбаре и футере */
-  logo: "file:///Users/mac/Desktop/Сайт/Logo%C2%A0—%20копия.svg",
+  logo: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/bucket/f80c57a2-1970-434d-a475-83345e18e971.svg",
 
   /** Фоновое фото на главном экране (Hero) */
   heroBg:
