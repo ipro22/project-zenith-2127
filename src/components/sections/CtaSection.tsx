@@ -12,7 +12,7 @@ export function CtaSection() {
             <LiquidCtaButton>Позвонить нам</LiquidCtaButton>
           </a>
           <a
-            href="/iphone"
+            href="/device/iphone"
             className="group flex items-center gap-2 px-6 py-3 text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors"
           >
             <span>Посмотреть услуги и цены</span>

@@ -3,14 +3,14 @@ import { Zap, BarChart3, Layers, ArrowRight, ShieldCheck } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
 const brands = [
-  { name: "Apple" },
-  { name: "Samsung" },
-  { name: "Xiaomi" },
-  { name: "Huawei" },
-  { name: "Sony" },
-  { name: "Honor" },
-  { name: "OnePlus" },
-  { name: "Realme" },
+  { name: "iPhone", href: "/device/iphone" },
+  { name: "iPad", href: "/device/ipad" },
+  { name: "MacBook", href: "/device/macbook" },
+  { name: "Samsung", href: "/device/samsung" },
+  { name: "Xiaomi", href: "/device/xiaomi" },
+  { name: "Huawei", href: "/device/huawei" },
+  { name: "AirPods", href: "/device/airpods" },
+  { name: "Watch", href: "/device/apple-watch" },
 ]
 
 export function FeaturesSection() {
@@ -249,8 +249,9 @@ export function FeaturesSection() {
                 <p className="text-zinc-500 text-sm mb-5">Работаем с любой техникой — от флагманов до бюджетных моделей.</p>
                 <div className="grid grid-cols-4 gap-2 mt-auto">
                   {brands.map((brand, i) => (
-                    <motion.div
+                    <motion.a
                       key={brand.name}
+                      href={brand.href}
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
@@ -259,15 +260,15 @@ export function FeaturesSection() {
                       className="aspect-auto rounded-lg border border-zinc-800 bg-zinc-800/50 flex items-center justify-center cursor-pointer px-2 py-2.5"
                     >
                       <span className="text-zinc-400 text-xs font-medium text-center">{brand.name}</span>
-                    </motion.div>
+                    </motion.a>
                   ))}
                 </div>
-                <motion.button
-                  whileHover={{ x: 6 }}
+                <a
+                  href="/device/iphone"
                   className="mt-4 flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
                 >
                   Все поддерживаемые модели <ArrowRight className="w-4 h-4" />
-                </motion.button>
+                </a>
               </CardContent>
             </Card>
           </motion.div>

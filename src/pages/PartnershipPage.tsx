@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
+import { SEOHead } from "@/components/SEOHead"
 import { motion } from "framer-motion"
 import { ArrowLeft, Building2, Handshake, Truck, GraduationCap, ArrowRight } from "lucide-react"
 import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
@@ -41,6 +42,10 @@ const steps = [
 export default function PartnershipPage() {
   return (
     <div className="min-h-screen bg-zinc-950">
+      <SEOHead
+        title="Сотрудничество с iPro — корпоративное обслуживание, агентская программа"
+        description="Партнёрство с iPro: корпоративное обслуживание со скидкой 20%, агентская программа до 15% комиссии, выкуп техники."
+      />
       <Navbar />
       <main className="pt-24 pb-20 px-6">
         <div className="max-w-4xl mx-auto">

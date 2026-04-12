@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
+import { SEOHead } from "@/components/SEOHead"
 import { motion } from "framer-motion"
 import { ArrowLeft, Gift, Star, Repeat, Zap, Trophy, Heart } from "lucide-react"
 import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
@@ -68,6 +69,10 @@ const levels = [
 export default function PrivilegesPage() {
   return (
     <div className="min-h-screen bg-zinc-950">
+      <SEOHead
+        title="Привилегии клиентов iPro — скидки, бонусы, VIP-статус | Барнаул"
+        description="Программа лояльности iPro: скидки до 10%, накопительные бонусы, VIP-статус, бесплатная чистка, персональный мастер."
+      />
       <Navbar />
       <main className="pt-24 pb-20 px-6">
         <div className="max-w-4xl mx-auto">

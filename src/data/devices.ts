@@ -1,0 +1,1058 @@
+export interface DeviceService {
+  name: string
+  price: string
+  priceNum: number
+}
+
+export interface DeviceModel {
+  slug: string
+  name: string
+  modelNumbers: string
+  year: string
+  services: DeviceService[]
+}
+
+export interface DeviceBrand {
+  slug: string
+  name: string
+  icon: string
+  image: string
+  models: DeviceModel[]
+  seoTitle: string
+  seoDescription: string
+}
+
+export const devices: DeviceBrand[] = [
+  {
+    slug: "iphone",
+    name: "iPhone",
+    icon: "Smartphone",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/c08dc48b-2e30-4193-993a-56744db25416.jpg",
+    seoTitle: "Ремонт iPhone в Барнауле — все модели, цены, гарантия 365 дней | iPro",
+    seoDescription: "Профессиональный ремонт iPhone всех моделей в Барнауле. Замена экрана, аккумулятора, ремонт после воды. Гарантия 365 дней. Бесплатная диагностика.",
+    models: [
+      {
+        slug: "iphone-17-pro-max",
+        name: "iPhone 17 Pro Max",
+        modelNumbers: "A3257, A3525, A3527, A3526",
+        year: "2025",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 12 500 ₽", priceNum: 12500 },
+          { name: "Замена аккумулятора", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Попадание воды — восстановление", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Замена камеры", price: "от 8 500 ₽", priceNum: 8500 },
+          { name: "Ремонт разъёма зарядки", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Замена задней крышки", price: "от 7 000 ₽", priceNum: 7000 },
+        ],
+      },
+      {
+        slug: "iphone-17-pro",
+        name: "iPhone 17 Pro",
+        modelNumbers: "A3258, A3528, A3530, A3529",
+        year: "2025",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 11 500 ₽", priceNum: 11500 },
+          { name: "Замена аккумулятора", price: "от 4 200 ₽", priceNum: 4200 },
+          { name: "Попадание воды — восстановление", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Замена камеры", price: "от 7 500 ₽", priceNum: 7500 },
+          { name: "Ремонт разъёма зарядки", price: "от 3 200 ₽", priceNum: 3200 },
+          { name: "Замена задней крышки", price: "от 6 500 ₽", priceNum: 6500 },
+        ],
+      },
+      {
+        slug: "iphone-17",
+        name: "iPhone 17",
+        modelNumbers: "A3259, A3531, A3533, A3532",
+        year: "2025",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 9 500 ₽", priceNum: 9500 },
+          { name: "Замена аккумулятора", price: "от 3 800 ₽", priceNum: 3800 },
+          { name: "Попадание воды — восстановление", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена камеры", price: "от 6 000 ₽", priceNum: 6000 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Замена задней крышки", price: "от 5 500 ₽", priceNum: 5500 },
+        ],
+      },
+      {
+        slug: "iphone-16-pro-max",
+        name: "iPhone 16 Pro Max",
+        modelNumbers: "A2894, A3092, A3094, A3093",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 9 500 ₽", priceNum: 9500 },
+          { name: "Замена аккумулятора", price: "от 3 800 ₽", priceNum: 3800 },
+          { name: "Попадание воды — восстановление", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Замена камеры", price: "от 7 000 ₽", priceNum: 7000 },
+          { name: "Ремонт разъёма зарядки", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Замена задней крышки", price: "от 5 500 ₽", priceNum: 5500 },
+        ],
+      },
+      {
+        slug: "iphone-16-pro",
+        name: "iPhone 16 Pro",
+        modelNumbers: "A2895, A3095, A3097, A3096",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 8 500 ₽", priceNum: 8500 },
+          { name: "Замена аккумулятора", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Попадание воды — восстановление", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена камеры", price: "от 6 500 ₽", priceNum: 6500 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Замена задней крышки", price: "от 5 000 ₽", priceNum: 5000 },
+        ],
+      },
+      {
+        slug: "iphone-16",
+        name: "iPhone 16",
+        modelNumbers: "A2896, A3098, A3100, A3099",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 7 500 ₽", priceNum: 7500 },
+          { name: "Замена аккумулятора", price: "от 3 200 ₽", priceNum: 3200 },
+          { name: "Попадание воды — восстановление", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена камеры", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Замена задней крышки", price: "от 4 500 ₽", priceNum: 4500 },
+        ],
+      },
+      {
+        slug: "iphone-15-pro-max",
+        name: "iPhone 15 Pro Max",
+        modelNumbers: "A2849, A3105, A3108",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 8 000 ₽", priceNum: 8000 },
+          { name: "Замена аккумулятора", price: "от 3 200 ₽", priceNum: 3200 },
+          { name: "Попадание воды — восстановление", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена камеры", price: "от 6 500 ₽", priceNum: 6500 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Замена задней крышки", price: "от 5 000 ₽", priceNum: 5000 },
+        ],
+      },
+      {
+        slug: "iphone-15-pro",
+        name: "iPhone 15 Pro",
+        modelNumbers: "A2848, A3101, A3104",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 7 500 ₽", priceNum: 7500 },
+          { name: "Замена аккумулятора", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Попадание воды — восстановление", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена камеры", price: "от 6 000 ₽", priceNum: 6000 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 300 ₽", priceNum: 2300 },
+          { name: "Замена задней крышки", price: "от 4 500 ₽", priceNum: 4500 },
+        ],
+      },
+      {
+        slug: "iphone-15",
+        name: "iPhone 15",
+        modelNumbers: "A2846, A3089, A3090",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 6 500 ₽", priceNum: 6500 },
+          { name: "Замена аккумулятора", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Попадание воды — восстановление", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Замена камеры", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Замена задней крышки", price: "от 4 000 ₽", priceNum: 4000 },
+        ],
+      },
+      {
+        slug: "iphone-14-pro-max",
+        name: "iPhone 14 Pro Max",
+        modelNumbers: "A2894, A2651",
+        year: "2022",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 7 000 ₽", priceNum: 7000 },
+          { name: "Замена аккумулятора", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Попадание воды — восстановление", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена камеры", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Замена задней крышки", price: "от 4 500 ₽", priceNum: 4500 },
+        ],
+      },
+      {
+        slug: "iphone-14-pro",
+        name: "iPhone 14 Pro",
+        modelNumbers: "A2890, A2650",
+        year: "2022",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 6 500 ₽", priceNum: 6500 },
+          { name: "Замена аккумулятора", price: "от 2 600 ₽", priceNum: 2600 },
+          { name: "Попадание воды — восстановление", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Замена камеры", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Замена задней крышки", price: "от 4 000 ₽", priceNum: 4000 },
+        ],
+      },
+      {
+        slug: "iphone-14",
+        name: "iPhone 14",
+        modelNumbers: "A2882, A2649",
+        year: "2022",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Замена аккумулятора", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Попадание воды — восстановление", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Замена камеры", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Замена задней крышки", price: "от 3 500 ₽", priceNum: 3500 },
+        ],
+      },
+      {
+        slug: "iphone-13-pro-max",
+        name: "iPhone 13 Pro Max",
+        modelNumbers: "A2643, A2484",
+        year: "2021",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Замена аккумулятора", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Попадание воды — восстановление", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Замена камеры", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Замена задней крышки", price: "от 3 000 ₽", priceNum: 3000 },
+        ],
+      },
+      {
+        slug: "iphone-13",
+        name: "iPhone 13",
+        modelNumbers: "A2633, A2482",
+        year: "2021",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена аккумулятора", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Попадание воды — восстановление", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Замена камеры", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Замена задней крышки", price: "от 2 500 ₽", priceNum: 2500 },
+        ],
+      },
+      {
+        slug: "iphone-12-pro-max",
+        name: "iPhone 12 Pro Max",
+        modelNumbers: "A2411, A2342",
+        year: "2020",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена аккумулятора", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Попадание воды — восстановление", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Замена камеры", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Замена задней крышки", price: "от 2 500 ₽", priceNum: 2500 },
+        ],
+      },
+      {
+        slug: "iphone-12",
+        name: "iPhone 12",
+        modelNumbers: "A2403, A2172",
+        year: "2020",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Замена аккумулятора", price: "от 1 600 ₽", priceNum: 1600 },
+          { name: "Попадание воды — восстановление", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Замена камеры", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 200 ₽", priceNum: 1200 },
+          { name: "Замена задней крышки", price: "от 2 000 ₽", priceNum: 2000 },
+        ],
+      },
+      {
+        slug: "iphone-11-pro-max",
+        name: "iPhone 11 Pro Max",
+        modelNumbers: "A2218, A2161",
+        year: "2019",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Замена аккумулятора", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Попадание воды — восстановление", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Замена камеры", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 200 ₽", priceNum: 1200 },
+          { name: "Замена задней крышки", price: "от 1 800 ₽", priceNum: 1800 },
+        ],
+      },
+      {
+        slug: "iphone-11",
+        name: "iPhone 11",
+        modelNumbers: "A2221, A2111",
+        year: "2019",
+        services: [
+          { name: "Замена экрана (LCD)", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Замена аккумулятора", price: "от 1 300 ₽", priceNum: 1300 },
+          { name: "Попадание воды — восстановление", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Замена камеры", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 000 ₽", priceNum: 1000 },
+          { name: "Замена задней крышки", price: "от 1 500 ₽", priceNum: 1500 },
+        ],
+      },
+      {
+        slug: "iphone-xs-max",
+        name: "iPhone XS Max",
+        modelNumbers: "A1921, A2101",
+        year: "2018",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Замена аккумулятора", price: "от 1 200 ₽", priceNum: 1200 },
+          { name: "Попадание воды — восстановление", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Замена камеры", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 000 ₽", priceNum: 1000 },
+          { name: "Замена задней крышки", price: "от 1 500 ₽", priceNum: 1500 },
+        ],
+      },
+      {
+        slug: "iphone-x",
+        name: "iPhone X",
+        modelNumbers: "A1865, A1901",
+        year: "2017",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Замена аккумулятора", price: "от 1 000 ₽", priceNum: 1000 },
+          { name: "Попадание воды — восстановление", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Замена камеры", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Ремонт разъёма зарядки", price: "от 900 ₽", priceNum: 900 },
+          { name: "Замена задней крышки", price: "от 1 200 ₽", priceNum: 1200 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "samsung",
+    name: "Samsung",
+    icon: "Smartphone",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/c8e591d4-a6ab-46a8-bc4a-e7ffcf85a4e7.jpg",
+    seoTitle: "Ремонт Samsung в Барнауле — Galaxy S, A, Z серии | iPro",
+    seoDescription: "Ремонт Samsung Galaxy всех моделей в Барнауле. Замена экрана AMOLED, аккумулятора, восстановление после воды. Гарантия 365 дней.",
+    models: [
+      {
+        slug: "galaxy-s25-ultra",
+        name: "Samsung Galaxy S25 Ultra",
+        modelNumbers: "SM-S938B",
+        year: "2025",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 14 000 ₽", priceNum: 14000 },
+          { name: "Замена аккумулятора", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Попадание воды — восстановление", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Замена камеры", price: "от 7 000 ₽", priceNum: 7000 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Замена задней крышки", price: "от 4 500 ₽", priceNum: 4500 },
+        ],
+      },
+      {
+        slug: "galaxy-s25-plus",
+        name: "Samsung Galaxy S25+",
+        modelNumbers: "SM-S936B",
+        year: "2025",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 11 000 ₽", priceNum: 11000 },
+          { name: "Замена аккумулятора", price: "от 3 200 ₽", priceNum: 3200 },
+          { name: "Попадание воды — восстановление", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена камеры", price: "от 6 000 ₽", priceNum: 6000 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Замена задней крышки", price: "от 3 800 ₽", priceNum: 3800 },
+        ],
+      },
+      {
+        slug: "galaxy-s25",
+        name: "Samsung Galaxy S25",
+        modelNumbers: "SM-S931B",
+        year: "2025",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 9 000 ₽", priceNum: 9000 },
+          { name: "Замена аккумулятора", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Попадание воды — восстановление", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена камеры", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Замена задней крышки", price: "от 3 200 ₽", priceNum: 3200 },
+        ],
+      },
+      {
+        slug: "galaxy-s24-ultra",
+        name: "Samsung Galaxy S24 Ultra",
+        modelNumbers: "SM-S928B",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 12 000 ₽", priceNum: 12000 },
+          { name: "Замена аккумулятора", price: "от 3 200 ₽", priceNum: 3200 },
+          { name: "Попадание воды — восстановление", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена камеры", price: "от 6 500 ₽", priceNum: 6500 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Замена задней крышки", price: "от 4 000 ₽", priceNum: 4000 },
+        ],
+      },
+      {
+        slug: "galaxy-s24",
+        name: "Samsung Galaxy S24",
+        modelNumbers: "SM-S921B",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 8 000 ₽", priceNum: 8000 },
+          { name: "Замена аккумулятора", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Попадание воды — восстановление", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Замена камеры", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Замена задней крышки", price: "от 3 000 ₽", priceNum: 3000 },
+        ],
+      },
+      {
+        slug: "galaxy-s23-ultra",
+        name: "Samsung Galaxy S23 Ultra",
+        modelNumbers: "SM-S918B",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 10 000 ₽", priceNum: 10000 },
+          { name: "Замена аккумулятора", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Попадание воды — восстановление", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена камеры", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Замена задней крышки", price: "от 3 500 ₽", priceNum: 3500 },
+        ],
+      },
+      {
+        slug: "galaxy-s23",
+        name: "Samsung Galaxy S23",
+        modelNumbers: "SM-S911B",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 7 000 ₽", priceNum: 7000 },
+          { name: "Замена аккумулятора", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Попадание воды — восстановление", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Замена камеры", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Замена задней крышки", price: "от 2 500 ₽", priceNum: 2500 },
+        ],
+      },
+      {
+        slug: "galaxy-a55",
+        name: "Samsung Galaxy A55",
+        modelNumbers: "SM-A556B",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена аккумулятора", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Попадание воды — восстановление", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Замена камеры", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 1 200 ₽", priceNum: 1200 },
+          { name: "Замена задней крышки", price: "от 2 000 ₽", priceNum: 2000 },
+        ],
+      },
+      {
+        slug: "galaxy-a54",
+        name: "Samsung Galaxy A54",
+        modelNumbers: "SM-A546B",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена аккумулятора", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Попадание воды — восстановление", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Замена камеры", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 1 000 ₽", priceNum: 1000 },
+          { name: "Замена задней крышки", price: "от 1 800 ₽", priceNum: 1800 },
+        ],
+      },
+      {
+        slug: "galaxy-a34",
+        name: "Samsung Galaxy A34",
+        modelNumbers: "SM-A346B",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Замена аккумулятора", price: "от 1 300 ₽", priceNum: 1300 },
+          { name: "Попадание воды — восстановление", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Замена камеры", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 900 ₽", priceNum: 900 },
+          { name: "Замена задней крышки", price: "от 1 500 ₽", priceNum: 1500 },
+        ],
+      },
+      {
+        slug: "galaxy-z-fold5",
+        name: "Samsung Galaxy Z Fold5",
+        modelNumbers: "SM-F946B",
+        year: "2023",
+        services: [
+          { name: "Замена внутреннего экрана", price: "от 25 000 ₽", priceNum: 25000 },
+          { name: "Замена внешнего экрана", price: "от 8 000 ₽", priceNum: 8000 },
+          { name: "Замена аккумулятора", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Попадание воды — восстановление", price: "от 6 000 ₽", priceNum: 6000 },
+          { name: "Ремонт петли складывания", price: "от 8 000 ₽", priceNum: 8000 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 2 500 ₽", priceNum: 2500 },
+        ],
+      },
+      {
+        slug: "galaxy-z-flip5",
+        name: "Samsung Galaxy Z Flip5",
+        modelNumbers: "SM-F731B",
+        year: "2023",
+        services: [
+          { name: "Замена внутреннего экрана", price: "от 18 000 ₽", priceNum: 18000 },
+          { name: "Замена внешнего экрана", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Замена аккумулятора", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Попадание воды — восстановление", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Ремонт петли складывания", price: "от 6 500 ₽", priceNum: 6500 },
+          { name: "Ремонт разъёма зарядки (USB-C)", price: "от 2 200 ₽", priceNum: 2200 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "xiaomi",
+    name: "Xiaomi",
+    icon: "Smartphone",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bccdbeea-9c78-4e7e-b57b-92affa7d3f09.jpg",
+    seoTitle: "Ремонт Xiaomi в Барнауле — Redmi, POCO, все модели | iPro",
+    seoDescription: "Ремонт Xiaomi, Redmi, POCO в Барнауле. Замена экрана, аккумулятора, восстановление после воды. Гарантия 365 дней. Цены от 800₽.",
+    models: [
+      {
+        slug: "xiaomi-15-pro",
+        name: "Xiaomi 15 Pro",
+        modelNumbers: "25010PN33G",
+        year: "2025",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 9 000 ₽", priceNum: 9000 },
+          { name: "Замена аккумулятора", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Попадание воды — восстановление", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена камеры", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Замена задней крышки", price: "от 3 000 ₽", priceNum: 3000 },
+        ],
+      },
+      {
+        slug: "xiaomi-15",
+        name: "Xiaomi 15",
+        modelNumbers: "25010PN32G",
+        year: "2025",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 7 500 ₽", priceNum: 7500 },
+          { name: "Замена аккумулятора", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Попадание воды — восстановление", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Замена камеры", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Замена задней крышки", price: "от 2 500 ₽", priceNum: 2500 },
+        ],
+      },
+      {
+        slug: "xiaomi-14-ultra",
+        name: "Xiaomi 14 Ultra",
+        modelNumbers: "24030PN60G",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 8 500 ₽", priceNum: 8500 },
+          { name: "Замена аккумулятора", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Попадание воды — восстановление", price: "от 3 800 ₽", priceNum: 3800 },
+          { name: "Замена камеры", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 600 ₽", priceNum: 1600 },
+          { name: "Замена задней крышки", price: "от 2 800 ₽", priceNum: 2800 },
+        ],
+      },
+      {
+        slug: "xiaomi-14",
+        name: "Xiaomi 14",
+        modelNumbers: "2311DRK48G",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 6 500 ₽", priceNum: 6500 },
+          { name: "Замена аккумулятора", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Попадание воды — восстановление", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Замена камеры", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 300 ₽", priceNum: 1300 },
+          { name: "Замена задней крышки", price: "от 2 200 ₽", priceNum: 2200 },
+        ],
+      },
+      {
+        slug: "redmi-note-13-pro",
+        name: "Redmi Note 13 Pro",
+        modelNumbers: "24015RAAMG",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена аккумулятора", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Попадание воды — восстановление", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Замена камеры", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 000 ₽", priceNum: 1000 },
+          { name: "Замена задней крышки", price: "от 1 500 ₽", priceNum: 1500 },
+        ],
+      },
+      {
+        slug: "redmi-note-13",
+        name: "Redmi Note 13",
+        modelNumbers: "23106RN0DA",
+        year: "2024",
+        services: [
+          { name: "Замена экрана", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Замена аккумулятора", price: "от 1 200 ₽", priceNum: 1200 },
+          { name: "Попадание воды — восстановление", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Замена камеры", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Ремонт разъёма зарядки", price: "от 800 ₽", priceNum: 800 },
+          { name: "Замена задней крышки", price: "от 1 200 ₽", priceNum: 1200 },
+        ],
+      },
+      {
+        slug: "poco-x6-pro",
+        name: "POCO X6 Pro",
+        modelNumbers: "23113RKC6G",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена аккумулятора", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Попадание воды — восстановление", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Замена камеры", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 100 ₽", priceNum: 1100 },
+          { name: "Замена задней крышки", price: "от 1 800 ₽", priceNum: 1800 },
+        ],
+      },
+      {
+        slug: "poco-f6",
+        name: "POCO F6",
+        modelNumbers: "24069PC21G",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (AMOLED)", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Замена аккумулятора", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Попадание воды — восстановление", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Замена камеры", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 200 ₽", priceNum: 1200 },
+          { name: "Замена задней крышки", price: "от 2 000 ₽", priceNum: 2000 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "ipad",
+    name: "iPad",
+    icon: "Tablet",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/d0410ba3-f22a-46bd-bc70-896b1f2f5c2b.jpg",
+    seoTitle: "Ремонт iPad в Барнауле — Pro, Air, mini, все модели | iPro",
+    seoDescription: "Ремонт iPad всех моделей в Барнауле. Замена экрана, аккумулятора, разъёма. Гарантия 365 дней. Бесплатная диагностика.",
+    models: [
+      {
+        slug: "ipad-pro-13-m4",
+        name: "iPad Pro 13\" M4",
+        modelNumbers: "A2925, A2926",
+        year: "2024",
+        services: [
+          { name: "Замена экрана", price: "от 18 000 ₽", priceNum: 18000 },
+          { name: "Замена аккумулятора", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Попадание воды — восстановление", price: "от 6 000 ₽", priceNum: 6000 },
+          { name: "Ремонт разъёма зарядки", price: "от 3 500 ₽", priceNum: 3500 },
+        ],
+      },
+      {
+        slug: "ipad-pro-11-m4",
+        name: "iPad Pro 11\" M4",
+        modelNumbers: "A2837, A2838",
+        year: "2024",
+        services: [
+          { name: "Замена экрана", price: "от 15 000 ₽", priceNum: 15000 },
+          { name: "Замена аккумулятора", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Попадание воды — восстановление", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Ремонт разъёма зарядки", price: "от 3 200 ₽", priceNum: 3200 },
+        ],
+      },
+      {
+        slug: "ipad-air-13-m2",
+        name: "iPad Air 13\" M2",
+        modelNumbers: "A2898, A2899",
+        year: "2024",
+        services: [
+          { name: "Замена экрана", price: "от 12 000 ₽", priceNum: 12000 },
+          { name: "Замена аккумулятора", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Попадание воды — восстановление", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 800 ₽", priceNum: 2800 },
+        ],
+      },
+      {
+        slug: "ipad-air-11-m2",
+        name: "iPad Air 11\" M2",
+        modelNumbers: "A2902, A2903",
+        year: "2024",
+        services: [
+          { name: "Замена экрана", price: "от 10 000 ₽", priceNum: 10000 },
+          { name: "Замена аккумулятора", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Попадание воды — восстановление", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 500 ₽", priceNum: 2500 },
+        ],
+      },
+      {
+        slug: "ipad-10",
+        name: "iPad 10 (2022)",
+        modelNumbers: "A2696, A2757",
+        year: "2022",
+        services: [
+          { name: "Замена экрана", price: "от 7 500 ₽", priceNum: 7500 },
+          { name: "Замена аккумулятора", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Попадание воды — восстановление", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 000 ₽", priceNum: 2000 },
+        ],
+      },
+      {
+        slug: "ipad-mini-7",
+        name: "iPad mini 7",
+        modelNumbers: "A2995, A2996",
+        year: "2024",
+        services: [
+          { name: "Замена экрана", price: "от 8 000 ₽", priceNum: 8000 },
+          { name: "Замена аккумулятора", price: "от 3 200 ₽", priceNum: 3200 },
+          { name: "Попадание воды — восстановление", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 200 ₽", priceNum: 2200 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "macbook",
+    name: "MacBook",
+    icon: "Laptop",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bae05299-9833-4cb6-854a-7024b8021cca.jpg",
+    seoTitle: "Ремонт MacBook в Барнауле — Pro, Air, все модели | iPro",
+    seoDescription: "Ремонт MacBook Pro и Air в Барнауле. Замена экрана, аккумулятора, клавиатуры, SSD. Восстановление после залития. Гарантия 365 дней.",
+    models: [
+      {
+        slug: "macbook-pro-16-m4",
+        name: "MacBook Pro 16\" M4 Pro/Max",
+        modelNumbers: "A2991, A2992",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (Liquid Retina XDR)", price: "от 35 000 ₽", priceNum: 35000 },
+          { name: "Замена аккумулятора", price: "от 12 000 ₽", priceNum: 12000 },
+          { name: "Восстановление после залития", price: "от 15 000 ₽", priceNum: 15000 },
+          { name: "Замена клавиатуры", price: "от 8 000 ₽", priceNum: 8000 },
+          { name: "Замена / апгрейд SSD", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Чистка + замена термопасты", price: "от 3 500 ₽", priceNum: 3500 },
+        ],
+      },
+      {
+        slug: "macbook-pro-14-m4",
+        name: "MacBook Pro 14\" M4",
+        modelNumbers: "A2918, A2919",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (Liquid Retina XDR)", price: "от 28 000 ₽", priceNum: 28000 },
+          { name: "Замена аккумулятора", price: "от 10 000 ₽", priceNum: 10000 },
+          { name: "Восстановление после залития", price: "от 12 000 ₽", priceNum: 12000 },
+          { name: "Замена клавиатуры", price: "от 7 000 ₽", priceNum: 7000 },
+          { name: "Замена / апгрейд SSD", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Чистка + замена термопасты", price: "от 3 000 ₽", priceNum: 3000 },
+        ],
+      },
+      {
+        slug: "macbook-air-15-m3",
+        name: "MacBook Air 15\" M3",
+        modelNumbers: "A3114, A3115",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (Liquid Retina)", price: "от 22 000 ₽", priceNum: 22000 },
+          { name: "Замена аккумулятора", price: "от 8 000 ₽", priceNum: 8000 },
+          { name: "Восстановление после залития", price: "от 10 000 ₽", priceNum: 10000 },
+          { name: "Замена клавиатуры", price: "от 6 000 ₽", priceNum: 6000 },
+          { name: "Замена / апгрейд SSD", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Чистка + замена термопасты", price: "от 2 500 ₽", priceNum: 2500 },
+        ],
+      },
+      {
+        slug: "macbook-air-13-m3",
+        name: "MacBook Air 13\" M3",
+        modelNumbers: "A3113, A3114",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (Liquid Retina)", price: "от 18 000 ₽", priceNum: 18000 },
+          { name: "Замена аккумулятора", price: "от 7 000 ₽", priceNum: 7000 },
+          { name: "Восстановление после залития", price: "от 9 000 ₽", priceNum: 9000 },
+          { name: "Замена клавиатуры", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Замена / апгрейд SSD", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Чистка + замена термопасты", price: "от 2 500 ₽", priceNum: 2500 },
+        ],
+      },
+      {
+        slug: "macbook-pro-16-m3",
+        name: "MacBook Pro 16\" M3 Pro/Max",
+        modelNumbers: "A2780, A2781",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (Liquid Retina XDR)", price: "от 32 000 ₽", priceNum: 32000 },
+          { name: "Замена аккумулятора", price: "от 11 000 ₽", priceNum: 11000 },
+          { name: "Восстановление после залития", price: "от 14 000 ₽", priceNum: 14000 },
+          { name: "Замена клавиатуры", price: "от 7 500 ₽", priceNum: 7500 },
+          { name: "Замена / апгрейд SSD", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Чистка + замена термопасты", price: "от 3 000 ₽", priceNum: 3000 },
+        ],
+      },
+      {
+        slug: "macbook-pro-14-m3",
+        name: "MacBook Pro 14\" M3",
+        modelNumbers: "A2779, A2780",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (Liquid Retina XDR)", price: "от 25 000 ₽", priceNum: 25000 },
+          { name: "Замена аккумулятора", price: "от 9 000 ₽", priceNum: 9000 },
+          { name: "Восстановление после залития", price: "от 11 000 ₽", priceNum: 11000 },
+          { name: "Замена клавиатуры", price: "от 6 500 ₽", priceNum: 6500 },
+          { name: "Замена / апгрейд SSD", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Чистка + замена термопасты", price: "от 2 500 ₽", priceNum: 2500 },
+        ],
+      },
+      {
+        slug: "macbook-air-13-m2",
+        name: "MacBook Air 13\" M2",
+        modelNumbers: "A2681, A2682",
+        year: "2022",
+        services: [
+          { name: "Замена экрана (Liquid Retina)", price: "от 16 000 ₽", priceNum: 16000 },
+          { name: "Замена аккумулятора", price: "от 6 500 ₽", priceNum: 6500 },
+          { name: "Восстановление после залития", price: "от 8 000 ₽", priceNum: 8000 },
+          { name: "Замена клавиатуры", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Замена / апгрейд SSD", price: "от 3 200 ₽", priceNum: 3200 },
+          { name: "Чистка + замена термопасты", price: "от 2 000 ₽", priceNum: 2000 },
+        ],
+      },
+      {
+        slug: "macbook-air-13-m1",
+        name: "MacBook Air 13\" M1",
+        modelNumbers: "A2337, A2338",
+        year: "2020",
+        services: [
+          { name: "Замена экрана (Retina)", price: "от 12 000 ₽", priceNum: 12000 },
+          { name: "Замена аккумулятора", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Восстановление после залития", price: "от 7 000 ₽", priceNum: 7000 },
+          { name: "Замена клавиатуры", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена / апгрейд SSD", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Чистка + замена термопасты", price: "от 1 800 ₽", priceNum: 1800 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "apple-watch",
+    name: "Apple Watch",
+    icon: "Watch",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/c08dc48b-2e30-4193-993a-56744db25416.jpg",
+    seoTitle: "Ремонт Apple Watch в Барнауле — Ultra, Series, SE | iPro",
+    seoDescription: "Ремонт Apple Watch всех серий в Барнауле. Замена экрана, аккумулятора. Гарантия 365 дней.",
+    models: [
+      {
+        slug: "apple-watch-ultra-2",
+        name: "Apple Watch Ultra 2",
+        modelNumbers: "A2984",
+        year: "2024",
+        services: [
+          { name: "Замена экрана", price: "от 12 000 ₽", priceNum: 12000 },
+          { name: "Замена аккумулятора", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Попадание воды — восстановление", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Замена кнопки Action", price: "от 3 000 ₽", priceNum: 3000 },
+        ],
+      },
+      {
+        slug: "apple-watch-series-10",
+        name: "Apple Watch Series 10",
+        modelNumbers: "A2978, A2979",
+        year: "2024",
+        services: [
+          { name: "Замена экрана", price: "от 8 000 ₽", priceNum: 8000 },
+          { name: "Замена аккумулятора", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Попадание воды — восстановление", price: "от 4 500 ₽", priceNum: 4500 },
+        ],
+      },
+      {
+        slug: "apple-watch-series-9",
+        name: "Apple Watch Series 9",
+        modelNumbers: "A2978, A2979",
+        year: "2023",
+        services: [
+          { name: "Замена экрана", price: "от 7 000 ₽", priceNum: 7000 },
+          { name: "Замена аккумулятора", price: "от 3 500 ₽", priceNum: 3500 },
+          { name: "Попадание воды — восстановление", price: "от 4 000 ₽", priceNum: 4000 },
+        ],
+      },
+      {
+        slug: "apple-watch-se-2",
+        name: "Apple Watch SE 2",
+        modelNumbers: "A2722, A2723",
+        year: "2022",
+        services: [
+          { name: "Замена экрана", price: "от 5 000 ₽", priceNum: 5000 },
+          { name: "Замена аккумулятора", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Попадание воды — восстановление", price: "от 3 000 ₽", priceNum: 3000 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "airpods",
+    name: "AirPods",
+    icon: "Headphones",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/c08dc48b-2e30-4193-993a-56744db25416.jpg",
+    seoTitle: "Ремонт AirPods в Барнауле — Pro, Max, замена аккумулятора | iPro",
+    seoDescription: "Ремонт AirPods Pro, AirPods Max в Барнауле. Замена аккумулятора, чистка, ремонт кейса. Гарантия 365 дней.",
+    models: [
+      {
+        slug: "airpods-pro-2",
+        name: "AirPods Pro 2 (USB-C)",
+        modelNumbers: "A3047, A3048",
+        year: "2023",
+        services: [
+          { name: "Замена аккумулятора наушника", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Замена аккумулятора кейса", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Профессиональная чистка", price: "от 800 ₽", priceNum: 800 },
+          { name: "Замена динамика", price: "от 2 200 ₽", priceNum: 2200 },
+        ],
+      },
+      {
+        slug: "airpods-4",
+        name: "AirPods 4",
+        modelNumbers: "A3049, A3050",
+        year: "2024",
+        services: [
+          { name: "Замена аккумулятора наушника", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Замена аккумулятора кейса", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Профессиональная чистка", price: "от 700 ₽", priceNum: 700 },
+        ],
+      },
+      {
+        slug: "airpods-3",
+        name: "AirPods 3",
+        modelNumbers: "A2564, A2565",
+        year: "2021",
+        services: [
+          { name: "Замена аккумулятора наушника", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Замена аккумулятора кейса", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Профессиональная чистка", price: "от 600 ₽", priceNum: 600 },
+        ],
+      },
+      {
+        slug: "airpods-max",
+        name: "AirPods Max",
+        modelNumbers: "A2096",
+        year: "2020",
+        services: [
+          { name: "Замена амбушюр", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Замена аккумулятора", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Профессиональная чистка", price: "от 1 000 ₽", priceNum: 1000 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "huawei",
+    name: "Huawei / Honor",
+    icon: "Smartphone",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bccdbeea-9c78-4e7e-b57b-92affa7d3f09.jpg",
+    seoTitle: "Ремонт Huawei и Honor в Барнауле — все модели | iPro",
+    seoDescription: "Ремонт Huawei Pura, Mate, Honor Magic в Барнауле. Замена экрана, аккумулятора, восстановление после воды. Гарантия 365 дней.",
+    models: [
+      {
+        slug: "huawei-pura-70-ultra",
+        name: "Huawei Pura 70 Ultra",
+        modelNumbers: "ALT-L09",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 10 000 ₽", priceNum: 10000 },
+          { name: "Замена аккумулятора", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Попадание воды — восстановление", price: "от 4 500 ₽", priceNum: 4500 },
+          { name: "Замена камеры", price: "от 6 000 ₽", priceNum: 6000 },
+          { name: "Ремонт разъёма зарядки", price: "от 2 000 ₽", priceNum: 2000 },
+        ],
+      },
+      {
+        slug: "huawei-mate-60-pro",
+        name: "Huawei Mate 60 Pro",
+        modelNumbers: "ALN-AL10",
+        year: "2023",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 9 000 ₽", priceNum: 9000 },
+          { name: "Замена аккумулятора", price: "от 2 800 ₽", priceNum: 2800 },
+          { name: "Попадание воды — восстановление", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена камеры", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 800 ₽", priceNum: 1800 },
+        ],
+      },
+      {
+        slug: "honor-magic6-pro",
+        name: "Honor Magic6 Pro",
+        modelNumbers: "FNE-NX9",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 7 000 ₽", priceNum: 7000 },
+          { name: "Замена аккумулятора", price: "от 2 200 ₽", priceNum: 2200 },
+          { name: "Попадание воды — восстановление", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Замена камеры", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 500 ₽", priceNum: 1500 },
+        ],
+      },
+      {
+        slug: "honor-200-pro",
+        name: "Honor 200 Pro",
+        modelNumbers: "KAN-LX3",
+        year: "2024",
+        services: [
+          { name: "Замена экрана (OLED)", price: "от 5 500 ₽", priceNum: 5500 },
+          { name: "Замена аккумулятора", price: "от 1 800 ₽", priceNum: 1800 },
+          { name: "Попадание воды — восстановление", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Замена камеры", price: "от 3 000 ₽", priceNum: 3000 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 200 ₽", priceNum: 1200 },
+        ],
+      },
+      {
+        slug: "honor-x9b",
+        name: "Honor X9b",
+        modelNumbers: "ANY-LX1",
+        year: "2024",
+        services: [
+          { name: "Замена экрана", price: "от 4 000 ₽", priceNum: 4000 },
+          { name: "Замена аккумулятора", price: "от 1 500 ₽", priceNum: 1500 },
+          { name: "Попадание воды — восстановление", price: "от 2 000 ₽", priceNum: 2000 },
+          { name: "Замена камеры", price: "от 2 500 ₽", priceNum: 2500 },
+          { name: "Ремонт разъёма зарядки", price: "от 1 000 ₽", priceNum: 1000 },
+        ],
+      },
+    ],
+  },
+]
+
+export interface SearchItem {
+  title: string
+  description: string
+  href: string
+  category: string
+  price?: string
+}
+
+function buildSearchIndex(): SearchItem[] {
+  const items: SearchItem[] = []
+
+  devices.forEach((brand) => {
+    items.push({
+      title: `Ремонт ${brand.name}`,
+      description: brand.seoDescription,
+      href: `/device/${brand.slug}`,
+      category: "Устройства",
+    })
+
+    brand.models.forEach((model) => {
+      items.push({
+        title: `Ремонт ${model.name}`,
+        description: `${model.name} (${model.modelNumbers}) — ${model.year} год`,
+        href: `/device/${brand.slug}/${model.slug}`,
+        category: brand.name,
+      })
+
+      model.services.forEach((service) => {
+        items.push({
+          title: `${service.name} — ${model.name}`,
+          description: `${service.price} | ${model.name} (${model.modelNumbers})`,
+          href: `/device/${brand.slug}/${model.slug}`,
+          category: "Услуги",
+          price: service.price,
+        })
+      })
+    })
+  })
+
+  items.push(
+    { title: "О компании iPro", description: "Сервисный центр по ремонту техники в Барнауле. 10 лет опыта, 10 000+ ремонтов", href: "/about", category: "Компания" },
+    { title: "Контакты", description: "Адрес, телефон, режим работы сервисного центра iPro", href: "/contacts", category: "Компания" },
+    { title: "Гарантия 365 дней", description: "Гарантия на все виды работ и запчасти до 365 дней", href: "/warranty", category: "Компания" },
+    { title: "Привилегии и бонусы", description: "Программа лояльности, скидки, VIP-статус", href: "/privileges", category: "Компания" },
+    { title: "Сотрудничество", description: "Корпоративное обслуживание, агентская программа", href: "/partnership", category: "Компания" },
+    { title: "Личный кабинет", description: "Проверка статуса заказа, бонусы, история ремонтов", href: "/account", category: "Компания" },
+  )
+
+  return items
+}
+
+export const searchIndex: SearchItem[] = buildSearchIndex()

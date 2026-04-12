@@ -2,21 +2,26 @@ import { Phone, MapPin, Instagram } from "lucide-react"
 
 const footerLinks = {
   product: [
-    { label: "Ремонт iPhone", href: "/iphone" },
-    { label: "Ремонт MacBook", href: "/macbook" },
-    { label: "Другие устройства", href: "/other" },
-    { label: "Продажа техники", href: "#" },
+    { label: "Ремонт iPhone", href: "/device/iphone" },
+    { label: "Ремонт Samsung", href: "/device/samsung" },
+    { label: "Ремонт Xiaomi", href: "/device/xiaomi" },
+    { label: "Ремонт iPad", href: "/device/ipad" },
+    { label: "Ремонт MacBook", href: "/device/macbook" },
+    { label: "Ремонт Apple Watch", href: "/device/apple-watch" },
+    { label: "Ремонт AirPods", href: "/device/airpods" },
+    { label: "Ремонт Huawei/Honor", href: "/device/huawei" },
   ],
   company: [
-    { label: "О нас", href: "#" },
-    { label: "Отзывы", href: "#testimonials" },
-    { label: "Контакты", href: "#" },
-    { label: "Адрес", href: "#" },
+    { label: "О нас", href: "/about" },
+    { label: "Контакты", href: "/contacts" },
+    { label: "Отзывы", href: "/#testimonials" },
+    { label: "Сотрудничество", href: "/partnership" },
+    { label: "Личный кабинет", href: "/account" },
   ],
   legal: [
-    { label: "Политика конфиденциальности", href: "#" },
-    { label: "Условия обслуживания", href: "#" },
-    { label: "Гарантия", href: "#" },
+    { label: "Гарантия", href: "/warranty" },
+    { label: "Привилегии", href: "/privileges" },
+    { label: "Политика конфиденциальности", href: "/privacy" },
   ],
 }
 
@@ -25,10 +30,14 @@ export function FooterSection() {
     <footer className="px-6 py-16 border-t border-zinc-900">
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-          {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <a href="/" className="font-display text-xl font-semibold text-zinc-100">
-              iPro
+            <a href="/" className="flex items-center gap-2">
+              <img
+                src="https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/921c383b-f1d2-4ed8-8379-31803622ba65.jpg"
+                alt="iPro logo"
+                className="w-8 h-8 rounded-lg object-cover"
+              />
+              <span className="font-display text-xl font-semibold text-zinc-100">iPro</span>
             </a>
             <p className="mt-4 text-sm text-zinc-500 max-w-xs">
               Сервисный центр по ремонту Apple и другой техники в центре Барнаула.
@@ -45,9 +54,8 @@ export function FooterSection() {
             </div>
           </div>
 
-          {/* Product Links */}
           <div>
-            <h4 className="font-heading text-sm font-semibold text-zinc-100 mb-4">Продукт</h4>
+            <h4 className="font-heading text-sm font-semibold text-zinc-100 mb-4">Ремонт</h4>
             <ul className="space-y-3">
               {footerLinks.product.map((link) => (
                 <li key={link.label}>
@@ -59,7 +67,6 @@ export function FooterSection() {
             </ul>
           </div>
 
-          {/* Company Links */}
           <div>
             <h4 className="font-heading text-sm font-semibold text-zinc-100 mb-4">Компания</h4>
             <ul className="space-y-3">
@@ -73,9 +80,8 @@ export function FooterSection() {
             </ul>
           </div>
 
-          {/* Legal Links */}
           <div>
-            <h4 className="font-heading text-sm font-semibold text-zinc-100 mb-4">Правовая информация</h4>
+            <h4 className="font-heading text-sm font-semibold text-zinc-100 mb-4">Информация</h4>
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.label}>
@@ -88,7 +94,6 @@ export function FooterSection() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="pt-8 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-zinc-600">© {new Date().getFullYear()} iPro Барнаул. Все права защищены.</p>
           <div className="flex items-center gap-4">

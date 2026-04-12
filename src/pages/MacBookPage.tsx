@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
+import { SEOHead } from "@/components/SEOHead"
 import { motion } from "framer-motion"
 import { ArrowLeft, Shield, Clock, Phone } from "lucide-react"
 import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
@@ -63,6 +64,10 @@ const services = [
 export default function MacBookPage() {
   return (
     <div className="min-h-screen bg-zinc-950">
+      <SEOHead
+        title="Ремонт MacBook и iMac в Барнауле — цены, гарантия 365 дней | iPro"
+        description="Ремонт MacBook Pro, MacBook Air, iMac в Барнауле. Замена экрана, аккумулятора, SSD. Восстановление после залития. Гарантия 365 дней."
+      />
       <Navbar />
       <main className="pt-24 pb-20 px-6">
         <div className="max-w-4xl mx-auto">

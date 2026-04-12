@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
+import { SEOHead } from "@/components/SEOHead"
 import { motion } from "framer-motion"
 import { ArrowLeft, Shield, Clock, Phone } from "lucide-react"
 import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
@@ -69,6 +70,10 @@ const services = [
 export default function OtherPage() {
   return (
     <div className="min-h-screen bg-zinc-950">
+      <SEOHead
+        title="Ремонт iPad, Samsung, Xiaomi, AirPods, Apple Watch в Барнауле | iPro"
+        description="Ремонт iPad, Samsung Galaxy, Xiaomi, Huawei, AirPods, Apple Watch в Барнауле. Все виды ремонта с гарантией 365 дней."
+      />
       <Navbar />
       <main className="pt-24 pb-20 px-6">
         <div className="max-w-4xl mx-auto">

@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
+import { SEOHead } from "@/components/SEOHead"
 import { motion } from "framer-motion"
 import { ArrowLeft, Award, Users, Wrench, MapPin } from "lucide-react"
 
@@ -57,6 +58,7 @@ const values = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-zinc-950">
+      <SEOHead title="О компании iPro — сервисный центр в Барнауле | 10 лет опыта" description="Сервисный центр iPro в Барнауле. 10 лет опыта, 10 000+ отремонтированных устройств, 98% довольных клиентов. Команда профессионалов." />
       <Navbar />
       <main className="pt-24 pb-20 px-6">
         <div className="max-w-4xl mx-auto">

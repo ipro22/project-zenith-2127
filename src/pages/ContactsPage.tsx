@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
+import { SEOHead } from "@/components/SEOHead"
 import { motion } from "framer-motion"
 import { ArrowLeft, Phone, MapPin, Clock, MessageCircle } from "lucide-react"
 import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
@@ -38,6 +39,10 @@ const contacts = [
 export default function ContactsPage() {
   return (
     <div className="min-h-screen bg-zinc-950">
+      <SEOHead
+        title="Контакты iPro Барнаул — адрес, телефон, режим работы"
+        description="Сервисный центр iPro: г. Барнаул, ул. Молодёжная 34, 1 этаж. Телефон: +7 (999) 323-18-17. Режим работы: Пн-Сб 9:00-20:00, Вс 10:00-18:00."
+      />
       <Navbar />
       <main className="pt-24 pb-20 px-6">
         <div className="max-w-4xl mx-auto">

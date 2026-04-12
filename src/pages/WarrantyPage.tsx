@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
+import { SEOHead } from "@/components/SEOHead"
 import { motion } from "framer-motion"
 import { ArrowLeft, Shield, CheckCircle, XCircle, FileText } from "lucide-react"
 import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
@@ -44,6 +45,10 @@ const faq = [
 export default function WarrantyPage() {
   return (
     <div className="min-h-screen bg-zinc-950">
+      <SEOHead
+        title="Гарантия на ремонт до 365 дней — iPro Барнаул"
+        description="Гарантия iPro до 365 дней на все виды ремонта и запчасти. Бесплатный повторный ремонт при гарантийном случае."
+      />
       <Navbar />
       <main className="pt-24 pb-20 px-6">
         <div className="max-w-4xl mx-auto">

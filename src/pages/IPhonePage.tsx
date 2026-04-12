@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
+import { SEOHead } from "@/components/SEOHead"
 import { motion } from "framer-motion"
 import { ArrowLeft, Shield, Clock, Phone } from "lucide-react"
 import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
@@ -70,6 +71,10 @@ const services = [
 export default function IPhonePage() {
   return (
     <div className="min-h-screen bg-zinc-950">
+      <SEOHead
+        title="Ремонт iPhone в Барнауле — цены на все модели | iPro"
+        description="Ремонт iPhone всех моделей в Барнауле. Замена экрана, аккумулятора, ремонт после воды. Гарантия 365 дней. Бесплатная диагностика."
+      />
       <Navbar />
       <main className="pt-24 pb-20 px-6">
         <div className="max-w-4xl mx-auto">

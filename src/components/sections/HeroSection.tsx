@@ -30,7 +30,7 @@ export function HeroSection() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="#pricing">
+          <a href="tel:+79993231817">
             <LiquidCtaButton>Записаться на ремонт</LiquidCtaButton>
           </a>
           <a
