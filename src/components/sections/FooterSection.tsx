@@ -1,4 +1,5 @@
 import { Phone, MapPin, Instagram } from "lucide-react"
+import { siteConfig } from "@/config/siteConfig"
 
 const footerLinks = {
   product: [
@@ -34,7 +35,7 @@ export function FooterSection() {
           <div className="col-span-2 md:col-span-1">
             <a href="/" className="flex items-center gap-2">
               <img
-                src="https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/921c383b-f1d2-4ed8-8379-31803622ba65.jpg"
+                src={siteConfig.logo}
                 alt="iPro logo"
                 className="w-8 h-8 rounded-lg object-cover"
               />

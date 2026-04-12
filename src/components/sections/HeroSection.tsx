@@ -1,16 +1,14 @@
 import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
 import { Shield, ArrowRight, Phone, Calculator } from "lucide-react"
-import { useState } from "react"
+import { siteConfig } from "@/config/siteConfig"
 
 export function HeroSection() {
-  const [calcOpen, setCalcOpen] = useState(false)
-
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-20 relative overflow-hidden">
+    <section className="flex flex-col items-center justify-center px-6 pt-40 pb-16 relative overflow-hidden">
       {/* MacBook background image */}
       <div className="absolute inset-0">
         <img
-          src="https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/bucket/643dd87e-5b1c-4a47-b7d0-0e3c2cafea19.jpg"
+          src={siteConfig.heroBg}
           alt="MacBook"
           className="w-full h-full object-cover object-center"
         />
@@ -29,7 +27,7 @@ export function HeroSection() {
         </div>
 
         {/* Headline */}
-        <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-6 drop-shadow-2xl">
+        <h1 className="font-display text-4xl md:text-6xl font-bold tracking-tight mb-5 drop-shadow-2xl">
           <span className="text-white block">Ремонт Apple</span>
           <span className="bg-gradient-to-r from-zinc-400 via-white to-zinc-400 bg-clip-text text-transparent">
             быстро и надёжно.

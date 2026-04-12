@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Menu, X, Search, User } from "lucide-react"
 import { SearchDialog } from "@/components/SearchDialog"
+import { siteConfig } from "@/config/siteConfig"
 
 const navLinks = [
   { href: "/device/iphone", label: "Ремонт" },
@@ -29,11 +30,11 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 p-4">
+      <header className="fixed top-8 left-0 right-0 z-40 p-4">
         <nav className="max-w-6xl mx-auto flex items-center justify-between h-12 px-6 rounded-full bg-zinc-900/70 border border-zinc-800/50 backdrop-blur-md">
           <a href="/" className="flex items-center gap-2 shrink-0">
             <img
-              src="https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/921c383b-f1d2-4ed8-8379-31803622ba65.jpg"
+              src={siteConfig.logo}
               alt="iPro logo"
               className="w-8 h-8 rounded-lg object-cover"
             />

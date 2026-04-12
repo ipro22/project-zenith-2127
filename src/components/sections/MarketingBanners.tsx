@@ -25,20 +25,20 @@ export function MarketingBanners() {
 
   return (
     <>
-      {/* Ticker bar */}
-      <div className="bg-zinc-900 border-b border-zinc-800/60 py-2 px-6 overflow-hidden">
+      {/* Ticker bar — fixed поверх навбара */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800/60 py-1.5 px-6 overflow-hidden">
         <div className="max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
+              exit={{ opacity: 0, y: -6 }}
               className="flex items-center justify-center gap-3"
             >
-              <Icon name={promos[current].icon} size={14} className="text-zinc-400 shrink-0" />
-              <span className="text-sm text-zinc-300 font-medium">{promos[current].text}</span>
-              <span className="text-sm text-zinc-600 hidden sm:block">— {promos[current].sub}</span>
+              <Icon name={promos[current].icon} size={13} className="text-zinc-400 shrink-0" />
+              <span className="text-xs text-zinc-300 font-medium">{promos[current].text}</span>
+              <span className="text-xs text-zinc-600 hidden sm:block">— {promos[current].sub}</span>
             </motion.div>
           </AnimatePresence>
         </div>
