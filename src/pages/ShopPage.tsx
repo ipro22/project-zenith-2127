@@ -99,7 +99,7 @@ export default function ShopPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex items-end justify-between mb-8 flex-wrap gap-4">
             <div>
               <p className="text-sm text-zinc-500 uppercase tracking-wider mb-2 text-center">Магазин техники</p>
-              <h1 className="font-display text-4xl font-bold text-zinc-100 text-center">iStore</h1>
+              <h1 className="font-display text-4xl font-bold text-zinc-100 text-center">iPro Store</h1>
               <p className="text-zinc-500 mt-2 text-center">Оригинальная техника. Самовывоз из центра в Барнауле.</p>
             </div>
             <div className="flex items-center gap-3">
