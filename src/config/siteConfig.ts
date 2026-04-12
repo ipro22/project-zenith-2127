@@ -15,7 +15,7 @@ export const siteConfig = {
 
   /** Фоновое фото на главном экране (Hero) */
   heroBg:
-    "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/bucket/1761cf5f-ec07-425f-a110-93961ef4c622.gif",
+    "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/bucket/e5c1afc5-7bb5-43fd-bbb8-11f8d6672a7e.gif",
 
   /** Фото на странице ремонта iPhone */
   imageIPhone:
