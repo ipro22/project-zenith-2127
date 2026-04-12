@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&subset=cyrillic,latin&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Onest:wght@400;500;600;700;800;900&display=swap&subset=cyrillic,latin");
 
 @tailwind base;
 @tailwind components;
@@ -25,7 +25,7 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -34,28 +34,33 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    /* iPro Brand Colors */
+    --aqua: 174 72% 56%;
+    --aqua-dark: 174 72% 42%;
+    --aqua-light: 174 72% 70%;
+    --aqua-glow: 174 72% 56%;
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 240 10% 3.5%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    --card: 240 8% 5%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
+    --popover: 240 8% 5%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
+    --secondary: 240 6% 12%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
+    --muted: 240 6% 12%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 174 72% 56%;
+    --accent-foreground: 240 10% 5%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --border: 240 6% 14%;
+    --input: 240 6% 14%;
+    --ring: 174 72% 56%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -74,7 +79,8 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: "Onest", "Inter", system-ui, sans-serif;
+    background-color: #080c0c;
   }
 
   html {
@@ -88,13 +94,35 @@
   }
 
   .font-display {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: "Onest", "Inter", system-ui, sans-serif;
     font-weight: 700;
   }
 
   .font-heading {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: "Onest", "Inter", system-ui, sans-serif;
     font-weight: 600;
+  }
+
+  .text-aqua {
+    color: hsl(174, 72%, 56%);
+  }
+
+  .bg-aqua {
+    background-color: hsl(174, 72%, 56%);
+  }
+
+  .border-aqua {
+    border-color: hsl(174, 72%, 56%);
+  }
+
+  .glow-aqua {
+    box-shadow:
+      0 0 20px hsl(174 72% 56% / 0.3),
+      0 0 40px hsl(174 72% 56% / 0.15);
+  }
+
+  .glow-aqua-sm {
+    box-shadow: 0 0 10px hsl(174 72% 56% / 0.25);
   }
 }
 
@@ -113,4 +141,32 @@
 
 .animate-gradient-shift {
   animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes aqua-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 hsl(174 72% 56% / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px hsl(174 72% 56% / 0);
+  }
+}
+
+.animate-aqua-pulse {
+  animation: aqua-pulse 2s ease-in-out infinite;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #080c0c;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a2e2e;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(174, 72%, 36%);
 }
