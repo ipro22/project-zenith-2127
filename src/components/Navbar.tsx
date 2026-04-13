@@ -1,21 +1,31 @@
 import { useState, useEffect } from "react"
-import { Menu, X, Search, User } from "lucide-react"
+import { Menu, X, Search, User, ChevronDown } from "lucide-react"
 import { SearchDialog } from "@/components/SearchDialog"
 import { siteConfig } from "@/config/siteConfig"
+import { motion, AnimatePresence } from "framer-motion"
+
+const repairLinks = [
+  { href: "/device/iphone", label: "iPhone" },
+  { href: "/device/ipad", label: "iPad" },
+  { href: "/device/macbook", label: "MacBook" },
+  { href: "/device/samsung", label: "Samsung" },
+  { href: "/device/xiaomi", label: "Xiaomi" },
+  { href: "/device/other", label: "Другие" },
+]
 
 const navLinks = [
-  { href: "/device/iphone", label: "Ремонт" },
   { href: "/shop", label: "Магазин" },
   { href: "/calculator", label: "Калькулятор" },
   { href: "/about", label: "О нас" },
   { href: "/contacts", label: "Контакты" },
   { href: "/privileges", label: "Бонусы" },
-  { href: "/warranty", label: "Гарантия" },
 ]
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [repairOpen, setRepairOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -28,25 +38,70 @@ export function Navbar() {
     return () => window.removeEventListener("keydown", handler)
   }, [])
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener("scroll", onScroll)
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
   return (
     <>
-      <header className="fixed top-8 left-0 right-0 z-40 p-4 py-0">
-        <nav className="max-w-6xl mx-auto flex items-center justify-between h-12 px-6 rounded-full bg-zinc-900/70 border border-zinc-800/50 backdrop-blur-md my-[3px]">
-          <a href="/" className="flex items-center gap-2 shrink-0">
+      <header
+        className={`fixed top-8 left-0 right-0 z-40 transition-all duration-300 ${
+          scrolled
+            ? "bg-white/90 backdrop-blur-xl shadow-sm border-b border-gray-100"
+            : "bg-transparent"
+        }`}
+      >
+        <nav className="max-w-7xl mx-auto flex items-center justify-between h-16 px-6">
+          <a href="/" className="flex items-center gap-2.5 shrink-0">
             <img
               src={siteConfig.logo}
               alt="iPro logo"
-              className="w-8 h-8 rounded-lg object-cover"
+              className="w-8 h-8 rounded-xl object-cover"
             />
-            <span className="font-display text-lg font-semibold text-zinc-100">iPro</span>
+            <span className="font-display text-lg font-bold text-gray-900 tracking-tight">iPro</span>
           </a>
 
-          <div className="hidden lg:flex items-center gap-0.5">
+          <div className="hidden lg:flex items-center gap-1">
+            {/* Ремонт dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setRepairOpen(true)}
+              onMouseLeave={() => setRepairOpen(false)}
+            >
+              <button className="flex items-center gap-1 px-3 py-2 text-sm rounded-xl transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium">
+                Ремонт
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${repairOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {repairOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 mt-1 w-44 bg-white rounded-2xl shadow-xl border border-gray-100 p-1.5 overflow-hidden"
+                  >
+                    {repairLinks.map((link) => (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="px-3 py-1.5 text-sm rounded-full transition-colors text-zinc-400 hover:text-zinc-100 whitespace-nowrap"
+                className="px-3 py-2 text-sm rounded-xl transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium whitespace-nowrap"
               >
                 {link.label}
               </a>
@@ -56,27 +111,27 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center justify-center w-9 h-9 rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors text-zinc-300"
+              className="flex items-center justify-center w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-gray-600"
               aria-label="Поиск"
             >
               <Search className="w-4 h-4" />
             </button>
             <a
               href="/account"
-              className="flex items-center justify-center w-9 h-9 rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors text-zinc-300"
+              className="flex items-center justify-center w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-gray-600"
               aria-label="Личный кабинет"
             >
               <User className="w-4 h-4" />
             </a>
             <a
               href="tel:+79993231817"
-              className="hidden sm:inline-flex px-4 py-1.5 text-sm rounded-full bg-zinc-100 text-zinc-900 font-medium hover:bg-zinc-200 transition-colors whitespace-nowrap"
+              className="hidden sm:inline-flex px-4 py-2 text-sm rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors whitespace-nowrap shadow-sm"
             >
               Позвонить
             </a>
             <button
               onClick={() => setOpen(!open)}
-              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors text-zinc-300"
+              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-gray-600"
               aria-label="Меню"
             >
               {open ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -84,36 +139,55 @@ export function Navbar() {
           </div>
         </nav>
 
-        {open && (
-          <div className="lg:hidden max-w-6xl mx-auto mt-2 px-2">
-            <div className="rounded-2xl bg-zinc-900/95 border border-zinc-800/50 backdrop-blur-md p-2 flex flex-col gap-0.5">
-              {navLinks.map((link) => (
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden border-t border-gray-100 bg-white overflow-hidden"
+            >
+              <div className="px-4 py-3 flex flex-col gap-0.5">
+                <p className="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Ремонт</p>
+                {repairLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="px-3 py-2.5 text-sm rounded-xl transition-colors text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+                <div className="h-px bg-gray-100 my-1" />
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="px-3 py-2.5 text-sm rounded-xl transition-colors text-gray-700 hover:bg-gray-50"
+                  >
+                    {link.label}
+                  </a>
+                ))}
                 <a
-                  key={link.href}
-                  href={link.href}
+                  href="/account"
                   onClick={() => setOpen(false)}
-                  className="px-4 py-2.5 text-sm rounded-xl transition-colors text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60"
+                  className="px-3 py-2.5 text-sm rounded-xl transition-colors text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                 >
-                  {link.label}
+                  <User className="w-4 h-4" />
+                  Личный кабинет
                 </a>
-              ))}
-              <a
-                href="/account"
-                onClick={() => setOpen(false)}
-                className="px-4 py-2.5 text-sm rounded-xl transition-colors text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60 flex items-center gap-2"
-              >
-                <User className="w-4 h-4" />
-                Личный кабинет
-              </a>
-              <a
-                href="tel:+79993231817"
-                className="mx-2 mt-1 mb-1 px-4 py-2.5 text-sm rounded-xl bg-zinc-100 text-zinc-900 font-medium text-center"
-              >
-                Позвонить
-              </a>
-            </div>
-          </div>
-        )}
+                <a
+                  href="tel:+79993231817"
+                  className="mx-1 mt-2 mb-1 px-4 py-2.5 text-sm rounded-xl bg-blue-600 text-white font-medium text-center"
+                >
+                  Позвонить
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />

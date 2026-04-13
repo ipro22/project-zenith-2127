@@ -44,19 +44,19 @@ const faq = [
 
 export default function WarrantyPage() {
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-white">
       <SEOHead
         title="Гарантия на ремонт до 365 дней — iPro Барнаул"
         description="Гарантия iPro до 365 дней на все виды ремонта и запчасти. Бесплатный повторный ремонт при гарантийном случае."
       />
       <Navbar />
-      <main className="pt-24 pb-20 px-6">
+      <main className="pt-20 pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.a
             href="/"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors mb-10"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors mb-10"
           >
             <ArrowLeft className="w-4 h-4" />
             На главную
@@ -68,9 +68,9 @@ export default function WarrantyPage() {
             transition={{ duration: 0.5 }}
             className="mb-12"
           >
-            <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">Условия</p>
-            <h1 className="font-display text-4xl md:text-5xl font-bold text-zinc-100 mb-4">Гарантия</h1>
-            <p className="text-zinc-500 text-lg max-w-2xl">
+            <p className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Условия</p>
+            <h1 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">Гарантия</h1>
+            <p className="text-gray-500 text-lg max-w-2xl">
               Мы уверены в качестве своей работы — поэтому даём гарантию 365 дней на все виды ремонта и используемые запчасти.
             </p>
           </motion.div>
@@ -80,12 +80,12 @@ export default function WarrantyPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-2xl border border-zinc-700 bg-zinc-900/60 p-8 text-center mb-12"
+            className="rounded-2xl border border-gray-300 bg-gray-50 p-8 text-center mb-12 shadow-sm"
           >
-            <Shield className="w-16 h-16 text-zinc-400 mx-auto mb-4" />
-            <div className="font-display text-6xl font-bold text-zinc-100 mb-2">365</div>
-            <div className="text-zinc-400 text-xl font-medium mb-3">дней гарантии</div>
-            <p className="text-zinc-500 max-w-md mx-auto text-sm">
+            <Shield className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <div className="font-display text-6xl font-bold text-gray-900 mb-2">365</div>
+            <div className="text-gray-600 text-xl font-medium mb-3">дней гарантии</div>
+            <p className="text-gray-500 max-w-md mx-auto text-sm">
               На все виды ремонта и запасные части. Гарантийный документ выдаётся вместе с отремонтированным устройством.
             </p>
           </motion.div>
@@ -97,30 +97,30 @@ export default function WarrantyPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="grid md:grid-cols-2 gap-4 mb-12"
           >
-            <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-6">
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-5">
-                <CheckCircle className="w-5 h-5 text-zinc-400" />
-                <h2 className="font-heading font-semibold text-zinc-200">Что покрывает гарантия</h2>
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <h2 className="font-heading font-semibold text-gray-800">Что покрывает гарантия</h2>
               </div>
               <ul className="space-y-3">
                 {covered.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-zinc-400">
-                    <div className="w-1.5 h-1.5 rounded-full bg-zinc-500 shrink-0 mt-1.5" />
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-gray-600">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-400 shrink-0 mt-1.5" />
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-6">
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-5">
-                <XCircle className="w-5 h-5 text-zinc-600" />
-                <h2 className="font-heading font-semibold text-zinc-200">Что не покрывает гарантия</h2>
+                <XCircle className="w-5 h-5 text-gray-400" />
+                <h2 className="font-heading font-semibold text-gray-800">Что не покрывает гарантия</h2>
               </div>
               <ul className="space-y-3">
                 {notCovered.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-zinc-500">
-                    <div className="w-1.5 h-1.5 rounded-full bg-zinc-700 shrink-0 mt-1.5" />
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-gray-500">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-300 shrink-0 mt-1.5" />
                     {item}
                   </li>
                 ))}
@@ -136,14 +136,14 @@ export default function WarrantyPage() {
             className="mb-12"
           >
             <div className="flex items-center gap-2 mb-6">
-              <FileText className="w-5 h-5 text-zinc-500" />
-              <h2 className="font-display text-2xl font-bold text-zinc-100">Частые вопросы</h2>
+              <FileText className="w-5 h-5 text-gray-500" />
+              <h2 className="font-display text-2xl font-bold text-gray-900">Частые вопросы</h2>
             </div>
             <div className="space-y-3">
               {faq.map((item, i) => (
-                <div key={i} className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-6">
-                  <h3 className="font-heading font-semibold text-zinc-200 mb-2">{item.q}</h3>
-                  <p className="text-zinc-500 text-sm leading-relaxed">{item.a}</p>
+                <div key={i} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                  <h3 className="font-heading font-semibold text-gray-800 mb-2">{item.q}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{item.a}</p>
                 </div>
               ))}
             </div>
@@ -155,7 +155,7 @@ export default function WarrantyPage() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-center"
           >
-            <p className="text-zinc-500 mb-6">Есть вопросы по гарантии? Позвоните — всё объясним.</p>
+            <p className="text-gray-500 mb-6">Есть вопросы по гарантии? Позвоните — всё объясним.</p>
             <a href="tel:+79993231817">
               <LiquidCtaButton>Позвонить нам</LiquidCtaButton>
             </a>

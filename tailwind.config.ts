@@ -52,6 +52,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				apple: {
+					blue: 'hsl(221, 83%, 53%)',
+					'blue-dark': 'hsl(221, 83%, 44%)',
+					'blue-light': 'hsl(210, 100%, 96%)',
+					gray: 'hsl(220, 9%, 46%)',
+					light: 'hsl(220, 14%, 96%)',
+					border: 'hsl(220, 13%, 91%)',
+					text: 'hsl(0, 0%, 9%)',
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

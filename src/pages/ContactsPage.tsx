@@ -38,19 +38,19 @@ const contacts = [
 
 export default function ContactsPage() {
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-white">
       <SEOHead
         title="Контакты iPro Барнаул — адрес, телефон, режим работы"
         description="Сервисный центр iPro: г. Барнаул, ул. Молодёжная 34, 1 этаж. Телефон: +7 (999) 323-18-17. Режим работы: Пн-Сб 9:00-20:00, Вс 10:00-18:00."
       />
       <Navbar />
-      <main className="pt-24 pb-20 px-6">
+      <main className="pt-20 pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.a
             href="/"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors mb-10"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors mb-10"
           >
             <ArrowLeft className="w-4 h-4" />
             На главную
@@ -62,9 +62,9 @@ export default function ContactsPage() {
             transition={{ duration: 0.5 }}
             className="mb-12"
           >
-            <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">Связь</p>
-            <h1 className="font-display text-4xl md:text-5xl font-bold text-zinc-100 mb-4">Контакты</h1>
-            <p className="text-zinc-500 text-lg max-w-2xl">
+            <p className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Связь</p>
+            <h1 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">Контакты</h1>
+            <p className="text-gray-500 text-lg max-w-2xl">
               Позвоните, напишите или приходите к нам — мы всегда рады помочь с вашей техникой.
             </p>
           </motion.div>
@@ -73,14 +73,14 @@ export default function ContactsPage() {
           <div className="grid md:grid-cols-2 gap-4 mb-12">
             {contacts.map((c, i) => {
               const Inner = (
-                <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-6 flex gap-4 h-full hover:border-zinc-700/60 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center shrink-0">
-                    <c.icon className="w-5 h-5 text-zinc-400" />
+                <div className="rounded-2xl border border-gray-200 bg-white p-6 flex gap-4 h-full hover:border-gray-300 transition-colors shadow-sm">
+                  <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+                    <c.icon className="w-5 h-5 text-gray-500" />
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500 uppercase tracking-wider mb-1">{c.title}</p>
-                    <p className="text-zinc-200 font-medium mb-1">{c.value}</p>
-                    <p className="text-zinc-500 text-sm">{c.sub}</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">{c.title}</p>
+                    <p className="text-gray-800 font-medium mb-1">{c.value}</p>
+                    <p className="text-gray-500 text-sm">{c.sub}</p>
                   </div>
                 </div>
               )
@@ -102,21 +102,21 @@ export default function ContactsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 overflow-hidden mb-12"
+            className="rounded-2xl border border-gray-200 bg-white overflow-hidden mb-12 shadow-sm"
           >
-            <div className="p-6 border-b border-zinc-800/50">
-              <h2 className="font-heading font-semibold text-zinc-200">Как нас найти</h2>
-              <p className="text-zinc-500 text-sm mt-1">г. Барнаул, ул. Молодёжная 34, 1 этаж</p>
+            <div className="p-6 border-b border-gray-100">
+              <h2 className="font-heading font-semibold text-gray-800">Как нас найти</h2>
+              <p className="text-gray-500 text-sm mt-1">г. Барнаул, ул. Молодёжная 34, 1 этаж</p>
             </div>
             <a
               href="https://yandex.ru/maps/?text=Барнаул+Молодежная+34"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center h-48 bg-zinc-900/60 hover:bg-zinc-800/40 transition-colors group"
+              className="flex items-center justify-center h-48 bg-gray-50 hover:bg-gray-100 transition-colors group"
             >
               <div className="text-center">
-                <MapPin className="w-8 h-8 text-zinc-600 group-hover:text-zinc-400 transition-colors mx-auto mb-2" />
-                <span className="text-zinc-500 group-hover:text-zinc-300 transition-colors text-sm">Открыть на Яндекс.Картах</span>
+                <MapPin className="w-8 h-8 text-gray-400 group-hover:text-gray-600 transition-colors mx-auto mb-2" />
+                <span className="text-gray-500 group-hover:text-gray-700 transition-colors text-sm">Открыть на Яндекс.Картах</span>
               </div>
             </a>
           </motion.div>
@@ -127,7 +127,7 @@ export default function ContactsPage() {
             transition={{ duration: 0.5, delay: 0.5 }}
             className="text-center"
           >
-            <p className="text-zinc-500 mb-6">Остались вопросы? Позвоните — ответим сразу.</p>
+            <p className="text-gray-500 mb-6">Остались вопросы? Позвоните — ответим сразу.</p>
             <a href="tel:+79993231817">
               <LiquidCtaButton>Позвонить сейчас</LiquidCtaButton>
             </a>

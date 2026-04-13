@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Onest:wght@400;500;600;700;800;900&display=swap&subset=cyrillic,latin");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=SF+Pro+Display:wght@400;500;600;700;800;900&display=swap&subset=cyrillic,latin");
 
 @tailwind base;
 @tailwind components;
@@ -7,68 +7,43 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 0 0% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 0 0% 9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
+    --popover-foreground: 0 0% 9%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 9% 46%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.75rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    /* iPro Brand Colors */
-    --aqua: 174 72% 56%;
-    --aqua-dark: 174 72% 42%;
-    --aqua-light: 174 72% 70%;
-    --aqua-glow: 174 72% 56%;
-  }
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 83% 53%;
+    --radius: 1rem;
 
-  .dark {
-    --background: 240 10% 3.5%;
-    --foreground: 0 0% 98%;
-    --card: 240 8% 5%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 8% 5%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 240 6% 12%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 6% 12%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 174 72% 56%;
-    --accent-foreground: 240 10% 5%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 6% 14%;
-    --input: 240 6% 14%;
-    --ring: 174 72% 56%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Apple-style brand colors */
+    --apple-blue: 221 83% 53%;
+    --apple-blue-dark: 221 83% 44%;
+    --apple-blue-light: 210 100% 96%;
+    --apple-gray: 220 9% 46%;
+    --apple-light: 220 14% 96%;
+    --apple-border: 220 13% 91%;
+    --apple-text: 0 0% 9%;
+    --apple-text-secondary: 220 9% 46%;
+    --apple-bg: 0 0% 100%;
+    --apple-surface: 220 14% 98%;
+    --gradient-hero: linear-gradient(
+      135deg,
+      #f5f7fa 0%,
+      #eef2ff 50%,
+      #f0f9ff 100%
+    );
   }
 }
 
@@ -78,9 +53,17 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: "Onest", "Inter", system-ui, sans-serif;
-    background-color: #080c0c;
+    @apply bg-white text-gray-900;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      system-ui,
+      sans-serif;
+    background-color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html {
@@ -94,39 +77,113 @@
   }
 
   .font-display {
-    font-family: "Onest", "Inter", system-ui, sans-serif;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      system-ui,
+      sans-serif;
     font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   .font-heading {
-    font-family: "Onest", "Inter", system-ui, sans-serif;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      system-ui,
+      sans-serif;
     font-weight: 600;
+    letter-spacing: -0.01em;
   }
 
+  /* Apple Blue */
+  .text-apple-blue {
+    color: hsl(221, 83%, 53%);
+  }
+  .bg-apple-blue {
+    background-color: hsl(221, 83%, 53%);
+  }
+  .border-apple-blue {
+    border-color: hsl(221, 83%, 53%);
+  }
+  .bg-apple-blue-light {
+    background-color: hsl(210, 100%, 96%);
+  }
+
+  /* Legacy aqua (keep for backward compat) */
   .text-aqua {
-    color: hsl(174, 72%, 56%);
+    color: hsl(221, 83%, 53%);
   }
-
   .bg-aqua {
-    background-color: hsl(174, 72%, 56%);
+    background-color: hsl(221, 83%, 53%);
   }
-
   .border-aqua {
-    border-color: hsl(174, 72%, 56%);
+    border-color: hsl(221, 83%, 53%);
   }
 
-  .glow-aqua {
+  /* Apple card style */
+  .apple-card {
+    @apply bg-white rounded-2xl border border-gray-100 shadow-sm;
+    transition:
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
+  }
+  .apple-card:hover {
+    @apply shadow-lg;
+    transform: translateY(-2px);
+  }
+
+  /* Apple button */
+  .btn-apple {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium text-sm transition-all;
+    background: hsl(221, 83%, 53%);
+    color: white;
+  }
+  .btn-apple:hover {
+    background: hsl(221, 83%, 44%);
+    transform: scale(1.02);
+  }
+
+  .btn-apple-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium text-sm transition-all border;
+    border-color: hsl(220, 13%, 91%);
+    color: hsl(0, 0%, 9%);
+    background: white;
+  }
+  .btn-apple-outline:hover {
+    background: hsl(220, 14%, 96%);
+  }
+
+  /* Glass effect for light theme */
+  .glass-light {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(220, 220, 230, 0.6);
+  }
+
+  .glow-blue {
     box-shadow:
-      0 0 20px hsl(174 72% 56% / 0.3),
-      0 0 40px hsl(174 72% 56% / 0.15);
+      0 0 20px hsl(221 83% 53% / 0.2),
+      0 0 40px hsl(221 83% 53% / 0.1);
   }
 
-  .glow-aqua-sm {
-    box-shadow: 0 0 10px hsl(174 72% 56% / 0.25);
+  .glow-blue-sm {
+    box-shadow: 0 4px 20px hsl(221 83% 53% / 0.25);
+  }
+
+  /* Section styles */
+  .section-bg {
+    background: #f5f7fa;
+  }
+  .section-bg-white {
+    background: #ffffff;
   }
 }
 
-/* Gradient animation for liquid metal effect */
+/* Animations */
 @keyframes gradient-shift {
   0% {
     background-position: 0% 50%;
@@ -140,33 +197,96 @@
 }
 
 .animate-gradient-shift {
-  animation: gradient-shift 3s ease infinite;
+  animation: gradient-shift 4s ease infinite;
+  background-size: 200% 200%;
 }
 
-@keyframes aqua-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 hsl(174 72% 56% / 0.4);
+@keyframes float-up {
+  0% {
+    transform: translateY(0px);
   }
   50% {
-    box-shadow: 0 0 0 8px hsl(174 72% 56% / 0);
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
   }
 }
 
-.animate-aqua-pulse {
-  animation: aqua-pulse 2s ease-in-out infinite;
+.animate-float {
+  animation: float-up 4s ease-in-out infinite;
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out forwards;
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #080c0c;
+  background: #f5f7fa;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1a2e2e;
+  background: #d1d5db;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(174, 72%, 36%);
+  background: hsl(221, 83%, 53%);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  @apply flex items-center gap-1 text-sm text-gray-400;
+}
+.breadcrumb a {
+  @apply hover:text-blue-600 transition-colors;
+}
+.breadcrumb-sep {
+  @apply text-gray-300;
+}
+
+/* Smooth page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }

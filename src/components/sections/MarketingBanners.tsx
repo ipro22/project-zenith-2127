@@ -3,10 +3,10 @@ import { useState, useEffect } from "react"
 import Icon from "@/components/ui/icon"
 
 const promos = [
-  { icon: "Zap", text: "Диагностика БЕСПЛАТНО для всех устройств", sub: "Узнайте причину поломки без оплаты" },
-  { icon: "Gift", text: "Скидка 5% при повторном обращении", sub: "Накапливайте бонусы с каждым ремонтом" },
-  { icon: "Shield", text: "Гарантия 365 дней на все работы", sub: "Бесплатный ремонт при гарантийном случае" },
-  { icon: "Clock", text: "Ремонт за 1-2 часа при вас", sub: "Ждите результата прямо в нашем офисе" },
+  { icon: "Zap", text: "Диагностика БЕСПЛАТНО для всех устройств", sub: "Узнайте причину без оплаты" },
+  { icon: "Gift", text: "Скидка 5% при повторном обращении", sub: "Накапливайте бонусы" },
+  { icon: "Shield", text: "Гарантия 365 дней на все работы", sub: "Бесплатное гарантийное обслуживание" },
+  { icon: "Clock", text: "Ремонт за 1-2 часа при вас", sub: "Ждите в нашем офисе" },
 ]
 
 export function MarketingBanners() {
@@ -19,15 +19,15 @@ export function MarketingBanners() {
   }, [])
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowPromo(true), 8000)
+    const timer = setTimeout(() => setShowPromo(true), 10000)
     return () => clearTimeout(timer)
   }, [])
 
   return (
     <>
-      {/* Ticker bar — fixed поверх навбара */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800/60 py-1.5 px-6 overflow-hidden">
-        <div className="max-w-5xl mx-auto">
+      {/* Ticker bar — светлый стиль */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-blue-600 py-1.5 px-6 overflow-hidden">
+        <div className="max-w-6xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
@@ -36,42 +36,43 @@ export function MarketingBanners() {
               exit={{ opacity: 0, y: -6 }}
               className="flex items-center justify-center gap-3"
             >
-              <Icon name={promos[current].icon} size={13} className="text-zinc-400 shrink-0" />
-              <span className="text-xs text-zinc-300 font-medium">{promos[current].text}</span>
-              <span className="text-xs text-zinc-600 hidden sm:block">— {promos[current].sub}</span>
+              <Icon name={promos[current].icon} size={12} className="text-blue-200 shrink-0" />
+              <span className="text-xs text-white font-medium">{promos[current].text}</span>
+              <span className="text-xs text-blue-200 hidden sm:block">— {promos[current].sub}</span>
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
 
-      {/* Exit-intent promo popup */}
+      {/* Promo popup */}
       <AnimatePresence>
         {showPromo && (
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, x: -20, y: 20 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: -20, y: 20 }}
             className="fixed bottom-24 left-6 z-40 max-w-xs"
           >
-            <div className="rounded-2xl bg-zinc-900 border border-zinc-700/60 shadow-2xl p-5">
+            <div className="relative rounded-2xl bg-white border border-gray-100 shadow-2xl p-5">
               <button
                 onClick={() => setShowPromo(false)}
-                className="absolute top-3 right-3 text-zinc-600 hover:text-zinc-400"
+                className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors"
               >
                 <Icon name="X" size={14} />
               </button>
               <div className="flex items-center gap-2 mb-2">
-                <Icon name="Gift" size={18} className="text-yellow-400" />
-                <span className="text-sm font-semibold text-zinc-100">Акция!</span>
+                <Icon name="Gift" size={18} className="text-yellow-500" />
+                <span className="text-sm font-bold text-gray-900">Специальное предложение!</span>
               </div>
-              <p className="text-sm text-zinc-400 mb-3">
-                Запишитесь сегодня и получите <span className="text-zinc-200 font-medium">бесплатную диагностику</span> + <span className="text-zinc-200 font-medium">300 бонусов</span> на первый ремонт
+              <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                Запишитесь сегодня — получите <strong className="text-gray-900">бесплатную диагностику</strong> и{" "}
+                <strong className="text-blue-600">300 бонусов</strong> на первый ремонт
               </p>
               <a
-                href="tel:+79993231817"
-                className="block text-center px-4 py-2.5 rounded-xl bg-zinc-100 text-zinc-900 font-medium text-sm hover:bg-zinc-200 transition-colors"
+                href="/calculator"
+                className="block text-center px-4 py-2.5 rounded-xl bg-blue-600 text-white font-medium text-sm hover:bg-blue-700 transition-colors"
               >
-                Записаться
+                Рассчитать стоимость
               </a>
             </div>
           </motion.div>

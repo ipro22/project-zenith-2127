@@ -63,20 +63,20 @@ const services = [
 
 export default function MacBookPage() {
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-white">
       <SEOHead
         title="Ремонт MacBook и iMac в Барнауле — цены, гарантия 365 дней | iPro"
         description="Ремонт MacBook Pro, MacBook Air, iMac в Барнауле. Замена экрана, аккумулятора, SSD. Восстановление после залития. Гарантия 365 дней."
       />
       <Navbar />
-      <main className="pt-24 pb-20 px-6">
+      <main className="pt-20 pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           {/* Back */}
           <motion.a
             href="/"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors mb-10"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors mb-10"
           >
             <ArrowLeft className="w-4 h-4" />
             На главную
@@ -89,11 +89,11 @@ export default function MacBookPage() {
             transition={{ duration: 0.5 }}
             className="mb-12"
           >
-            <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">Услуги</p>
-            <h1 className="font-display text-4xl md:text-5xl font-bold text-zinc-100 mb-4">
+            <p className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Услуги</p>
+            <h1 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Ремонт MacBook и iMac
             </h1>
-            <p className="text-zinc-500 text-lg max-w-2xl">
+            <p className="text-gray-500 text-lg max-w-2xl">
               Ремонт всех моделей MacBook Air, MacBook Pro и iMac в Барнауле. Опытные мастера, сертифицированные запчасти, гарантия на работу.
             </p>
 
@@ -104,7 +104,7 @@ export default function MacBookPage() {
                 { icon: Clock, text: "Срочный ремонт за 1 день" },
                 { icon: Phone, text: "Бесплатная диагностика" },
               ].map(({ icon: Icon, text }) => (
-                <div key={text} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-sm text-zinc-400">
+                <div key={text} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-600">
                   <Icon className="w-4 h-4" />
                   {text}
                 </div>
@@ -120,19 +120,19 @@ export default function MacBookPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: gi * 0.08 }}
-                className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 overflow-hidden"
+                className="rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm"
               >
-                <div className="px-6 py-4 border-b border-zinc-800/50 bg-zinc-900/60">
-                  <h2 className="font-heading font-semibold text-zinc-200 text-base">{group.model}</h2>
+                <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                  <h2 className="font-heading font-semibold text-gray-800 text-base">{group.model}</h2>
                 </div>
-                <div className="divide-y divide-zinc-800/40">
+                <div className="divide-y divide-gray-100">
                   {group.items.map((item, ii) => (
                     <div
                       key={ii}
-                      className="flex items-center justify-between px-6 py-3.5 hover:bg-zinc-800/20 transition-colors"
+                      className="flex items-center justify-between px-6 py-3.5 hover:bg-gray-50 transition-colors"
                     >
-                      <span className="text-zinc-400 text-sm">{item.name}</span>
-                      <span className="text-zinc-200 font-medium text-sm tabular-nums">{item.price}</span>
+                      <span className="text-gray-600 text-sm">{item.name}</span>
+                      <span className="text-gray-900 font-medium text-sm tabular-nums">{item.price}</span>
                     </div>
                   ))}
                 </div>
@@ -147,7 +147,7 @@ export default function MacBookPage() {
             transition={{ duration: 0.5, delay: 0.5 }}
             className="mt-12 text-center"
           >
-            <p className="text-zinc-500 mb-6">Не нашли свою модель? Позвоните — диагностика бесплатно, стоимость назовём сразу.</p>
+            <p className="text-gray-500 mb-6">Не нашли свою модель? Позвоните — диагностика бесплатно, стоимость назовём сразу.</p>
             <a href="tel:+79993231817">
               <LiquidCtaButton>Позвонить и записаться</LiquidCtaButton>
             </a>

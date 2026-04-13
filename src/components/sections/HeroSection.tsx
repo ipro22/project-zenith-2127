@@ -1,36 +1,36 @@
 import { motion } from "framer-motion"
-import { Shield, ArrowRight, Phone, Calculator, MapPin, Star } from "lucide-react"
+import { Shield, ArrowRight, Phone, Calculator, MapPin, Star, ChevronDown } from "lucide-react"
 import { siteConfig } from "@/config/siteConfig"
+
+const devices = [
+  { label: "iPhone", href: "/device/iphone", icon: "📱" },
+  { label: "Samsung", href: "/device/samsung", icon: "📱" },
+  { label: "MacBook", href: "/device/macbook", icon: "💻" },
+  { label: "iPad", href: "/device/ipad", icon: "📋" },
+  { label: "Xiaomi", href: "/device/xiaomi", icon: "📱" },
+]
 
 export function HeroSection() {
   return (
-    <section className="flex flex-col items-center justify-center px-6 pt-40 pb-16 relative overflow-hidden min-h-screen">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <img
-          src={siteConfig.heroBg}
-          alt="iPro сервисный центр"
-          className="w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-black/75" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080c0c] via-[#080c0c]/50 to-[#080c0c]/20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080c0c]/70 via-transparent to-[#080c0c]/95" />
-      </div>
-
-      {/* Aqua glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[hsl(174,72%,56%)] opacity-[0.05] blur-[120px] rounded-full pointer-events-none" />
+    <section className="relative overflow-hidden min-h-screen flex flex-col">
+      {/* Background gradient — Apple style */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-white" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200 opacity-20 blur-3xl rounded-full" />
+      <div className="absolute bottom-1/4 left-0 w-72 h-72 bg-indigo-200 opacity-20 blur-3xl rounded-full" />
 
       {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto">
+      <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center max-w-5xl mx-auto px-6 pt-28 pb-12">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/80 border border-zinc-800/80 backdrop-blur-sm mb-8"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-blue-100 shadow-sm mb-8"
         >
-          <Shield className="w-4 h-4 text-[hsl(174,72%,56%)]" />
-          <span className="text-sm text-zinc-400">Гарантия на все работы до 365 дней</span>
+          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="text-sm text-gray-600">Работаем · Пн–Вс 09:00–20:00</span>
+          <Shield className="w-3.5 h-3.5 text-blue-500" />
+          <span className="text-sm text-gray-600">Гарантия 365 дней</span>
         </motion.div>
 
         {/* Headline */}
@@ -38,10 +38,10 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-5 drop-shadow-2xl"
+          className="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-5"
         >
-          <span className="text-white block">iPro — ремонт техники</span>
-          <span className="bg-gradient-to-r from-[hsl(174,72%,56%)] via-[hsl(174,72%,72%)] to-[hsl(174,72%,56%)] bg-clip-text text-transparent">
+          <span className="text-gray-900 block">Ремонт техники</span>
+          <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
             Apple и других брендов
           </span>
         </motion.h1>
@@ -51,24 +51,29 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto mb-4 leading-relaxed text-balance drop-shadow-lg"
+          className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-4 leading-relaxed"
         >
-          Профессиональный ремонт iPhone, iPad, MacBook, Samsung, Xiaomi и ноутбуков.
-          Бесплатная диагностика, ремонт в день обращения.
+          Профессиональный ремонт iPhone, iPad, MacBook, Samsung, Xiaomi.
+          Диагностика бесплатно. Ремонт в день обращения.
         </motion.p>
 
-        {/* Key stats */}
+        {/* Stats row */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="flex flex-wrap items-center justify-center gap-4 mb-10 text-sm text-zinc-400"
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="flex flex-wrap items-center justify-center gap-6 mb-10 text-sm text-gray-400"
         >
-          {["Диагностика бесплатно", "Ремонт от 30 минут", "10 лет на рынке Барнаула"].map((t) => (
-            <span key={t} className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[hsl(174,72%,56%)]" />
-              {t}
-            </span>
+          {[
+            { num: "10+", text: "лет на рынке" },
+            { num: "3000+", text: "довольных клиентов" },
+            { num: "0 ₽", text: "диагностика" },
+            { num: "1–2 ч", text: "срок ремонта" },
+          ].map(({ num, text }) => (
+            <div key={text} className="flex items-center gap-1.5">
+              <span className="font-bold text-gray-800">{num}</span>
+              <span>{text}</span>
+            </div>
           ))}
         </motion.div>
 
@@ -77,130 +82,127 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 flex-wrap mb-6"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 flex-wrap mb-8"
         >
           <a
-            href="tel:+79993231817"
-            className="flex items-center gap-2 px-8 py-3.5 rounded-full bg-[hsl(174,72%,56%)] text-[#080c0c] text-sm font-bold hover:bg-[hsl(174,72%,65%)] transition-all duration-300 shadow-lg shadow-[hsl(174,72%,56%)/25] animate-aqua-pulse"
-          >
-            <Phone className="w-4 h-4" />
-            Записаться на ремонт
-          </a>
-          <a
             href="/calculator"
-            className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-zinc-900/70 backdrop-blur-sm border border-zinc-700/60 text-sm font-medium text-zinc-200 hover:bg-zinc-800/80 hover:border-[hsl(174,72%,56%)]/40 transition-all duration-300"
+            className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95"
           >
             <Calculator className="w-4 h-4" />
             Рассчитать стоимость
           </a>
           <a
             href="tel:+79993231817"
-            className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-zinc-900/70 backdrop-blur-sm border border-zinc-700/60 text-sm font-medium text-zinc-200 hover:bg-zinc-800/80 transition-all duration-300"
+            className="flex items-center gap-2 px-6 py-4 rounded-2xl bg-white border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm"
           >
-            <Phone className="w-4 h-4" />
+            <Phone className="w-4 h-4 text-blue-500" />
             +7 (999) 323-18-17
           </a>
         </motion.div>
 
-        {/* Map buttons */}
+        {/* Device quick-links */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap items-center justify-center gap-3 mb-12"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="flex flex-wrap items-center justify-center gap-2 mb-10"
         >
+          {devices.map((d) => (
+            <a
+              key={d.href}
+              href={d.href}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm text-gray-600 hover:border-blue-300 hover:text-blue-600 transition-all shadow-sm hover:shadow-md"
+            >
+              <span>{d.icon}</span>
+              {d.label}
+            </a>
+          ))}
           <a
-            href="https://2gis.ru/barnaul/search/iPro"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/60 border border-zinc-800/60 backdrop-blur-sm text-xs text-zinc-400 hover:text-zinc-200 hover:border-zinc-700 transition-all duration-300"
+            href="/device/other"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-50 border border-blue-100 text-sm text-blue-600 hover:bg-blue-100 transition-all"
           >
-            <MapPin className="w-3.5 h-3.5 text-[hsl(174,72%,56%)]" />
-            Открыть на 2ГИС
+            Другие →
           </a>
-          <a
-            href="https://yandex.ru/maps/?text=iPro+Барнаул"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/60 border border-zinc-800/60 backdrop-blur-sm text-xs text-zinc-400 hover:text-zinc-200 hover:border-zinc-700 transition-all duration-300"
-          >
-            <MapPin className="w-3.5 h-3.5 text-[hsl(174,72%,56%)]" />
-            Яндекс Карты
-          </a>
-          <span className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-zinc-900/60 border border-zinc-800/60 backdrop-blur-sm text-xs text-zinc-400">
-            <MapPin className="w-3.5 h-3.5" />
-            ул. Молодёжная 34, 1 этаж
-          </span>
         </motion.div>
 
         {/* Social proof */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-6"
         >
-          <div className="flex items-center gap-4">
-            <div className="flex -space-x-3">
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-2">
               {[
                 "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
                 "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
-                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200",
                 "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200",
                 "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200",
+                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200",
               ].map((src, i) => (
                 <img
                   key={i}
                   src={src}
                   alt="Клиент"
-                  className="w-9 h-9 rounded-full border-2 border-[#080c0c] object-cover"
+                  className="w-9 h-9 rounded-full border-2 border-white object-cover shadow-sm"
                   style={{ zIndex: i + 1 }}
                 />
               ))}
             </div>
-            <div className="h-8 w-px bg-zinc-800" />
-            <div className="flex flex-col items-start">
+            <div>
               <div className="flex items-center gap-0.5">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                {[1,2,3,4,5].map((i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                 ))}
-                <span className="text-zinc-200 font-bold ml-1.5 text-sm">5.0</span>
+                <span className="text-gray-800 font-bold ml-1 text-sm">5.0</span>
               </div>
-              <a
-                href="#reviews"
-                className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors flex items-center gap-1 group mt-0.5"
-              >
-                <span>Нам доверяют <strong className="text-zinc-200">3 000+</strong> клиентов</span>
-                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-              </a>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Нам доверяют <strong className="text-gray-700">3 000+</strong> клиентов
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/60 border border-zinc-800/60 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs text-zinc-400">Работаем <strong className="text-zinc-300">Пн–Вс 09:00–20:00</strong></span>
+          <div className="flex items-center gap-3 text-sm text-gray-500">
+            <a
+              href="https://2gis.ru/barnaul/search/iPro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 hover:text-blue-600 transition-colors"
+            >
+              <MapPin className="w-3.5 h-3.5" />
+              2ГИС
+              <ArrowRight className="w-3 h-3" />
+            </a>
+            <a
+              href="https://yandex.ru/maps/?text=iPro+Барнаул"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 hover:text-blue-600 transition-colors"
+            >
+              <MapPin className="w-3.5 h-3.5" />
+              Яндекс Карты
+              <ArrowRight className="w-3 h-3" />
+            </a>
           </div>
         </motion.div>
-
-        {/* Scroll hint */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="mt-10 flex justify-center"
-        >
-          <a href="#features" className="group flex flex-col items-center gap-2 text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
-            <span>Наши услуги</span>
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-5 h-5 rounded-full border border-zinc-700 flex items-center justify-center"
-            >
-              <ArrowRight className="w-3 h-3 rotate-90" />
-            </motion.div>
-          </a>
-        </motion.div>
       </div>
+
+      {/* Scroll hint */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="relative z-10 flex justify-center pb-8"
+      >
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 1.8 }}
+          className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center"
+        >
+          <ChevronDown className="w-4 h-4 text-gray-400" />
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

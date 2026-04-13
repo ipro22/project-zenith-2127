@@ -13,7 +13,7 @@ export function VideoSection() {
   const [active, setActive] = useState(0)
 
   return (
-    <section className="px-6 py-16 bg-zinc-900/20">
+    <section className="px-6 py-16 bg-gray-50">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -21,11 +21,11 @@ export function VideoSection() {
           viewport={{ once: true }}
           className="text-center mb-10"
         >
-          <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">Видео</p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-zinc-100 mb-3">
+          <p className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Видео</p>
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             Разборка техники Apple
           </h2>
-          <p className="text-zinc-500 max-w-xl mx-auto">Смотрите, как устроена ваша техника изнутри</p>
+          <p className="text-gray-500 max-w-xl mx-auto">Смотрите, как устроена ваша техника изнутри</p>
         </motion.div>
 
         {/* Tabs */}
@@ -34,7 +34,7 @@ export function VideoSection() {
             <button
               key={v.id}
               onClick={() => { setActive(i); setPlaying(null) }}
-              className={`shrink-0 px-4 py-2 rounded-full text-sm transition-all ${active === i ? "bg-zinc-100 text-zinc-900 font-medium" : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-zinc-200"}`}
+              className={`shrink-0 px-4 py-2 rounded-full text-sm transition-all ${active === i ? "bg-blue-600 text-white font-medium" : "bg-white border border-gray-200 text-gray-500 hover:text-gray-700 hover:border-gray-300"}`}
             >
               {v.title}
             </button>
@@ -45,7 +45,7 @@ export function VideoSection() {
           key={active}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl overflow-hidden border border-zinc-800/50 bg-zinc-900/40"
+          className="rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-sm"
         >
           {playing === videos[active].id ? (
             <iframe
@@ -64,12 +64,12 @@ export function VideoSection() {
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors flex items-center justify-center">
                 <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Icon name="Play" size={24} className="text-zinc-900 ml-1" />
+                  <Icon name="Play" size={24} className="text-gray-900 ml-1" />
                 </div>
               </div>
               <div className="absolute bottom-4 left-4">
                 <p className="text-white font-semibold text-lg drop-shadow-lg">{videos[active].title}</p>
-                <p className="text-zinc-300 text-sm">{videos[active].channel}</p>
+                <p className="text-gray-200 text-sm">{videos[active].channel}</p>
               </div>
             </div>
           )}

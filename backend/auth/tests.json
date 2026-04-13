@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "Send SMS code",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "send_code", "phone": "+79991234567"},
+      "expectedStatus": 200,
+      "expectedBody": {"success": true},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ const reviews2gis = [
 
 export function ReviewsMapSection() {
   return (
-    <section className="px-6 py-16 bg-zinc-900/20">
+    <section className="px-6 py-16 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -17,11 +17,11 @@ export function ReviewsMapSection() {
           viewport={{ once: true }}
           className="text-center mb-10"
         >
-          <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">Репутация</p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-zinc-100 mb-3">
+          <p className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Репутация</p>
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             Нас выбирают и рекомендуют
           </h2>
-          <p className="text-zinc-500 max-w-xl mx-auto">Реальные отзывы клиентов на крупнейших платформах</p>
+          <p className="text-gray-500 max-w-xl mx-auto">Реальные отзывы клиентов на крупнейших платформах</p>
         </motion.div>
 
         {/* Ratings block */}
@@ -34,24 +34,24 @@ export function ReviewsMapSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="group flex items-center gap-5 p-6 rounded-2xl border border-zinc-800/50 bg-zinc-900/40 hover:border-zinc-700/60 transition-all"
+            className="group flex items-center gap-5 p-6 rounded-2xl border border-gray-200 bg-white hover:border-gray-300 transition-all shadow-sm"
           >
             <div className="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center shrink-0">
               <span className="text-2xl font-bold text-green-400">2</span>
             </div>
             <div className="flex-1">
-              <p className="text-xs text-zinc-500 mb-1">2ГИС</p>
+              <p className="text-xs text-gray-500 mb-1">2ГИС</p>
               <div className="flex items-center gap-2 mb-1">
                 <div className="flex">
                   {[1,2,3,4,5].map((i) => (
                     <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#FACC15"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
                   ))}
                 </div>
-                <span className="text-zinc-100 font-bold">4.9</span>
+                <span className="text-gray-900 font-bold">4.9</span>
               </div>
-              <p className="text-zinc-500 text-sm">120+ отзывов</p>
+              <p className="text-gray-500 text-sm">120+ отзывов</p>
             </div>
-            <Icon name="ExternalLink" size={16} className="text-zinc-600 group-hover:text-zinc-400" />
+            <Icon name="ExternalLink" size={16} className="text-gray-400 group-hover:text-gray-600" />
           </motion.a>
 
           {/* Яндекс */}
@@ -63,24 +63,24 @@ export function ReviewsMapSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="group flex items-center gap-5 p-6 rounded-2xl border border-zinc-800/50 bg-zinc-900/40 hover:border-zinc-700/60 transition-all"
+            className="group flex items-center gap-5 p-6 rounded-2xl border border-gray-200 bg-white hover:border-gray-300 transition-all shadow-sm"
           >
             <div className="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center shrink-0">
               <span className="text-xl font-bold text-red-400">Я</span>
             </div>
             <div className="flex-1">
-              <p className="text-xs text-zinc-500 mb-1">Яндекс Карты</p>
+              <p className="text-xs text-gray-500 mb-1">Яндекс Карты</p>
               <div className="flex items-center gap-2 mb-1">
                 <div className="flex">
                   {[1,2,3,4,5].map((i) => (
                     <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#FACC15"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
                   ))}
                 </div>
-                <span className="text-zinc-100 font-bold">4.8</span>
+                <span className="text-gray-900 font-bold">4.8</span>
               </div>
-              <p className="text-zinc-500 text-sm">85+ отзывов</p>
+              <p className="text-gray-500 text-sm">85+ отзывов</p>
             </div>
-            <Icon name="ExternalLink" size={16} className="text-zinc-600 group-hover:text-zinc-400" />
+            <Icon name="ExternalLink" size={16} className="text-gray-400 group-hover:text-gray-600" />
           </motion.a>
         </div>
 
@@ -93,21 +93,21 @@ export function ReviewsMapSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
-              className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-5"
+              className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
             >
               <div className="flex items-center gap-3 mb-3">
                 <img src={r.avatar} alt={r.name} className="w-10 h-10 rounded-full object-cover" />
                 <div>
-                  <p className="text-sm font-medium text-zinc-200">{r.name}</p>
+                  <p className="text-sm font-medium text-gray-800">{r.name}</p>
                   <div className="flex items-center gap-1">
                     {[...Array(r.rating)].map((_, j) => (
                       <svg key={j} width="12" height="12" viewBox="0 0 24 24" fill="#FACC15"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
                     ))}
-                    <span className="text-xs text-zinc-600 ml-1">{r.source}</span>
+                    <span className="text-xs text-gray-400 ml-1">{r.source}</span>
                   </div>
                 </div>
               </div>
-              <p className="text-sm text-zinc-400">"{r.text}"</p>
+              <p className="text-sm text-gray-600">"{r.text}"</p>
             </motion.div>
           ))}
         </div>
@@ -117,18 +117,18 @@ export function ReviewsMapSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl overflow-hidden border border-zinc-800/50"
+          className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm"
         >
-          <div className="bg-zinc-900/60 px-6 py-4 flex items-center justify-between">
+          <div className="bg-white px-6 py-4 flex items-center justify-between border-b border-gray-100">
             <div>
-              <h3 className="font-heading font-semibold text-zinc-200">Мы на карте</h3>
-              <p className="text-zinc-500 text-sm">г. Барнаул, ул. Молодёжная 34, 1 этаж</p>
+              <h3 className="font-heading font-semibold text-gray-800">Мы на карте</h3>
+              <p className="text-gray-500 text-sm">г. Барнаул, ул. Молодёжная 34, 1 этаж</p>
             </div>
             <div className="flex gap-2">
-              <a href="https://go.2gis.com/f9jBa" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl bg-green-500/20 text-green-400 text-sm hover:bg-green-500/30 transition-colors border border-green-500/20">
+              <a href="https://go.2gis.com/f9jBa" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl bg-green-500/20 text-green-600 text-sm hover:bg-green-500/30 transition-colors border border-green-500/20">
                 2ГИС
               </a>
-              <a href="https://yandex.ru/maps/-/CPrwFG7O" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl bg-red-500/20 text-red-400 text-sm hover:bg-red-500/30 transition-colors border border-red-500/20">
+              <a href="https://yandex.ru/maps/-/CPrwFG7O" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl bg-red-500/20 text-red-500 text-sm hover:bg-red-500/30 transition-colors border border-red-500/20">
                 Яндекс
               </a>
             </div>

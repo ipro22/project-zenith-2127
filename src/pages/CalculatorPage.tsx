@@ -1,313 +1,685 @@
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
 import { SEOHead } from "@/components/SEOHead"
+import { Breadcrumb } from "@/components/Breadcrumb"
+import { RepairRequestForm } from "@/components/RepairRequestForm"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
-import { LiquidCtaButton } from "@/components/buttons/LiquidCtaButton"
 import Icon from "@/components/ui/icon"
+import { ChevronDown, AlertCircle } from "lucide-react"
 
-// Цены актуальны для Барнаула 2025 (запчасть + работа, аналог pedant.ru)
-const catalog = [
+interface Service { name: string; price: number; time?: string }
+interface Model { name: string; services: Service[] }
+interface Brand { brand: string; icon: string; color: string; models: Model[] }
+
+const OTHER_BRAND: Brand = {
+  brand: "Другое",
+  icon: "Smartphone",
+  color: "bg-gray-100 text-gray-600",
+  models: [
+    { name: "Другое устройство / Другая модель", services: [
+      { name: "Диагностика устройства", price: 0, time: "30 мин" },
+      { name: "Замена экрана", price: 2490, time: "1-2 ч" },
+      { name: "Замена аккумулятора", price: 1490, time: "30 мин" },
+      { name: "Ремонт разъёма зарядки", price: 1290, time: "1 ч" },
+      { name: "Восстановление после воды", price: 2990, time: "1-2 д" },
+      { name: "Замена камеры", price: 1990, time: "1-2 ч" },
+      { name: "Замена задней крышки", price: 990, time: "30 мин" },
+      { name: "Ремонт кнопок", price: 890, time: "30 мин" },
+      { name: "Замена динамика / микрофона", price: 1190, time: "1 ч" },
+      { name: "Пайка материнской платы", price: 3990, time: "1-3 д" },
+      { name: "Восстановление данных", price: 2490, time: "1-3 д" },
+    ]}
+  ]
+}
+
+const catalog: Brand[] = [
   {
     brand: "iPhone",
+    icon: "Smartphone",
+    color: "bg-gray-900 text-white",
     models: [
-      { name: "iPhone 16 Pro Max", services: [{ name: "Замена дисплея (OLED)", price: 11990 }, { name: "Замена аккумулятора", price: 3990 }, { name: "Восстановление после воды", price: 4990 }, { name: "Замена камеры (основной блок)", price: 7990 }, { name: "Ремонт разъёма зарядки", price: 2990 }, { name: "Замена задней крышки (стекло)", price: 5990 }] },
-      { name: "iPhone 16 Pro", services: [{ name: "Замена дисплея (OLED)", price: 10990 }, { name: "Замена аккумулятора", price: 3490 }, { name: "Восстановление после воды", price: 4490 }, { name: "Замена камеры", price: 6990 }, { name: "Ремонт разъёма зарядки", price: 2490 }, { name: "Замена задней крышки", price: 5490 }] },
-      { name: "iPhone 16 / 16 Plus", services: [{ name: "Замена дисплея (OLED)", price: 8990 }, { name: "Замена аккумулятора", price: 2990 }, { name: "Восстановление после воды", price: 3990 }, { name: "Замена камеры", price: 5490 }, { name: "Ремонт разъёма зарядки", price: 1990 }, { name: "Замена задней крышки", price: 4490 }] },
-      { name: "iPhone 15 Pro Max", services: [{ name: "Замена дисплея (OLED)", price: 9990 }, { name: "Замена аккумулятора", price: 3490 }, { name: "Восстановление после воды", price: 4490 }, { name: "Замена камеры", price: 6490 }, { name: "Ремонт разъёма зарядки", price: 2490 }, { name: "Замена задней крышки", price: 4990 }] },
-      { name: "iPhone 15 Pro", services: [{ name: "Замена дисплея (OLED)", price: 8990 }, { name: "Замена аккумулятора", price: 2990 }, { name: "Восстановление после воды", price: 3990 }, { name: "Замена камеры", price: 5990 }, { name: "Ремонт разъёма зарядки", price: 1990 }, { name: "Замена задней крышки", price: 4490 }] },
-      { name: "iPhone 15 / 15 Plus", services: [{ name: "Замена дисплея (OLED)", price: 7490 }, { name: "Замена аккумулятора", price: 2490 }, { name: "Восстановление после воды", price: 3490 }, { name: "Замена камеры", price: 4990 }, { name: "Ремонт разъёма зарядки", price: 1790 }, { name: "Замена задней крышки", price: 3990 }] },
-      { name: "iPhone 14 Pro Max", services: [{ name: "Замена дисплея (OLED)", price: 7990 }, { name: "Замена аккумулятора", price: 2490 }, { name: "Восстановление после воды", price: 3990 }, { name: "Замена камеры", price: 5490 }, { name: "Ремонт разъёма зарядки", price: 1990 }, { name: "Замена задней крышки", price: 4490 }] },
-      { name: "iPhone 14 Pro", services: [{ name: "Замена дисплея (OLED)", price: 6990 }, { name: "Замена аккумулятора", price: 2290 }, { name: "Восстановление после воды", price: 3490 }, { name: "Замена камеры", price: 4990 }, { name: "Ремонт разъёма зарядки", price: 1790 }, { name: "Замена задней крышки", price: 3990 }] },
-      { name: "iPhone 14 / 14 Plus", services: [{ name: "Замена дисплея (OLED)", price: 5990 }, { name: "Замена аккумулятора", price: 1990 }, { name: "Восстановление после воды", price: 2990 }, { name: "Замена камеры", price: 3990 }, { name: "Ремонт разъёма зарядки", price: 1490 }, { name: "Замена задней крышки", price: 2990 }] },
-      { name: "iPhone 13 Pro Max", services: [{ name: "Замена дисплея (OLED)", price: 5490 }, { name: "Замена аккумулятора", price: 1790 }, { name: "Восстановление после воды", price: 2790 }, { name: "Замена камеры", price: 3490 }, { name: "Ремонт разъёма зарядки", price: 1290 }, { name: "Замена задней крышки", price: 2490 }] },
-      { name: "iPhone 13 / 13 Pro / mini", services: [{ name: "Замена дисплея (OLED)", price: 4490 }, { name: "Замена аккумулятора", price: 1490 }, { name: "Восстановление после воды", price: 2490 }, { name: "Замена камеры", price: 2990 }, { name: "Ремонт разъёма зарядки", price: 1090 }, { name: "Замена задней крышки", price: 1990 }] },
-      { name: "iPhone 12 Pro Max", services: [{ name: "Замена дисплея (OLED)", price: 3990 }, { name: "Замена аккумулятора", price: 1490 }, { name: "Восстановление после воды", price: 2290 }, { name: "Замена камеры", price: 2790 }, { name: "Ремонт разъёма зарядки", price: 990 }, { name: "Замена задней крышки", price: 1790 }] },
-      { name: "iPhone 12 / 12 Pro / mini", services: [{ name: "Замена дисплея (OLED)", price: 3490 }, { name: "Замена аккумулятора", price: 1290 }, { name: "Восстановление после воды", price: 1990 }, { name: "Замена камеры", price: 2490 }, { name: "Ремонт разъёма зарядки", price: 890 }, { name: "Замена задней крышки", price: 1590 }] },
-      { name: "iPhone 11 Pro Max", services: [{ name: "Замена дисплея (OLED)", price: 2990 }, { name: "Замена аккумулятора", price: 1190 }, { name: "Восстановление после воды", price: 1790 }, { name: "Замена камеры", price: 2290 }, { name: "Ремонт разъёма зарядки", price: 790 }] },
-      { name: "iPhone 11 / 11 Pro", services: [{ name: "Замена дисплея (LCD/OLED)", price: 2490 }, { name: "Замена аккумулятора", price: 990 }, { name: "Восстановление после воды", price: 1590 }, { name: "Замена камеры", price: 1990 }, { name: "Ремонт разъёма зарядки", price: 690 }] },
-      { name: "iPhone XS Max / XR", services: [{ name: "Замена дисплея", price: 2290 }, { name: "Замена аккумулятора", price: 990 }, { name: "Восстановление после воды", price: 1490 }, { name: "Замена камеры", price: 1790 }, { name: "Ремонт разъёма зарядки", price: 690 }] },
+      { name: "iPhone 16 Pro Max", services: [
+        { name: "Замена дисплея OLED", price: 11990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 3990, time: "30-60 мин" },
+        { name: "Замена задней панели", price: 5990, time: "2-3 ч" },
+        { name: "Замена камеры (основной блок)", price: 7990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 2990, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 4990, time: "1-2 д" },
+        { name: "Замена Face ID модуля", price: 8990, time: "2-3 д" },
+        { name: "Замена SIM-лотка", price: 890, time: "15 мин" },
+        { name: "Ремонт кнопок Action/Power", price: 2490, time: "1-2 ч" },
+        { name: "Пайка материнской платы", price: 6990, time: "2-5 д" },
+      ]},
+      { name: "iPhone 16 Pro", services: [
+        { name: "Замена дисплея OLED", price: 10990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 3490, time: "30-60 мин" },
+        { name: "Замена задней панели", price: 5490, time: "2-3 ч" },
+        { name: "Замена камеры", price: 6990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 2490, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 4490, time: "1-2 д" },
+        { name: "Пайка материнской платы", price: 5990, time: "2-5 д" },
+      ]},
+      { name: "iPhone 16 / 16 Plus", services: [
+        { name: "Замена дисплея OLED", price: 8990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2990, time: "30 мин" },
+        { name: "Замена задней крышки", price: 4490, time: "1-2 ч" },
+        { name: "Замена камеры", price: 5490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1990, time: "1 ч" },
+        { name: "Восстановление после воды", price: 3990, time: "1-2 д" },
+      ]},
+      { name: "iPhone 15 Pro Max", services: [
+        { name: "Замена дисплея OLED", price: 9990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 3490, time: "30-60 мин" },
+        { name: "Замена задней крышки", price: 4990, time: "2-3 ч" },
+        { name: "Замена камеры", price: 6490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 2490, time: "1 ч" },
+        { name: "Восстановление после воды", price: 4490, time: "1-2 д" },
+        { name: "Пайка материнской платы", price: 5990, time: "2-5 д" },
+      ]},
+      { name: "iPhone 15 Pro", services: [
+        { name: "Замена дисплея OLED", price: 8990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2990, time: "30 мин" },
+        { name: "Замена задней крышки", price: 4490, time: "2-3 ч" },
+        { name: "Замена камеры", price: 5990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1990, time: "1 ч" },
+        { name: "Восстановление после воды", price: 3990, time: "1-2 д" },
+      ]},
+      { name: "iPhone 15 / 15 Plus", services: [
+        { name: "Замена дисплея OLED", price: 7490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2490, time: "30 мин" },
+        { name: "Замена задней крышки", price: 3990, time: "1-2 ч" },
+        { name: "Замена камеры", price: 4990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1790, time: "1 ч" },
+        { name: "Восстановление после воды", price: 3490, time: "1-2 д" },
+      ]},
+      { name: "iPhone 14 Pro Max", services: [
+        { name: "Замена дисплея OLED", price: 7990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2490, time: "30 мин" },
+        { name: "Замена задней крышки", price: 4490, time: "2-3 ч" },
+        { name: "Замена камеры", price: 5490, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 1990, time: "1 ч" },
+        { name: "Восстановление после воды", price: 3990, time: "1-2 д" },
+      ]},
+      { name: "iPhone 14 Pro", services: [
+        { name: "Замена дисплея OLED", price: 6990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2290, time: "30 мин" },
+        { name: "Замена задней крышки", price: 3990, time: "2-3 ч" },
+        { name: "Замена камеры", price: 4990, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 1790, time: "1 ч" },
+        { name: "Восстановление после воды", price: 3490, time: "1-2 д" },
+      ]},
+      { name: "iPhone 14 / 14 Plus", services: [
+        { name: "Замена дисплея OLED", price: 5990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1990, time: "30 мин" },
+        { name: "Замена задней крышки", price: 2990, time: "1-2 ч" },
+        { name: "Замена камеры", price: 3990, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 1490, time: "1 ч" },
+        { name: "Восстановление после воды", price: 2990, time: "1-2 д" },
+      ]},
+      { name: "iPhone 13 Pro Max", services: [
+        { name: "Замена дисплея OLED", price: 5490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1790, time: "30 мин" },
+        { name: "Замена задней крышки", price: 2490, time: "1-2 ч" },
+        { name: "Замена камеры", price: 3490, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 1290, time: "1 ч" },
+        { name: "Восстановление после воды", price: 2790, time: "1-2 д" },
+      ]},
+      { name: "iPhone 13 / 13 Pro / mini", services: [
+        { name: "Замена дисплея OLED", price: 4490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1490, time: "30 мин" },
+        { name: "Замена задней крышки", price: 1990, time: "1-2 ч" },
+        { name: "Замена камеры", price: 2990, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 1090, time: "1 ч" },
+        { name: "Восстановление после воды", price: 2490, time: "1-2 д" },
+      ]},
+      { name: "iPhone 12 Pro Max", services: [
+        { name: "Замена дисплея OLED", price: 3990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1490, time: "30 мин" },
+        { name: "Замена задней крышки", price: 1790, time: "1-2 ч" },
+        { name: "Замена камеры", price: 2790, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 990, time: "1 ч" },
+        { name: "Восстановление после воды", price: 2290, time: "1-2 д" },
+      ]},
+      { name: "iPhone 12 / 12 Pro / mini", services: [
+        { name: "Замена дисплея OLED", price: 3490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1290, time: "30 мин" },
+        { name: "Замена задней крышки", price: 1590, time: "1-2 ч" },
+        { name: "Замена камеры", price: 2490, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 890, time: "1 ч" },
+        { name: "Восстановление после воды", price: 1990, time: "1-2 д" },
+      ]},
+      { name: "iPhone 11 Pro Max", services: [
+        { name: "Замена дисплея OLED", price: 2990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1190, time: "30 мин" },
+        { name: "Замена камеры", price: 2290, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 790, time: "1 ч" },
+        { name: "Восстановление после воды", price: 1790, time: "1-2 д" },
+      ]},
+      { name: "iPhone 11 / 11 Pro", services: [
+        { name: "Замена дисплея LCD/OLED", price: 2490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 990, time: "30 мин" },
+        { name: "Замена камеры", price: 1990, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 690, time: "1 ч" },
+        { name: "Восстановление после воды", price: 1590, time: "1-2 д" },
+      ]},
+      { name: "iPhone XS Max / XR / X", services: [
+        { name: "Замена дисплея OLED/LCD", price: 2290, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 990, time: "30 мин" },
+        { name: "Замена камеры", price: 1790, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 690, time: "1 ч" },
+        { name: "Восстановление после воды", price: 1490, time: "1-2 д" },
+      ]},
+      { name: "iPhone SE (2022/2020)", services: [
+        { name: "Замена дисплея LCD", price: 1990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 890, time: "30 мин" },
+        { name: "Замена камеры", price: 1490, time: "1-2 ч" },
+        { name: "Ремонт разъёма Lightning", price: 590, time: "1 ч" },
+      ]},
     ],
   },
   {
     brand: "Samsung",
+    icon: "Smartphone",
+    color: "bg-blue-600 text-white",
     models: [
-      { name: "Galaxy S25 Ultra", services: [{ name: "Замена дисплея (AMOLED)", price: 16990 }, { name: "Замена аккумулятора", price: 3490 }, { name: "Восстановление после воды", price: 4990 }, { name: "Замена камеры", price: 6990 }, { name: "Ремонт разъёма USB-C", price: 2490 }] },
-      { name: "Galaxy S25 / S25+", services: [{ name: "Замена дисплея (AMOLED)", price: 10990 }, { name: "Замена аккумулятора", price: 2790 }, { name: "Восстановление после воды", price: 3990 }, { name: "Замена камеры", price: 4990 }, { name: "Ремонт разъёма USB-C", price: 1990 }] },
-      { name: "Galaxy S24 Ultra", services: [{ name: "Замена дисплея (AMOLED)", price: 14990 }, { name: "Замена аккумулятора", price: 3290 }, { name: "Восстановление после воды", price: 4490 }, { name: "Замена камеры", price: 6490 }, { name: "Ремонт разъёма USB-C", price: 2290 }] },
-      { name: "Galaxy S24 / S23", services: [{ name: "Замена дисплея (AMOLED)", price: 8490 }, { name: "Замена аккумулятора", price: 2190 }, { name: "Восстановление после воды", price: 2990 }, { name: "Замена камеры", price: 3990 }, { name: "Ремонт разъёма USB-C", price: 1490 }] },
-      { name: "Galaxy A55 / A54 / A53", services: [{ name: "Замена дисплея (AMOLED)", price: 4490 }, { name: "Замена аккумулятора", price: 1490 }, { name: "Восстановление после воды", price: 2190 }, { name: "Замена камеры", price: 2490 }, { name: "Ремонт разъёма USB-C", price: 990 }] },
-      { name: "Galaxy A35 / A34 / A33", services: [{ name: "Замена дисплея", price: 3490 }, { name: "Замена аккумулятора", price: 1290 }, { name: "Восстановление после воды", price: 1990 }, { name: "Замена камеры", price: 1990 }, { name: "Ремонт разъёма USB-C", price: 890 }] },
-      { name: "Galaxy Z Fold5 / Fold6", services: [{ name: "Замена внутреннего экрана", price: 27990 }, { name: "Замена внешнего экрана", price: 8990 }, { name: "Замена аккумулятора", price: 4490 }, { name: "Восстановление после воды", price: 5990 }, { name: "Ремонт петли", price: 8990 }] },
-      { name: "Galaxy Z Flip5 / Flip6", services: [{ name: "Замена внутреннего экрана", price: 19990 }, { name: "Замена внешнего экрана", price: 4990 }, { name: "Замена аккумулятора", price: 3490 }, { name: "Восстановление после воды", price: 4990 }, { name: "Ремонт петли", price: 6990 }] },
+      { name: "Galaxy S25 Ultra", services: [
+        { name: "Замена дисплея AMOLED", price: 16990, time: "2-3 ч" },
+        { name: "Замена аккумулятора", price: 3490, time: "1 ч" },
+        { name: "Замена камеры", price: 6990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 2490, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 4990, time: "1-2 д" },
+        { name: "Замена задней крышки", price: 3990, time: "1-2 ч" },
+        { name: "Замена S Pen", price: 1990, time: "15 мин" },
+      ]},
+      { name: "Galaxy S25 / S25+", services: [
+        { name: "Замена дисплея AMOLED", price: 10990, time: "2-3 ч" },
+        { name: "Замена аккумулятора", price: 2790, time: "1 ч" },
+        { name: "Замена камеры", price: 4990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1990, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 3990, time: "1-2 д" },
+      ]},
+      { name: "Galaxy S24 Ultra", services: [
+        { name: "Замена дисплея AMOLED", price: 14990, time: "2-3 ч" },
+        { name: "Замена аккумулятора", price: 3290, time: "1 ч" },
+        { name: "Замена камеры", price: 6490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 2290, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 4490, time: "1-2 д" },
+      ]},
+      { name: "Galaxy S24 / S24+", services: [
+        { name: "Замена дисплея AMOLED", price: 9490, time: "2-3 ч" },
+        { name: "Замена аккумулятора", price: 2490, time: "1 ч" },
+        { name: "Замена камеры", price: 4490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1790, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 3490, time: "1-2 д" },
+      ]},
+      { name: "Galaxy S23 / S23+", services: [
+        { name: "Замена дисплея AMOLED", price: 8490, time: "2-3 ч" },
+        { name: "Замена аккумулятора", price: 2190, time: "1 ч" },
+        { name: "Замена камеры", price: 3990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1490, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 2990, time: "1-2 д" },
+      ]},
+      { name: "Galaxy A55 / A54 / A53", services: [
+        { name: "Замена дисплея AMOLED", price: 4490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1490, time: "1 ч" },
+        { name: "Замена камеры", price: 2490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 990, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 2190, time: "1-2 д" },
+      ]},
+      { name: "Galaxy A35 / A34 / A33", services: [
+        { name: "Замена дисплея", price: 3490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1290, time: "1 ч" },
+        { name: "Замена камеры", price: 1990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 890, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 1990, time: "1-2 д" },
+      ]},
+      { name: "Galaxy A25 / A15 / A05", services: [
+        { name: "Замена дисплея", price: 2490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 990, time: "30 мин" },
+        { name: "Замена камеры", price: 1490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 690, time: "1 ч" },
+      ]},
+      { name: "Galaxy Z Fold 5 / Fold 6", services: [
+        { name: "Замена внутреннего экрана", price: 27990, time: "3-5 д" },
+        { name: "Замена внешнего экрана", price: 8990, time: "2-3 ч" },
+        { name: "Замена аккумулятора", price: 4490, time: "2-3 ч" },
+        { name: "Ремонт петли шарнира", price: 8990, time: "2-3 д" },
+        { name: "Восстановление после воды", price: 5990, time: "1-3 д" },
+      ]},
+      { name: "Galaxy Z Flip 5 / Flip 6", services: [
+        { name: "Замена внутреннего экрана", price: 19990, time: "3-5 д" },
+        { name: "Замена внешнего экрана", price: 4990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 3490, time: "2-3 ч" },
+        { name: "Ремонт петли шарнира", price: 6990, time: "2-3 д" },
+      ]},
+      { name: "Galaxy Note 20 Ultra / 10+", services: [
+        { name: "Замена дисплея AMOLED", price: 6990, time: "2-3 ч" },
+        { name: "Замена аккумулятора", price: 1990, time: "1 ч" },
+        { name: "Замена S Pen / стилуса", price: 1490, time: "15 мин" },
+        { name: "Восстановление после воды", price: 3490, time: "1-2 д" },
+      ]},
     ],
   },
   {
     brand: "Xiaomi / Redmi / POCO",
+    icon: "Smartphone",
+    color: "bg-orange-500 text-white",
     models: [
-      { name: "Xiaomi 15 / 15 Pro", services: [{ name: "Замена дисплея", price: 8490 }, { name: "Замена аккумулятора", price: 2490 }, { name: "Восстановление после воды", price: 3490 }, { name: "Замена камеры", price: 4990 }, { name: "Ремонт разъёма", price: 1490 }] },
-      { name: "Xiaomi 14 Ultra", services: [{ name: "Замена дисплея", price: 9990 }, { name: "Замена аккумулятора", price: 2490 }, { name: "Восстановление после воды", price: 3790 }, { name: "Замена камеры", price: 5490 }, { name: "Ремонт разъёма", price: 1590 }] },
-      { name: "Xiaomi 14 / 13", services: [{ name: "Замена дисплея", price: 6990 }, { name: "Замена аккумулятора", price: 1990 }, { name: "Восстановление после воды", price: 2990 }, { name: "Замена камеры", price: 3990 }, { name: "Ремонт разъёма", price: 1290 }] },
-      { name: "Redmi Note 13 Pro / Pro+", services: [{ name: "Замена дисплея", price: 3990 }, { name: "Замена аккумулятора", price: 1390 }, { name: "Восстановление после воды", price: 2190 }, { name: "Замена камеры", price: 2490 }, { name: "Ремонт разъёма", price: 990 }] },
-      { name: "Redmi Note 13 / 12", services: [{ name: "Замена дисплея", price: 2990 }, { name: "Замена аккумулятора", price: 1190 }, { name: "Восстановление после воды", price: 1790 }, { name: "Замена камеры", price: 1990 }, { name: "Ремонт разъёма", price: 790 }] },
-      { name: "POCO F6 / X6 Pro", services: [{ name: "Замена дисплея", price: 4490 }, { name: "Замена аккумулятора", price: 1690 }, { name: "Восстановление после воды", price: 2490 }, { name: "Замена камеры", price: 2990 }, { name: "Ремонт разъёма", price: 1090 }] },
+      { name: "Xiaomi 15 / 15 Pro", services: [
+        { name: "Замена дисплея AMOLED", price: 8490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2490, time: "1 ч" },
+        { name: "Замена камеры", price: 4990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1490, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 3490, time: "1-2 д" },
+      ]},
+      { name: "Xiaomi 14 Ultra", services: [
+        { name: "Замена дисплея AMOLED", price: 9990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2490, time: "1 ч" },
+        { name: "Замена камеры Leica", price: 5490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1590, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 3790, time: "1-2 д" },
+      ]},
+      { name: "Xiaomi 14 / 13 / 12", services: [
+        { name: "Замена дисплея AMOLED", price: 6990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1990, time: "1 ч" },
+        { name: "Замена камеры", price: 3990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1290, time: "1 ч" },
+        { name: "Восстановление после воды", price: 2990, time: "1-2 д" },
+      ]},
+      { name: "Redmi Note 13 Pro+ / Pro", services: [
+        { name: "Замена дисплея AMOLED", price: 3990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1390, time: "30 мин" },
+        { name: "Замена камеры", price: 2490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 990, time: "1 ч" },
+        { name: "Восстановление после воды", price: 2190, time: "1-2 д" },
+      ]},
+      { name: "Redmi Note 13 / 12 / 11", services: [
+        { name: "Замена дисплея AMOLED", price: 2990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1190, time: "30 мин" },
+        { name: "Замена камеры", price: 1990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 790, time: "1 ч" },
+        { name: "Восстановление после воды", price: 1790, time: "1-2 д" },
+      ]},
+      { name: "Redmi 13C / 13 / 12", services: [
+        { name: "Замена дисплея", price: 1990, time: "1 ч" },
+        { name: "Замена аккумулятора", price: 990, time: "30 мин" },
+        { name: "Замена камеры", price: 1490, time: "1 ч" },
+        { name: "Ремонт разъёма USB-C", price: 590, time: "1 ч" },
+      ]},
+      { name: "POCO X6 Pro / F6 Pro", services: [
+        { name: "Замена дисплея AMOLED", price: 4490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1690, time: "1 ч" },
+        { name: "Замена камеры", price: 2990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1090, time: "1 ч" },
+        { name: "Восстановление после воды", price: 2490, time: "1-2 д" },
+      ]},
+      { name: "POCO M6 / M5 / C55", services: [
+        { name: "Замена дисплея", price: 2490, time: "1 ч" },
+        { name: "Замена аккумулятора", price: 1190, time: "30 мин" },
+        { name: "Замена камеры", price: 1590, time: "1 ч" },
+        { name: "Ремонт разъёма USB-C", price: 790, time: "1 ч" },
+      ]},
     ],
   },
   {
-    brand: "iPad",
+    brand: "Huawei / Honor",
+    icon: "Smartphone",
+    color: "bg-red-600 text-white",
     models: [
-      { name: "iPad Pro 13\" M4 (2024)", services: [{ name: "Замена дисплея (OLED)", price: 19990 }, { name: "Замена аккумулятора", price: 5490 }, { name: "Восстановление после воды", price: 5990 }, { name: "Ремонт разъёма", price: 3490 }] },
-      { name: "iPad Pro 11\" M4 (2024)", services: [{ name: "Замена дисплея (OLED)", price: 16990 }, { name: "Замена аккумулятора", price: 4990 }, { name: "Восстановление после воды", price: 5490 }, { name: "Ремонт разъёма", price: 2990 }] },
-      { name: "iPad Air M2 (2024)", services: [{ name: "Замена дисплея", price: 11990 }, { name: "Замена аккумулятора", price: 3990 }, { name: "Восстановление после воды", price: 4490 }, { name: "Ремонт разъёма", price: 2490 }] },
-      { name: "iPad 10 (2022)", services: [{ name: "Замена дисплея", price: 7990 }, { name: "Замена аккумулятора", price: 2990 }, { name: "Восстановление после воды", price: 3490 }, { name: "Ремонт разъёма", price: 1990 }] },
-      { name: "iPad mini 7 (2024)", services: [{ name: "Замена дисплея", price: 8990 }, { name: "Замена аккумулятора", price: 3290 }, { name: "Восстановление после воды", price: 3790 }, { name: "Ремонт разъёма", price: 2190 }] },
-      { name: "iPad 9 / 8 (2020–2021)", services: [{ name: "Замена дисплея", price: 5490 }, { name: "Замена аккумулятора", price: 2490 }, { name: "Восстановление после воды", price: 2990 }, { name: "Замена кнопки Home", price: 1490 }] },
+      { name: "Huawei P60 Pro / P50 Pro", services: [
+        { name: "Замена дисплея OLED", price: 8990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2490, time: "1 ч" },
+        { name: "Замена камеры", price: 4490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1490, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 3490, time: "1-2 д" },
+      ]},
+      { name: "Huawei Nova 11 / 10 / 9", services: [
+        { name: "Замена дисплея OLED", price: 3990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1490, time: "1 ч" },
+        { name: "Замена камеры", price: 2490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 990, time: "1 ч" },
+      ]},
+      { name: "Honor 200 Pro / 90 Pro", services: [
+        { name: "Замена дисплея AMOLED", price: 4990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1690, time: "1 ч" },
+        { name: "Замена камеры", price: 2990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1090, time: "1 ч" },
+      ]},
+      { name: "Honor X8b / X7b / X6b", services: [
+        { name: "Замена дисплея", price: 2490, time: "1 ч" },
+        { name: "Замена аккумулятора", price: 990, time: "30 мин" },
+        { name: "Замена камеры", price: 1490, time: "1 ч" },
+        { name: "Ремонт разъёма USB-C", price: 690, time: "1 ч" },
+      ]},
     ],
   },
   {
-    brand: "MacBook",
+    brand: "OPPO / OnePlus / Realme",
+    icon: "Smartphone",
+    color: "bg-green-600 text-white",
     models: [
-      { name: "MacBook Pro 16\" M4 Pro/Max", services: [{ name: "Замена матрицы (Liquid Retina XDR)", price: 38990 }, { name: "Замена аккумулятора", price: 13990 }, { name: "Восстановление после залития", price: 16990 }, { name: "Замена клавиатуры (TopCase)", price: 9990 }, { name: "Диагностика SSD / замена", price: 4990 }, { name: "Чистка + термопаста", price: 2990 }] },
-      { name: "MacBook Pro 14\" M4 Pro/Max", services: [{ name: "Замена матрицы", price: 31990 }, { name: "Замена аккумулятора", price: 11990 }, { name: "Восстановление после залития", price: 13990 }, { name: "Замена клавиатуры", price: 8990 }, { name: "Диагностика SSD / замена", price: 4490 }, { name: "Чистка + термопаста", price: 2990 }] },
-      { name: "MacBook Air 15\" M3 (2024)", services: [{ name: "Замена матрицы", price: 23990 }, { name: "Замена аккумулятора", price: 8990 }, { name: "Восстановление после залития", price: 10990 }, { name: "Замена клавиатуры", price: 6990 }, { name: "Диагностика SSD / замена", price: 3990 }, { name: "Чистка + термопаста", price: 2490 }] },
-      { name: "MacBook Air 13\" M3 / M2", services: [{ name: "Замена матрицы", price: 18990 }, { name: "Замена аккумулятора", price: 7490 }, { name: "Восстановление после залития", price: 8990 }, { name: "Замена клавиатуры", price: 5990 }, { name: "Диагностика SSD / замена", price: 3490 }, { name: "Чистка + термопаста", price: 1990 }] },
-      { name: "MacBook Air 13\" M1 (2020)", services: [{ name: "Замена матрицы", price: 13990 }, { name: "Замена аккумулятора", price: 5990 }, { name: "Восстановление после залития", price: 7490 }, { name: "Замена клавиатуры", price: 4990 }, { name: "Диагностика SSD / замена", price: 2990 }, { name: "Чистка + термопаста", price: 1790 }] },
-      { name: "MacBook Pro 13\" Intel (2016–2019)", services: [{ name: "Замена матрицы", price: 11990 }, { name: "Замена аккумулятора", price: 5490 }, { name: "Восстановление после залития", price: 6990 }, { name: "Замена клавиатуры", price: 7990 }, { name: "Замена SSD (апгрейд)", price: 3990 }, { name: "Чистка + термопаста", price: 1590 }] },
+      { name: "OnePlus 12 / 11 / 10 Pro", services: [
+        { name: "Замена дисплея AMOLED", price: 7490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2290, time: "1 ч" },
+        { name: "Замена камеры", price: 3990, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1490, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 3490, time: "1-2 д" },
+      ]},
+      { name: "OPPO Reno 12 Pro / 11 Pro", services: [
+        { name: "Замена дисплея AMOLED", price: 4490, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1490, time: "1 ч" },
+        { name: "Замена камеры", price: 2490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 990, time: "1 ч" },
+      ]},
+      { name: "Realme 12 Pro+ / GT 6T", services: [
+        { name: "Замена дисплея AMOLED", price: 3990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1290, time: "1 ч" },
+        { name: "Замена камеры", price: 2190, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 890, time: "1 ч" },
+      ]},
     ],
   },
   {
-    brand: "Apple Watch / AirPods",
+    brand: "Google Pixel",
+    icon: "Smartphone",
+    color: "bg-teal-600 text-white",
     models: [
-      { name: "Apple Watch Ultra 2", services: [{ name: "Замена экрана", price: 13990 }, { name: "Замена аккумулятора", price: 5490 }, { name: "Восстановление после воды", price: 5990 }, { name: "Замена кнопки Action", price: 2990 }] },
-      { name: "Apple Watch Series 10", services: [{ name: "Замена экрана", price: 8990 }, { name: "Замена аккумулятора", price: 3990 }, { name: "Восстановление после воды", price: 4490 }] },
-      { name: "Apple Watch Series 9 / SE 2", services: [{ name: "Замена экрана", price: 6990 }, { name: "Замена аккумулятора", price: 3290 }, { name: "Восстановление после воды", price: 3790 }] },
-      { name: "AirPods Pro 2", services: [{ name: "Замена аккумулятора (1 наушник)", price: 2290 }, { name: "Замена аккумулятора кейса", price: 2790 }, { name: "Профессиональная чистка", price: 890 }, { name: "Замена динамика", price: 2490 }] },
-      { name: "AirPods 4 / 3", services: [{ name: "Замена аккумулятора (1 наушник)", price: 1890 }, { name: "Замена аккумулятора кейса", price: 2290 }, { name: "Профессиональная чистка", price: 690 }] },
+      { name: "Pixel 9 Pro / 9 Pro XL", services: [
+        { name: "Замена дисплея OLED", price: 9990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2990, time: "1 ч" },
+        { name: "Замена камеры", price: 5490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1990, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 3990, time: "1-2 д" },
+      ]},
+      { name: "Pixel 9 / Pixel 8 Pro", services: [
+        { name: "Замена дисплея OLED", price: 7990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 2490, time: "1 ч" },
+        { name: "Замена камеры", price: 4490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1690, time: "1-2 ч" },
+        { name: "Восстановление после воды", price: 3490, time: "1-2 д" },
+      ]},
+      { name: "Pixel 7a / 7 / 6a", services: [
+        { name: "Замена дисплея OLED", price: 5990, time: "1-2 ч" },
+        { name: "Замена аккумулятора", price: 1990, time: "1 ч" },
+        { name: "Замена камеры", price: 3490, time: "1-2 ч" },
+        { name: "Ремонт разъёма USB-C", price: 1290, time: "1 ч" },
+      ]},
     ],
   },
+  OTHER_BRAND,
+]
+
+const commonIssues = [
+  { icon: "📱", issue: "Треснул экран", from: 1990, time: "от 30 мин" },
+  { icon: "🔋", issue: "Быстро садится батарея", from: 890, time: "30 мин" },
+  { icon: "💧", issue: "Попала вода", from: 1490, time: "1-2 дня" },
+  { icon: "📸", issue: "Не работает камера", from: 1490, time: "1-2 ч" },
+  { icon: "🔌", issue: "Не заряжается", from: 590, time: "30-60 мин" },
+  { icon: "🔇", issue: "Нет звука", from: 890, time: "1 ч" },
+  { icon: "📡", issue: "Нет сети / Wi-Fi", from: 1990, time: "1-3 ч" },
+  { icon: "🔑", issue: "Не работает кнопка", from: 590, time: "30 мин" },
 ]
 
 export default function CalculatorPage() {
-  const [step, setStep] = useState<1 | 2 | 3>(1)
-  const [selectedBrand, setSelectedBrand] = useState<string | null>(null)
-  const [selectedModel, setSelectedModel] = useState<string | null>(null)
-  const [selectedServices, setSelectedServices] = useState<string[]>([])
-  const [name, setName] = useState("")
-  const [phone, setPhone] = useState("")
-  const [submitted, setSubmitted] = useState(false)
+  const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null)
+  const [selectedModel, setSelectedModel] = useState<Model | null>(null)
+  const [selectedService, setSelectedService] = useState<Service | null>(null)
+  const [modelOpen, setModelOpen] = useState(false)
 
-  const brandData = catalog.find((b) => b.brand === selectedBrand)
-  const modelData = brandData?.models.find((m) => m.name === selectedModel)
-
-  const toggleService = (svc: string) => {
-    setSelectedServices((prev) =>
-      prev.includes(svc) ? prev.filter((s) => s !== svc) : [...prev, svc]
-    )
+  const handleBrand = (b: Brand) => {
+    setSelectedBrand(b)
+    setSelectedModel(null)
+    setSelectedService(null)
+    setModelOpen(false)
   }
 
-  const total = modelData?.services
-    .filter((s) => selectedServices.includes(s.name))
-    .reduce((sum, s) => sum + s.price, 0) ?? 0
+  const handleModel = (m: Model) => {
+    setSelectedModel(m)
+    setSelectedService(null)
+    setModelOpen(false)
+  }
 
-  const handleSubmit = () => {
-    if (name && phone) setSubmitted(true)
+  const handleService = (s: Service) => {
+    setSelectedService(s)
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-white">
       <SEOHead
         title="Калькулятор стоимости ремонта — iPro Барнаул"
-        description="Рассчитайте стоимость ремонта iPhone, Samsung, MacBook, iPad онлайн. Точная цена под ключ — запчасть + работа. Бесплатная диагностика."
+        description="Рассчитайте стоимость ремонта iPhone, Samsung, Xiaomi и других смартфонов онлайн. Актуальные цены по Барнаулу."
       />
       <Navbar />
-      <main className="pt-24 pb-20 px-6">
-        <div className="max-w-2xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 mb-4">
-              <Icon name="Calculator" size={16} className="text-zinc-400" />
-              <span className="text-sm text-zinc-400">Бесплатный расчёт</span>
-            </div>
-            <h1 className="font-display text-4xl font-bold text-zinc-100 mb-3">Калькулятор ремонта</h1>
-            <p className="text-zinc-500">Выберите устройство и виды работ — получите точную цену под ключ</p>
-          </motion.div>
 
-          {/* Steps */}
-          <div className="flex items-center gap-2 mb-8">
-            {[1, 2, 3].map((s) => (
-              <div key={s} className="flex items-center gap-2 flex-1">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${step >= s ? "bg-zinc-100 text-zinc-900" : "bg-zinc-800 text-zinc-500"}`}>
-                  {s}
-                </div>
-                <span className={`text-xs hidden sm:block ${step >= s ? "text-zinc-300" : "text-zinc-600"}`}>
-                  {s === 1 ? "Устройство" : s === 2 ? "Услуги" : "Заявка"}
-                </span>
-                {s < 3 && <div className={`flex-1 h-px ${step > s ? "bg-zinc-600" : "bg-zinc-800"}`} />}
-              </div>
-            ))}
+      <main className="pt-20">
+        {/* Hero */}
+        <section className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-14 px-6">
+          <div className="max-w-4xl mx-auto">
+            <Breadcrumb items={[{ label: "Калькулятор ремонта" }]} />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6"
+            >
+              <h1 className="font-display text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+                Калькулятор стоимости ремонта
+              </h1>
+              <p className="text-gray-500 mt-3 text-lg">
+                Выберите устройство и услугу — получите точную цену за секунды
+              </p>
+            </motion.div>
           </div>
+        </section>
 
-          <AnimatePresence mode="wait">
-            {/* Step 1 — Выбор устройства */}
-            {step === 1 && (
-              <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-6 mb-4">
-                  <h2 className="font-heading font-semibold text-zinc-200 mb-4">Выберите бренд</h2>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        {/* Популярные поломки */}
+        <section className="bg-gray-50 py-8 px-6 border-b border-gray-100">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Частые поломки и стоимость</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {commonIssues.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-white rounded-2xl p-4 border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all cursor-pointer"
+                >
+                  <div className="text-2xl mb-2">{item.icon}</div>
+                  <p className="text-sm font-semibold text-gray-800">{item.issue}</p>
+                  <p className="text-xs text-blue-600 font-medium mt-1">от {item.from.toLocaleString("ru")} ₽</p>
+                  <p className="text-xs text-gray-400">{item.time}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Calculator */}
+        <section className="py-12 px-6">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid lg:grid-cols-[1fr_380px] gap-8">
+              {/* Left: configurator */}
+              <div>
+                {/* Step 1: Brand */}
+                <div className="mb-8">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">1</span>
+                    <h2 className="font-semibold text-gray-900">Выберите бренд</h2>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                     {catalog.map((b) => (
                       <button
                         key={b.brand}
-                        onClick={() => { setSelectedBrand(b.brand); setSelectedModel(null); setSelectedServices([]) }}
-                        className={`px-4 py-3 rounded-xl text-sm text-left transition-all border ${selectedBrand === b.brand ? "bg-zinc-100 text-zinc-900 border-zinc-100 font-medium" : "bg-zinc-800/40 text-zinc-400 border-zinc-700/50 hover:bg-zinc-800/80 hover:text-zinc-200"}`}
+                        onClick={() => handleBrand(b)}
+                        className={`flex items-center gap-2 px-3 py-3 rounded-2xl border-2 text-sm font-medium transition-all text-left ${
+                          selectedBrand?.brand === b.brand
+                            ? "border-blue-500 bg-blue-50 text-blue-700"
+                            : "border-gray-100 bg-white text-gray-700 hover:border-gray-200 hover:bg-gray-50"
+                        }`}
                       >
-                        {b.brand}
+                        <Icon name={b.icon} size={16} className="shrink-0" />
+                        <span className="truncate">{b.brand}</span>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {brandData && (
-                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-6 mb-4">
-                    <h2 className="font-heading font-semibold text-zinc-200 mb-4">Выберите модель</h2>
-                    <div className="grid grid-cols-1 gap-2">
-                      {brandData.models.map((m) => (
+                {/* Step 2: Model */}
+                <AnimatePresence>
+                  {selectedBrand && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mb-8"
+                    >
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">2</span>
+                        <h2 className="font-semibold text-gray-900">Выберите модель</h2>
+                      </div>
+                      {/* Dropdown */}
+                      <div className="relative">
                         <button
-                          key={m.name}
-                          onClick={() => { setSelectedModel(m.name); setSelectedServices([]) }}
-                          className={`px-4 py-3 rounded-xl text-sm text-left transition-all border ${selectedModel === m.name ? "bg-zinc-100 text-zinc-900 border-zinc-100 font-medium" : "bg-zinc-800/40 text-zinc-400 border-zinc-700/50 hover:bg-zinc-800/80 hover:text-zinc-200"}`}
+                          onClick={() => setModelOpen(!modelOpen)}
+                          className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl border-2 border-gray-200 bg-white text-sm text-gray-700 hover:border-blue-300 transition-all"
                         >
-                          {m.name}
+                          <span>{selectedModel?.name || "Выберите модель..."}</span>
+                          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${modelOpen ? "rotate-180" : ""}`} />
                         </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
+                        <AnimatePresence>
+                          {modelOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -8 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -8 }}
+                              className="absolute z-20 top-full mt-1 w-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden max-h-72 overflow-y-auto"
+                            >
+                              {selectedBrand.models.map((m) => (
+                                <button
+                                  key={m.name}
+                                  onClick={() => handleModel(m)}
+                                  className={`w-full text-left px-4 py-3 text-sm transition-colors hover:bg-blue-50 hover:text-blue-700 ${
+                                    selectedModel?.name === m.name ? "bg-blue-50 text-blue-700 font-medium" : "text-gray-700"
+                                  }`}
+                                >
+                                  {m.name}
+                                </button>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-                <button
-                  onClick={() => setStep(2)}
-                  disabled={!selectedModel}
-                  className="w-full py-3 rounded-xl bg-zinc-100 text-zinc-900 font-medium hover:bg-zinc-200 transition-colors disabled:opacity-30"
-                >
-                  Далее — выбрать услуги
-                </button>
-              </motion.div>
-            )}
-
-            {/* Step 2 — Выбор услуг */}
-            {step === 2 && modelData && (
-              <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-6 mb-4">
-                  <h2 className="font-heading font-semibold text-zinc-200 mb-1">Выберите виды ремонта</h2>
-                  <p className="text-zinc-500 text-xs mb-4">{selectedModel} — цены под ключ (запчасть + работа)</p>
-                  <div className="space-y-2">
-                    {modelData.services.map((svc) => {
-                      const checked = selectedServices.includes(svc.name)
-                      return (
-                        <button
-                          key={svc.name}
-                          onClick={() => toggleService(svc.name)}
-                          className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-sm transition-all border ${checked ? "bg-zinc-100 text-zinc-900 border-zinc-100" : "bg-zinc-800/40 text-zinc-300 border-zinc-700/50 hover:bg-zinc-800/80"}`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className={`w-5 h-5 rounded-md flex items-center justify-center ${checked ? "bg-zinc-900" : "bg-zinc-700"}`}>
-                              {checked && <Icon name="Check" size={12} className="text-zinc-100" />}
+                {/* Step 3: Services */}
+                <AnimatePresence>
+                  {selectedModel && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mb-8"
+                    >
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">3</span>
+                        <h2 className="font-semibold text-gray-900">Выберите услугу</h2>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        {selectedModel.services.map((s) => (
+                          <button
+                            key={s.name}
+                            onClick={() => handleService(s)}
+                            className={`flex items-center justify-between px-4 py-3.5 rounded-2xl border-2 text-sm transition-all text-left ${
+                              selectedService?.name === s.name
+                                ? "border-blue-500 bg-blue-50"
+                                : "border-gray-100 bg-white hover:border-gray-200 hover:bg-gray-50"
+                            }`}
+                          >
+                            <div>
+                              <p className={`font-medium ${selectedService?.name === s.name ? "text-blue-700" : "text-gray-800"}`}>{s.name}</p>
+                              {s.time && <p className="text-xs text-gray-400 mt-0.5">⏱ {s.time}</p>}
                             </div>
-                            <span>{svc.name}</span>
-                          </div>
-                          <span className="font-semibold tabular-nums">39 900₽</span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* Total */}
-                <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/60 p-5 mb-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-zinc-400 text-sm">Итоговая стоимость</p>
-                      <p className="text-xs text-zinc-600 mt-0.5">+ бесплатная диагностика</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-display text-3xl font-bold text-zinc-100">
-                        {total > 0 ? `${total.toLocaleString("ru-RU")} ₽` : "0 ₽"}
-                      </p>
-                      {selectedServices.length > 0 && (
-                        <p className="text-xs text-green-400 mt-0.5">+{Math.round(total * 0.05)} бонусов</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <button onClick={() => setStep(1)} className="px-5 py-3 rounded-xl bg-zinc-800 text-zinc-300 text-sm hover:bg-zinc-700 transition-colors">
-                    Назад
-                  </button>
-                  <button
-                    onClick={() => setStep(3)}
-                    disabled={selectedServices.length === 0}
-                    className="flex-1 py-3 rounded-xl bg-zinc-100 text-zinc-900 font-medium hover:bg-zinc-200 transition-colors disabled:opacity-30"
-                  >
-                    Оставить заявку
-                  </button>
-                </div>
-              </motion.div>
-            )}
-
-            {/* Step 3 — Заявка */}
-            {step === 3 && (
-              <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                {!submitted ? (
-                  <>
-                    <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-6 mb-4">
-                      <h2 className="font-heading font-semibold text-zinc-200 mb-4">Ваши данные</h2>
-
-                      <div className="rounded-xl bg-zinc-800/40 border border-zinc-700/30 p-4 mb-5">
-                        <p className="text-sm font-medium text-zinc-300 mb-2">{selectedModel}</p>
-                        {selectedServices.map((s) => (
-                          <div key={s} className="flex justify-between text-sm text-zinc-500 py-0.5">
-                            <span>{s}</span>
-                            <span>{modelData?.services.find((sv) => sv.name === s)?.price.toLocaleString("ru-RU")} ₽</span>
-                          </div>
+                            <div className="text-right shrink-0 ml-4">
+                              {s.price === 0 ? (
+                                <span className="text-green-600 font-bold text-sm">Бесплатно</span>
+                              ) : (
+                                <span className={`font-bold ${selectedService?.name === s.name ? "text-blue-600" : "text-gray-900"}`}>
+                                  от {s.price.toLocaleString("ru")} ₽
+                                </span>
+                              )}
+                            </div>
+                          </button>
                         ))}
-                        <div className="flex justify-between font-semibold text-zinc-200 border-t border-zinc-700/30 mt-3 pt-3">
-                          <span>Итого</span>
-                          <span>{total.toLocaleString("ru-RU")} ₽</span>
-                        </div>
                       </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
-                      <div className="space-y-3">
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ваше имя" className="w-full px-4 py-3 rounded-xl bg-zinc-800/60 border border-zinc-700/50 text-zinc-100 placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-600 transition-colors" />
-                        <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+7 (___) ___-__-__" className="w-full px-4 py-3 rounded-xl bg-zinc-800/60 border border-zinc-700/50 text-zinc-100 placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-600 transition-colors" />
+              {/* Right: Summary + Form */}
+              <div className="lg:sticky lg:top-24 self-start">
+                <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                  {/* Summary */}
+                  <div className="p-6 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+                    <p className="text-blue-100 text-sm mb-1">Итого</p>
+                    {selectedService ? (
+                      <>
+                        <p className="text-3xl font-bold mb-1">
+                          {selectedService.price === 0 ? "Бесплатно" : `от ${selectedService.price.toLocaleString("ru")} ₽`}
+                        </p>
+                        <p className="text-blue-100 text-sm">{selectedBrand?.brand} {selectedModel?.name}</p>
+                        <p className="text-white/90 text-sm font-medium">{selectedService.name}</p>
+                        {selectedService.time && (
+                          <p className="text-blue-200 text-xs mt-1">⏱ Время: {selectedService.time}</p>
+                        )}
+                      </>
+                    ) : (
+                      <div className="flex items-center gap-2 text-blue-100">
+                        <AlertCircle className="w-5 h-5" />
+                        <p className="text-sm">Выберите устройство и услугу</p>
                       </div>
-                    </div>
+                    )}
+                  </div>
 
-                    <div className="flex gap-3">
-                      <button onClick={() => setStep(2)} className="px-5 py-3 rounded-xl bg-zinc-800 text-zinc-300 text-sm hover:bg-zinc-700 transition-colors">
-                        Назад
-                      </button>
-                      <button onClick={handleSubmit} disabled={!name || !phone} className="flex-1 py-3 rounded-xl bg-zinc-100 text-zinc-900 font-semibold hover:bg-zinc-200 transition-colors disabled:opacity-30">
-                        Отправить заявку
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl border border-zinc-800/50 bg-zinc-900/40 p-10 text-center">
-                    <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-5">
-                      <Icon name="CheckCircle" size={32} className="text-green-400" />
-                    </div>
-                    <h2 className="font-display text-2xl font-bold text-zinc-100 mb-2">Заявка отправлена!</h2>
-                    <p className="text-zinc-500 mb-2">Мы перезвоним вам в течение 15 минут</p>
-                    <p className="text-zinc-600 text-sm mb-6">Предварительная стоимость: <span className="text-zinc-300 font-medium">{total.toLocaleString("ru-RU")} ₽</span></p>
-                    <a href="tel:+79993231817">
-                      <LiquidCtaButton>Позвонить сразу</LiquidCtaButton>
-                    </a>
-                  </motion.div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+                  {/* Guarantees */}
+                  <div className="flex border-b border-gray-100">
+                    {[
+                      { icon: "✓", text: "Гарантия 90 дней" },
+                      { icon: "🚗", text: "Бесплатная доставка" },
+                      { icon: "🎁", text: "5% бонусами" },
+                    ].map((item, i) => (
+                      <div key={i} className="flex-1 flex flex-col items-center text-center py-3 px-2 text-xs text-gray-500">
+                        <span className="text-sm mb-0.5">{item.icon}</span>
+                        {item.text}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Form */}
+                  <div className="p-6">
+                    <RepairRequestForm
+                      deviceBrand={selectedBrand?.brand || ""}
+                      deviceModel={selectedModel?.name || ""}
+                      serviceName={selectedService?.name || ""}
+                      servicePrice={selectedService?.price}
+                      compact
+                    />
+                  </div>
+                </div>
+
+                {/* Info block */}
+                <div className="mt-4 p-4 bg-amber-50 rounded-2xl border border-amber-100">
+                  <p className="text-xs text-amber-700 leading-relaxed">
+                    <strong>Цены ориентировочные.</strong> Точная стоимость определяется после бесплатной диагностики. Диагностика — 0 ₽, даже если вы откажетесь от ремонта.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
+
       <FooterSection />
     </div>
   )
