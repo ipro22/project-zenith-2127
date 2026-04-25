@@ -1,4 +1,5 @@
 {
+  "auth-email-auth": "https://functions.poehali.dev/2a196342-ae1a-415a-85a3-069f9e3da4fe",
   "auth": "https://functions.poehali.dev/e7c967d6-fa1c-48c9-94d6-e34f2ebfbc5a",
   "orders": "https://functions.poehali.dev/3d347366-4634-46b9-8f26-b76436c97f8b",
   "livesklad": "https://functions.poehali.dev/2c31be27-9106-4e32-ad11-699d62056d8f"

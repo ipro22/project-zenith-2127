@@ -16,10 +16,29 @@ import {
   removeAuthToken, getStoredClient, storeClient,
   type ClientData,
 } from "@/hooks/useApi"
+import { useAuth } from "@/components/extensions/auth-email/useAuth"
+import { LoginForm } from "@/components/extensions/auth-email/LoginForm"
+import { RegisterForm } from "@/components/extensions/auth-email/RegisterForm"
+
+const AUTH_EMAIL_URL = "https://functions.poehali.dev/2a196342-ae1a-415a-85a3-069f9e3da4fe"
 
 const YANDEX_CLIENT_ID = "ваш_client_id_яндекс"
 
 export default function AccountPage() {
+  const [loginTab, setLoginTab] = useState<"phone" | "email">("phone")
+  const [showRegister, setShowRegister] = useState(false)
+
+  const emailAuth = useAuth({
+    apiUrls: {
+      login: `${AUTH_EMAIL_URL}?action=login`,
+      register: `${AUTH_EMAIL_URL}?action=register`,
+      verifyEmail: `${AUTH_EMAIL_URL}?action=verify-email`,
+      refresh: `${AUTH_EMAIL_URL}?action=refresh`,
+      logout: `${AUTH_EMAIL_URL}?action=logout`,
+      resetPassword: `${AUTH_EMAIL_URL}?action=reset-password`,
+    },
+  })
+
   const [client, setClient] = useState<ClientData | null>(null)
   const [token, setToken] = useState(getAuthToken())
   const [tab, setTab] = useState<"orders" | "bonuses" | "profile">("orders")
@@ -226,13 +245,45 @@ export default function AccountPage() {
                   <ExternalLink className="w-4 h-4 text-gray-400 ml-auto" />
                 </button>
 
-                <div className="flex items-center gap-3 my-4">
-                  <div className="flex-1 h-px bg-gray-100" />
-                  <span className="text-xs text-gray-400">или по номеру телефона</span>
-                  <div className="flex-1 h-px bg-gray-100" />
+                {/* Tabs: phone / email */}
+                <div className="flex gap-1 p-1 rounded-2xl bg-gray-100 mb-5">
+                  {([
+                    { key: "phone", label: "По телефону" },
+                    { key: "email", label: "По email" },
+                  ] as const).map(({ key, label }) => (
+                    <button
+                      key={key}
+                      onClick={() => setLoginTab(key)}
+                      className={`flex-1 py-2 text-sm rounded-xl font-medium transition-all ${loginTab === key ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
+                    >
+                      {label}
+                    </button>
+                  ))}
                 </div>
 
-                {!codeSent ? (
+                {loginTab === "email" ? (
+                  <div>
+                    {showRegister ? (
+                      <RegisterForm
+                        onRegister={emailAuth.register}
+                        onVerifyEmail={emailAuth.verifyEmail}
+                        isLoading={emailAuth.isLoading}
+                        error={emailAuth.error}
+                        onSwitchToLogin={() => setShowRegister(false)}
+                      />
+                    ) : (
+                      <LoginForm
+                        onLogin={emailAuth.login}
+                        isLoading={emailAuth.isLoading}
+                        error={emailAuth.error}
+                        onSwitchToRegister={() => setShowRegister(true)}
+                        onForgotPassword={() => {}}
+                      />
+                    )}
+                  </div>
+                ) : null}
+
+                {loginTab === "phone" && !codeSent ? (
                   <div className="flex flex-col gap-3">
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -256,7 +307,7 @@ export default function AccountPage() {
                       {authLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Получить код"}
                     </button>
                   </div>
-                ) : (
+                ) : loginTab === "phone" ? (
                   <div className="flex flex-col gap-3">
                     <p className="text-sm text-gray-600">Код отправлен на <strong>{phone}</strong></p>
                     {devCode && (
@@ -289,7 +340,7 @@ export default function AccountPage() {
                       Изменить номер
                     </button>
                   </div>
-                )}
+                ) : null}
               </motion.div>
 
               {/* Track order */}
