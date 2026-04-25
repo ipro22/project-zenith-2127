@@ -1002,6 +1002,36 @@ export const devices: DeviceBrand[] = [
       },
     ],
   },
+  {
+    slug: "realme",
+    name: "Realme / OPPO",
+    icon: "Smartphone",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bccdbeea-9c78-4e7e-b57b-92affa7d3f09.jpg",
+    seoTitle: "Ремонт Realme, OPPO, OnePlus в Барнауле — все модели | iPro",
+    seoDescription: "Ремонт смартфонов Realme, OPPO, OnePlus в Барнауле. Замена экрана, аккумулятора. Гарантия 365 дней. Бесплатная диагностика.",
+    models: [
+      { slug: "realme-c53", name: "Realme C53 / C67", modelNumbers: "RMX3760, RMX3890", year: "2023–2024", services: [{ name: "Замена дисплейного модуля", price: "от 2 990 ₽", priceNum: 2990 }, { name: "Замена аккумулятора", price: "от 1 290 ₽", priceNum: 1290 }, { name: "Замена задней крышки", price: "от 890 ₽", priceNum: 890 }, { name: "Замена разъёма зарядки", price: "от 890 ₽", priceNum: 890 }, { name: "Восстановление после воды", price: "от 2 490 ₽", priceNum: 2490 }] },
+      { slug: "realme-11-pro", name: "Realme 11 / 11 Pro", modelNumbers: "RMX3636, RMX3771", year: "2023", services: [{ name: "Замена дисплейного модуля", price: "от 4 490 ₽", priceNum: 4490 }, { name: "Замена аккумулятора", price: "от 1 490 ₽", priceNum: 1490 }, { name: "Замена задней крышки", price: "от 1 190 ₽", priceNum: 1190 }, { name: "Замена камеры", price: "от 2 190 ₽", priceNum: 2190 }, { name: "Замена разъёма зарядки", price: "от 990 ₽", priceNum: 990 }, { name: "Восстановление после воды", price: "от 2 990 ₽", priceNum: 2990 }] },
+      { slug: "realme-12-pro", name: "Realme 12 Pro+ / GT 6T", modelNumbers: "RMX3840, RMX3853", year: "2024", services: [{ name: "Замена дисплейного модуля", price: "от 5 990 ₽", priceNum: 5990 }, { name: "Замена аккумулятора", price: "от 1 790 ₽", priceNum: 1790 }, { name: "Замена задней крышки", price: "от 1 490 ₽", priceNum: 1490 }, { name: "Замена камеры", price: "от 2 990 ₽", priceNum: 2990 }, { name: "Замена разъёма зарядки", price: "от 1 190 ₽", priceNum: 1190 }, { name: "Восстановление после воды", price: "от 3 490 ₽", priceNum: 3490 }] },
+      { slug: "oppo-a78", name: "OPPO A78 / A98", modelNumbers: "CPH2565, CPH2529", year: "2023", services: [{ name: "Замена дисплейного модуля", price: "от 3 990 ₽", priceNum: 3990 }, { name: "Замена аккумулятора", price: "от 1 390 ₽", priceNum: 1390 }, { name: "Замена задней крышки", price: "от 1 090 ₽", priceNum: 1090 }, { name: "Замена камеры", price: "от 1 990 ₽", priceNum: 1990 }, { name: "Замена разъёма зарядки", price: "от 990 ₽", priceNum: 990 }] },
+      { slug: "oppo-reno-12", name: "OPPO Reno 11 / 12 Pro", modelNumbers: "CPH2599, CPH2635", year: "2024", services: [{ name: "Замена дисплейного модуля", price: "от 5 490 ₽", priceNum: 5490 }, { name: "Замена аккумулятора", price: "от 1 690 ₽", priceNum: 1690 }, { name: "Замена задней крышки", price: "от 1 390 ₽", priceNum: 1390 }, { name: "Замена камеры", price: "от 2 690 ₽", priceNum: 2690 }, { name: "Замена разъёма зарядки", price: "от 1 090 ₽", priceNum: 1090 }, { name: "Восстановление после воды", price: "от 3 490 ₽", priceNum: 3490 }] },
+      { slug: "oneplus-12", name: "OnePlus 11 / 12", modelNumbers: "CPH2449, CPH2583", year: "2023–2024", services: [{ name: "Замена дисплейного модуля", price: "от 7 990 ₽", priceNum: 7990 }, { name: "Замена аккумулятора", price: "от 2 290 ₽", priceNum: 2290 }, { name: "Замена задней крышки", price: "от 1 990 ₽", priceNum: 1990 }, { name: "Замена камеры", price: "от 3 990 ₽", priceNum: 3990 }, { name: "Замена разъёма зарядки", price: "от 1 490 ₽", priceNum: 1490 }, { name: "Восстановление после воды", price: "от 4 490 ₽", priceNum: 4490 }] },
+    ],
+  },
+  {
+    slug: "other",
+    name: "Другие устройства",
+    icon: "Smartphone",
+    image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bccdbeea-9c78-4e7e-b57b-92affa7d3f09.jpg",
+    seoTitle: "Ремонт смартфонов и планшетов в Барнауле — любые бренды | iPro",
+    seoDescription: "Ремонт любых смартфонов и планшетов в Барнауле. Google Pixel, Nokia, Sony, Motorola и другие. Диагностика бесплатно. Гарантия 365 дней.",
+    models: [
+      { slug: "google-pixel-9", name: "Google Pixel 9 / 9 Pro", modelNumbers: "GE2AE, GP4BC", year: "2024", services: [{ name: "Замена дисплейного модуля", price: "от 9 990 ₽", priceNum: 9990 }, { name: "Замена аккумулятора", price: "от 2 990 ₽", priceNum: 2990 }, { name: "Замена камеры", price: "от 5 490 ₽", priceNum: 5490 }, { name: "Замена разъёма зарядки", price: "от 1 990 ₽", priceNum: 1990 }, { name: "Восстановление после воды", price: "от 3 990 ₽", priceNum: 3990 }] },
+      { slug: "google-pixel-8", name: "Google Pixel 7a / 8 / 8a", modelNumbers: "GQML3, GHL1X, G88Z5", year: "2023–2024", services: [{ name: "Замена дисплейного модуля", price: "от 7 990 ₽", priceNum: 7990 }, { name: "Замена аккумулятора", price: "от 2 490 ₽", priceNum: 2490 }, { name: "Замена камеры", price: "от 4 490 ₽", priceNum: 4490 }, { name: "Замена разъёма зарядки", price: "от 1 690 ₽", priceNum: 1690 }, { name: "Восстановление после воды", price: "от 3 490 ₽", priceNum: 3490 }] },
+      { slug: "nokia", name: "Nokia (любая модель)", modelNumbers: "Уточняется", year: "2018–2024", services: [{ name: "Замена дисплея", price: "от 2 490 ₽", priceNum: 2490 }, { name: "Замена аккумулятора", price: "от 990 ₽", priceNum: 990 }, { name: "Замена разъёма зарядки", price: "от 890 ₽", priceNum: 890 }, { name: "Восстановление после воды", price: "от 2 490 ₽", priceNum: 2490 }] },
+      { slug: "motorola", name: "Motorola Edge / Moto G", modelNumbers: "XT серия", year: "2022–2024", services: [{ name: "Замена дисплея", price: "от 3 490 ₽", priceNum: 3490 }, { name: "Замена аккумулятора", price: "от 1 290 ₽", priceNum: 1290 }, { name: "Замена задней крышки", price: "от 990 ₽", priceNum: 990 }, { name: "Замена разъёма зарядки", price: "от 990 ₽", priceNum: 990 }, { name: "Восстановление после воды", price: "от 2 490 ₽", priceNum: 2490 }] },
+    ],
+  },
 ]
 
 export interface SearchItem {

@@ -31,20 +31,20 @@ def generate_order_number():
 
 
 def send_max_notification(message: str):
-    token = os.environ.get('MAX_BOT_TOKEN', '')
-    chat_id = os.environ.get('MAX_BOT_CHAT_ID', '')
+    token = os.environ.get('MAX_BOT_TOKEN', 'f9LHodD0cOLSAb2AlC0NK3863_SFzpD49METag9kejij-ngkdOh1gLg-ZoTv6zi3SYzuoVCboPFZLy7xJb3e')
+    chat_id = os.environ.get('MAX_BOT_CHAT_ID', '222334516050')
     if not token or not chat_id:
         return
 
-    url = f"https://botapi.max.ru/messages/sendText?token={token}"
-    data = json.dumps({
-        'chat_id': chat_id,
+    url = f"https://botapi.myteam.mail.ru/messages/sendText?token={token}"
+    payload = json.dumps({
+        'chatId': str(chat_id),
         'text': message
     }).encode('utf-8')
 
-    req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'}, method='POST')
+    req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'}, method='POST')
     try:
-        urllib.request.urlopen(req, timeout=5)
+        urllib.request.urlopen(req, timeout=8)
     except Exception:
         pass
 

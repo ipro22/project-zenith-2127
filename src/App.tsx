@@ -18,6 +18,7 @@ import DevicePage from "./pages/DevicePage";
 import DeviceModelPage from "./pages/DeviceModelPage";
 import CalculatorPage from "./pages/CalculatorPage";
 import ShopPage from "./pages/ShopPage";
+import AdminPage from "./pages/AdminPage";
 import NotFound from "./pages/NotFound";
 import { ContactWidget } from "./components/ContactWidget";
 
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/account" element={<AccountPage />} />
           <Route path="/calculator" element={<CalculatorPage />} />
           <Route path="/shop" element={<ShopPage />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/device/:brandSlug" element={<DevicePage />} />
           <Route path="/device/:brandSlug/:modelSlug" element={<DeviceModelPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

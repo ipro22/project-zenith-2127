@@ -19,7 +19,7 @@ export function HeroSection() {
       <div className="absolute bottom-1/4 left-0 w-72 h-72 bg-indigo-200 opacity-20 blur-3xl rounded-full" />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center max-w-5xl mx-auto px-6 pt-28 pb-12">
+      <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center max-w-5xl mx-auto px-6 pt-14 pb-12">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}

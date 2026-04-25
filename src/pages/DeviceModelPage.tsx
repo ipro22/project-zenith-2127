@@ -17,7 +17,7 @@ export default function DeviceModelPage() {
     return (
       <div className="min-h-screen bg-white">
         <Navbar />
-        <main className="pt-24 pb-20 px-6 text-center">
+        <main className="pb-20 px-6 text-center">
           <h1 className="text-2xl text-gray-900 font-bold">Модель не найдена</h1>
           <a href="/" className="text-blue-600 hover:underline mt-4 inline-block">На главную</a>
         </main>
@@ -46,7 +46,7 @@ export default function DeviceModelPage() {
       <SEOHead title={seoTitle} description={seoDesc} />
       <Navbar />
 
-      <main className="pt-16">
+      <main>
         {/* Hero */}
         <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-12 px-6">
           <div className="max-w-6xl mx-auto">
@@ -220,6 +220,21 @@ export default function DeviceModelPage() {
                       </div>
                     ))}
                   </div>
+                </div>
+
+                {/* Other device block */}
+                <div className="mt-4 bg-amber-50 rounded-2xl p-4 border border-amber-100">
+                  <p className="text-sm font-semibold text-amber-900 mb-1">Другое устройство или вопрос?</p>
+                  <p className="text-xs text-amber-700 mb-3">
+                    Оставьте заявку — мы перезвоним в течение 15 минут и ответим на любой вопрос.
+                  </p>
+                  <a
+                    href="tel:+79993231817"
+                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 transition-colors"
+                  >
+                    <Icon name="Phone" size={14} />
+                    +7 (999) 323-18-17
+                  </a>
                 </div>
               </div>
             </div>

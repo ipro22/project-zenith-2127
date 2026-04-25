@@ -50,7 +50,7 @@ export default function WarrantyPage() {
         description="Гарантия iPro до 365 дней на все виды ремонта и запчасти. Бесплатный повторный ремонт при гарантийном случае."
       />
       <Navbar />
-      <main className="pt-20 pb-20 px-6">
+      <main className="pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.a
             href="/"

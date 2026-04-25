@@ -583,7 +583,7 @@ export default function ShopPage() {
       />
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-16">
         {/* Breadcrumb */}
         <div className="mb-6">
           <Breadcrumb items={[{ label: "Магазин", href: "/shop" }]} />

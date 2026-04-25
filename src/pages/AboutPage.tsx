@@ -60,7 +60,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white">
       <SEOHead title="О компании iPro — сервисный центр в Барнауле | 10 лет опыта" description="Сервисный центр iPro в Барнауле. 10 лет опыта, 10 000+ отремонтированных устройств, 98% довольных клиентов. Команда профессионалов." />
       <Navbar />
-      <main className="pt-20 pb-20 px-6">
+      <main className="pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.a
             href="/"

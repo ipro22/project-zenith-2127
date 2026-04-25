@@ -5,11 +5,11 @@ import { Breadcrumb } from "@/components/Breadcrumb"
 import { motion, AnimatePresence } from "framer-motion"
 import Icon from "@/components/ui/icon"
 import { useState, useEffect, useCallback } from "react"
-import { Loader2, LogOut, Package, Gift, User, ChevronRight, Star, Phone, Mail, Edit3, Check, AlertCircle, ExternalLink } from "lucide-react"
+import { Loader2, LogOut, Package, Gift, User, Star, Phone, Mail, Edit3, Check, AlertCircle } from "lucide-react"
 import {
   statusLabels, statusColors, statusSteps,
   loyaltyLabels, loyaltyColors, loyaltyDiscounts,
-  type Order, type BonusEntry,
+  type Order,
 } from "@/pages/account/account.types"
 import {
   API, apiPost, apiGet, getAuthToken, setAuthToken,
@@ -22,7 +22,7 @@ import { RegisterForm } from "@/components/extensions/auth-email/RegisterForm"
 
 const AUTH_EMAIL_URL = "https://functions.poehali.dev/2a196342-ae1a-415a-85a3-069f9e3da4fe"
 
-const YANDEX_CLIENT_ID = "ваш_client_id_яндекс"
+
 
 export default function AccountPage() {
   const [loginTab, setLoginTab] = useState<"phone" | "email">("phone")
@@ -162,11 +162,6 @@ export default function AccountPage() {
     setAuthLoading(false)
   }
 
-  const handleYandexAuth = () => {
-    const returnUrl = encodeURIComponent(window.location.origin + "/account?yandex_callback=1")
-    window.location.href = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${YANDEX_CLIENT_ID}&redirect_uri=${returnUrl}`
-  }
-
   const handleLogout = async () => {
     if (token) {
       await apiPost(API.auth, { action: "logout" }, token).catch(() => {})
@@ -222,7 +217,7 @@ export default function AccountPage() {
       <div className="min-h-screen bg-white">
         <SEOHead title="Личный кабинет — iPro Барнаул" description="Войдите в личный кабинет iPro." />
         <Navbar />
-        <main className="pt-20 pb-20 px-6">
+        <main className="pb-20 px-6">
           <div className="max-w-4xl mx-auto mt-8">
             <Breadcrumb items={[{ label: "Личный кабинет" }]} />
 
@@ -231,19 +226,6 @@ export default function AccountPage() {
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
                 <h1 className="font-display text-2xl font-bold text-gray-900 mb-2">Войти в кабинет</h1>
                 <p className="text-gray-500 text-sm mb-8">Получите доступ к заказам, бонусам и персональным скидкам</p>
-
-                {/* Яндекс ID */}
-                <button
-                  onClick={handleYandexAuth}
-                  className="w-full flex items-center justify-center gap-3 py-3 px-6 rounded-2xl border-2 border-gray-200 hover:border-gray-300 bg-white transition-all mb-4 group"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="12" fill="#FC3F1D"/>
-                    <path d="M13.8 6H12.2C10.1 6 8.9 7.1 8.9 8.9C8.9 10.4 9.6 11.3 11 12.2L12 12.8L8.8 18H11L14 13.1L14.1 13.2C15.2 13.9 15.8 14.5 15.8 15.8C15.8 17.2 14.9 17.9 13.7 17.9H12.9V18H15.1C16.9 18 18.1 16.9 18.1 15.1C18.1 13.5 17.3 12.6 15.7 11.5L14.7 10.9L15.1 10.2C15.7 9.3 16.1 8.5 16.1 7.8C16.1 6.7 15.2 6 13.8 6ZM13.5 10.4L12.6 11.8L11.7 11.3C10.8 10.7 10.4 10.2 10.4 9.2C10.4 8.1 11.1 7.4 12.3 7.4H13.1V7.5C13.7 7.5 14.1 7.9 14.1 8.4C14.1 9 13.9 9.6 13.5 10.4Z" fill="white"/>
-                  </svg>
-                  <span className="font-medium text-gray-700 group-hover:text-gray-900">Войти через Яндекс ID</span>
-                  <ExternalLink className="w-4 h-4 text-gray-400 ml-auto" />
-                </button>
 
                 {/* Tabs: phone / email */}
                 <div className="flex gap-1 p-1 rounded-2xl bg-gray-100 mb-5">
@@ -398,7 +380,7 @@ export default function AccountPage() {
     <div className="min-h-screen bg-gray-50">
       <SEOHead title="Личный кабинет — iPro Барнаул" description="Личный кабинет iPro: заказы, бонусы, профиль." />
       <Navbar />
-      <main className="pt-20 pb-20 px-6">
+      <main className="pb-20 px-6">
         <div className="max-w-4xl mx-auto mt-8">
           <Breadcrumb items={[{ label: "Личный кабинет" }]} />
 

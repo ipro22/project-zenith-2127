@@ -44,7 +44,7 @@ export default function ContactsPage() {
         description="Сервисный центр iPro: г. Барнаул, ул. Молодёжная 34, 1 этаж. Телефон: +7 (999) 323-18-17. Режим работы: Пн-Сб 9:00-20:00, Вс 10:00-18:00."
       />
       <Navbar />
-      <main className="pt-20 pb-20 px-6">
+      <main className="pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.a
             href="/"

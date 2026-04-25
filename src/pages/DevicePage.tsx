@@ -17,7 +17,7 @@ export default function DevicePage() {
     return (
       <div className="min-h-screen bg-white">
         <Navbar />
-        <main className="pt-24 pb-20 px-6 text-center">
+        <main className="pb-20 px-6 text-center">
           <h1 className="text-2xl text-gray-900 font-bold">Устройство не найдено</h1>
           <a href="/" className="text-blue-600 hover:underline mt-4 inline-block">На главную</a>
         </main>
@@ -31,7 +31,7 @@ export default function DevicePage() {
       <SEOHead title={brand.seoTitle} description={brand.seoDescription} />
       <Navbar />
 
-      <main className="pt-16">
+      <main>
         {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="relative h-52 md:h-72">
@@ -150,10 +150,11 @@ export default function DevicePage() {
               </div>
 
               {/* Sidebar CTA */}
-              <div className="lg:sticky lg:top-24">
+              <div className="lg:sticky lg:top-4">
                 <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-6 text-white mb-4">
-                  <h3 className="font-bold text-xl mb-2">Не нашли модель?</h3>
-                  <p className="text-blue-100 text-sm mb-5">Позвоните — уточним стоимость за 1 минуту</p>
+                  <h3 className="font-bold text-xl mb-1">Не нашли модель?</h3>
+                  <p className="text-blue-100 text-sm mb-1">У вас другое устройство или вопрос?</p>
+                  <p className="text-blue-200 text-xs mb-5">Оставьте заявку — перезвоним в течение 15 минут</p>
                   <a
                     href="tel:+79993231817"
                     className="flex items-center justify-center gap-2 w-full py-3 rounded-2xl bg-white text-blue-600 font-bold text-sm hover:bg-blue-50 transition-colors"

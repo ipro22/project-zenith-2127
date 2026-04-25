@@ -74,7 +74,7 @@ export default function PrivilegesPage() {
         description="Программа лояльности iPro: скидки до 10%, накопительные бонусы, VIP-статус, бесплатная чистка, персональный мастер."
       />
       <Navbar />
-      <main className="pt-20 pb-20 px-6">
+      <main className="pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.a
             href="/"

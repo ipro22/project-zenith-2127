@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Menu, X, Search, User, ChevronDown } from "lucide-react"
+import { Menu, X, Search, User, ChevronDown, Phone } from "lucide-react"
 import { SearchDialog } from "@/components/SearchDialog"
 import { siteConfig } from "@/config/siteConfig"
 import { motion, AnimatePresence } from "framer-motion"
@@ -7,25 +7,26 @@ import { motion, AnimatePresence } from "framer-motion"
 const repairLinks = [
   { href: "/device/iphone", label: "iPhone" },
   { href: "/device/ipad", label: "iPad" },
-  { href: "/device/macbook", label: "MacBook" },
+  { href: "/device/macbook", label: "MacBook / iMac" },
   { href: "/device/samsung", label: "Samsung" },
-  { href: "/device/xiaomi", label: "Xiaomi" },
-  { href: "/device/other", label: "Другие" },
+  { href: "/device/xiaomi", label: "Xiaomi / Redmi" },
+  { href: "/device/realme", label: "Realme / OPPO" },
+  { href: "/device/other", label: "Другие устройства" },
 ]
 
 const navLinks = [
+  { href: "/calculator", label: "Прайс" },
   { href: "/shop", label: "Магазин" },
-  { href: "/calculator", label: "Калькулятор" },
+  { href: "/privileges", label: "Бонусы" },
+  { href: "/warranty", label: "Гарантия" },
   { href: "/about", label: "О нас" },
   { href: "/contacts", label: "Контакты" },
-  { href: "/privileges", label: "Бонусы" },
 ]
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [repairOpen, setRepairOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -38,56 +39,51 @@ export function Navbar() {
     return () => window.removeEventListener("keydown", handler)
   }, [])
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener("scroll", onScroll)
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-
   return (
     <>
-      <header
-        className={`fixed top-8 left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled
-            ? "bg-white/90 backdrop-blur-xl shadow-sm border-b border-gray-100"
-            : "bg-transparent"
-        }`}
-      >
-        <nav className="max-w-7xl mx-auto flex items-center justify-between h-16 px-6">
-          <a href="/" className="flex items-center gap-2.5 shrink-0">
-            <img
-              src={siteConfig.logo}
-              alt="iPro logo"
-              className="w-8 h-8 rounded-xl object-cover"
-            />
-            <span className="font-display text-lg font-bold text-gray-900 tracking-tight">iPro</span>
+      {/* Top info bar */}
+      <div className="bg-blue-600 text-white text-xs py-1.5 px-4 text-center">
+        <span className="hidden sm:inline">📍 г. Барнаул, ул. Молодёжная 34 · </span>
+        <a href="tel:+79993231817" className="font-medium hover:underline">+7 (999) 323-18-17</a>
+        <span className="mx-2">·</span>
+        <span>Пн–Вс 9:00–20:00 · Диагностика бесплатно</span>
+      </div>
+
+      {/* Main navbar */}
+      <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+        <nav className="max-w-7xl mx-auto flex items-center justify-between h-14 px-4 lg:px-6">
+          {/* Logo */}
+          <a href="/" className="flex items-center gap-2 shrink-0">
+            <img src={siteConfig.logo} alt="iPro" className="w-8 h-8 rounded-lg object-cover" />
+            <span className="font-bold text-gray-900 text-lg tracking-tight">iPro</span>
           </a>
 
-          <div className="hidden lg:flex items-center gap-1">
+          {/* Desktop nav */}
+          <div className="hidden lg:flex items-center gap-0.5">
             {/* Ремонт dropdown */}
             <div
               className="relative"
               onMouseEnter={() => setRepairOpen(true)}
               onMouseLeave={() => setRepairOpen(false)}
             >
-              <button className="flex items-center gap-1 px-3 py-2 text-sm rounded-xl transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium">
+              <button className="flex items-center gap-1 px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors">
                 Ремонт
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${repairOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-200 ${repairOpen ? "rotate-180" : ""}`} />
               </button>
               <AnimatePresence>
                 {repairOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full left-0 mt-1 w-44 bg-white rounded-2xl shadow-xl border border-gray-100 p-1.5 overflow-hidden"
+                    className="absolute top-full left-0 mt-0 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-1 overflow-hidden z-50"
                   >
                     {repairLinks.map((link) => (
                       <a
                         key={link.href}
                         href={link.href}
-                        className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors"
+                        className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       >
                         {link.label}
                       </a>
@@ -101,44 +97,47 @@ export function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="px-3 py-2 text-sm rounded-xl transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium whitespace-nowrap"
+                className="px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors whitespace-nowrap"
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Right actions */}
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center justify-center w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-gray-600"
+              className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
               aria-label="Поиск"
             >
               <Search className="w-4 h-4" />
             </button>
             <a
               href="/account"
-              className="flex items-center justify-center w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-gray-600"
+              className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
               aria-label="Личный кабинет"
             >
               <User className="w-4 h-4" />
             </a>
             <a
               href="tel:+79993231817"
-              className="hidden sm:inline-flex px-4 py-2 text-sm rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors whitespace-nowrap shadow-sm"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
             >
+              <Phone className="w-3.5 h-3.5" />
               Позвонить
             </a>
             <button
               onClick={() => setOpen(!open)}
-              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-gray-600"
+              className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
               aria-label="Меню"
             >
-              {open ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </nav>
 
+        {/* Mobile menu */}
         <AnimatePresence>
           {open && (
             <motion.div
@@ -147,43 +146,40 @@ export function Navbar() {
               exit={{ opacity: 0, height: 0 }}
               className="lg:hidden border-t border-gray-100 bg-white overflow-hidden"
             >
-              <div className="px-4 py-3 flex flex-col gap-0.5">
-                <p className="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Ремонт</p>
-                {repairLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="px-3 py-2.5 text-sm rounded-xl transition-colors text-gray-700 hover:bg-gray-50 hover:text-blue-600"
-                  >
-                    {link.label}
+              <div className="px-4 py-3 flex flex-col divide-y divide-gray-50">
+                <div className="pb-2">
+                  <p className="px-2 py-1 text-xs font-bold text-gray-400 uppercase tracking-widest">Ремонт</p>
+                  {repairLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center px-2 py-2.5 text-sm text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+                <div className="py-2">
+                  {navLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center px-2 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+                <div className="pt-2 flex flex-col gap-2">
+                  <a href="/account" onClick={() => setOpen(false)} className="flex items-center gap-2 px-2 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
+                    <User className="w-4 h-4" /> Личный кабинет
                   </a>
-                ))}
-                <div className="h-px bg-gray-100 my-1" />
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="px-3 py-2.5 text-sm rounded-xl transition-colors text-gray-700 hover:bg-gray-50"
-                  >
-                    {link.label}
+                  <a href="tel:+79993231817" className="flex items-center justify-center gap-2 py-3 text-sm font-bold rounded-xl bg-blue-600 text-white">
+                    <Phone className="w-4 h-4" /> +7 (999) 323-18-17
                   </a>
-                ))}
-                <a
-                  href="/account"
-                  onClick={() => setOpen(false)}
-                  className="px-3 py-2.5 text-sm rounded-xl transition-colors text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                >
-                  <User className="w-4 h-4" />
-                  Личный кабинет
-                </a>
-                <a
-                  href="tel:+79993231817"
-                  className="mx-1 mt-2 mb-1 px-4 py-2.5 text-sm rounded-xl bg-blue-600 text-white font-medium text-center"
-                >
-                  Позвонить
-                </a>
+                </div>
               </div>
             </motion.div>
           )}
