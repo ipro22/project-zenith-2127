@@ -72,7 +72,7 @@ export default function OtherPage() {
     <div className="min-h-screen bg-zinc-950">
       <SEOHead
         title="Ремонт iPad, Samsung, Xiaomi, AirPods, Apple Watch в Барнауле | iPro"
-        description="Ремонт iPad, Samsung Galaxy, Xiaomi, Huawei, AirPods, Apple Watch в Барнауле. Все виды ремонта с гарантией 365 дней."
+        description="Ремонт iPad, Samsung Galaxy, Xiaomi, Huawei, AirPods, Apple Watch в Барнауле. Все виды ремонта с гарантией до 365 дней."
       />
       <Navbar />
       <main className="pt-24 pb-20 px-6">
@@ -106,7 +106,7 @@ export default function OtherPage() {
             {/* Badges */}
             <div className="flex flex-wrap gap-3 mt-6">
               {[
-                { icon: Shield, text: "Гарантия 365 дней" },
+                { icon: Shield, text: "Гарантия до 365 дней" },
                 { icon: Clock, text: "Ремонт за 1–2 часа" },
                 { icon: Phone, text: "Бесплатная диагностика" },
               ].map(({ icon: Icon, text }) => (

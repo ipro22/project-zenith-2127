@@ -93,8 +93,9 @@ export function FooterSection() {
             </ul>
             <div className="mt-6">
               <h4 className="text-sm font-semibold text-gray-900 mb-3">Режим работы</h4>
-              <p className="text-sm text-gray-500">Пн–Вс: 9:00 – 20:00</p>
-              <p className="text-xs text-gray-400 mt-1">Без выходных</p>
+              <p className="text-sm text-gray-500">Пн–Пт: 11:00 – 20:00</p>
+              <p className="text-sm text-gray-500">Сб: 12:00 – 18:00</p>
+              <p className="text-xs text-gray-400 mt-1">Воскресенье — выходной</p>
             </div>
           </div>
         </div>

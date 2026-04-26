@@ -16,28 +16,13 @@ import {
   removeAuthToken, getStoredClient, storeClient,
   type ClientData,
 } from "@/hooks/useApi"
-import { useAuth } from "@/components/extensions/auth-email/useAuth"
-import { LoginForm } from "@/components/extensions/auth-email/LoginForm"
-import { RegisterForm } from "@/components/extensions/auth-email/RegisterForm"
-
-const AUTH_EMAIL_URL = "https://functions.poehali.dev/2a196342-ae1a-415a-85a3-069f9e3da4fe"
-
-
-
 export default function AccountPage() {
   const [loginTab, setLoginTab] = useState<"phone" | "email">("phone")
-  const [showRegister, setShowRegister] = useState(false)
-
-  const emailAuth = useAuth({
-    apiUrls: {
-      login: `${AUTH_EMAIL_URL}?action=login`,
-      register: `${AUTH_EMAIL_URL}?action=register`,
-      verifyEmail: `${AUTH_EMAIL_URL}?action=verify-email`,
-      refresh: `${AUTH_EMAIL_URL}?action=refresh`,
-      logout: `${AUTH_EMAIL_URL}?action=logout`,
-      resetPassword: `${AUTH_EMAIL_URL}?action=reset-password`,
-    },
-  })
+  const [emailValue, setEmailValue] = useState("")
+  const [emailName, setEmailName] = useState("")
+  const [emailCode, setEmailCode] = useState("")
+  const [emailCodeSent, setEmailCodeSent] = useState(false)
+  const [emailDevCode, setEmailDevCode] = useState("")
 
   const [client, setClient] = useState<ClientData | null>(null)
   const [token, setToken] = useState(getAuthToken())
@@ -243,25 +228,84 @@ export default function AccountPage() {
                   ))}
                 </div>
 
-                {loginTab === "email" ? (
-                  <div>
-                    {showRegister ? (
-                      <RegisterForm
-                        onRegister={emailAuth.register}
-                        onVerifyEmail={emailAuth.verifyEmail}
-                        isLoading={emailAuth.isLoading}
-                        error={emailAuth.error}
-                        onSwitchToLogin={() => setShowRegister(false)}
+                {loginTab === "email" && !emailCodeSent ? (
+                  <div className="flex flex-col gap-3">
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        type="email"
+                        placeholder="email@example.com"
+                        value={emailValue}
+                        onChange={(e) => setEmailValue(e.target.value)}
+                        className="w-full pl-9 pr-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
-                    ) : (
-                      <LoginForm
-                        onLogin={emailAuth.login}
-                        isLoading={emailAuth.isLoading}
-                        error={emailAuth.error}
-                        onSwitchToRegister={() => setShowRegister(true)}
-                        onForgotPassword={() => {}}
-                      />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Ваше имя (необязательно)"
+                      value={emailName}
+                      onChange={(e) => setEmailName(e.target.value)}
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {authError && <p className="text-red-500 text-xs">{authError}</p>}
+                    <button
+                      onClick={async () => {
+                        if (!emailValue.includes("@")) { setAuthError("Введите корректный email"); return }
+                        setAuthError(""); setAuthLoading(true)
+                        try {
+                          const data = await apiPost<{ success: boolean; dev_code?: string }>(API.auth, { action: "email_register", email: emailValue })
+                          setEmailCodeSent(true)
+                          if (data.dev_code) setEmailDevCode(data.dev_code)
+                        } catch { setAuthError("Ошибка отправки кода") }
+                        setAuthLoading(false)
+                      }}
+                      disabled={authLoading}
+                      className="flex items-center justify-center gap-2 w-full py-3 rounded-2xl bg-blue-600 text-white font-medium text-sm hover:bg-blue-700 transition-all disabled:opacity-60"
+                    >
+                      {authLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Получить код на email"}
+                    </button>
+                  </div>
+                ) : loginTab === "email" ? (
+                  <div className="flex flex-col gap-3">
+                    <p className="text-sm text-gray-600">Код отправлен на <strong>{emailValue}</strong></p>
+                    {emailDevCode && (
+                      <div className="flex items-center gap-2 p-3 bg-amber-50 rounded-xl border border-amber-100">
+                        <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                        <p className="text-xs text-amber-700">Тестовый режим: ваш код <strong>{emailDevCode}</strong></p>
+                      </div>
                     )}
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={4}
+                      placeholder="Код из письма"
+                      value={emailCode}
+                      onChange={(e) => setEmailCode(e.target.value.replace(/\D/g, ""))}
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm text-center tracking-widest text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {authError && <p className="text-red-500 text-xs">{authError}</p>}
+                    <button
+                      onClick={async () => {
+                        if (emailCode.length < 4) { setAuthError("Введите 4-значный код"); return }
+                        setAuthError(""); setAuthLoading(true)
+                        try {
+                          const data = await apiPost<{ success: boolean; token: string; client: ClientData }>(API.auth, {
+                            action: "email_verify", email: emailValue, code: emailCode, name: emailName,
+                          })
+                          setAuthToken(data.token); setToken(data.token)
+                          setClient(data.client); storeClient(data.client)
+                          setProfileName(data.client.name || ""); setProfileEmail(data.client.email || "")
+                        } catch { setAuthError("Неверный код") }
+                        setAuthLoading(false)
+                      }}
+                      disabled={authLoading}
+                      className="flex items-center justify-center gap-2 w-full py-3 rounded-2xl bg-blue-600 text-white font-medium text-sm hover:bg-blue-700 transition-all disabled:opacity-60"
+                    >
+                      {authLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Войти"}
+                    </button>
+                    <button onClick={() => { setEmailCodeSent(false); setEmailCode(""); setEmailDevCode("") }} className="text-xs text-gray-400 hover:text-gray-600 transition-colors text-center">
+                      Изменить email
+                    </button>
                   </div>
                 ) : null}
 

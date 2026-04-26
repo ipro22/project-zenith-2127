@@ -59,7 +59,7 @@ export default function DevicePage() {
               <p className="text-gray-600 text-base max-w-3xl mb-6">{brand.seoDescription}</p>
               <div className="flex flex-wrap gap-3">
                 {[
-                  { icon: "Shield", text: "Гарантия 365 дней" },
+                  { icon: "Shield", text: "Гарантия до 365 дней" },
                   { icon: "Clock", text: "Ремонт за 1–2 часа" },
                   { icon: "Stethoscope", text: "Диагностика 0 ₽" },
                   { icon: "Car", text: "Доставка по Барнаулу" },

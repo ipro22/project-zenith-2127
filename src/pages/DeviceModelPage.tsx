@@ -27,7 +27,7 @@ export default function DeviceModelPage() {
   }
 
   const seoTitle = `Ремонт ${model.name} в Барнауле — замена экрана, аккумулятора | iPro`
-  const seoDesc = `Ремонт ${model.name} (${model.modelNumbers}) в Барнауле ✓ ${model.services[0]?.name} ${model.services[0]?.price} ✓ Гарантия 365 дней ✓ Бесплатная диагностика`
+  const seoDesc = `Ремонт ${model.name} (${model.modelNumbers}) в Барнауле ✓ ${model.services[0]?.name} ${model.services[0]?.price} ✓ Гарантия до 365 дней ✓ Бесплатная диагностика`
   const otherModels = brand.models.filter((m) => m.slug !== model.slug).slice(0, 6)
 
   const allServices = [
@@ -64,7 +64,7 @@ export default function DeviceModelPage() {
                 <p className="text-gray-500 text-sm mb-5">Модели: {model.modelNumbers}</p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {[
-                    { icon: "Shield", text: "Гарантия 365 дней" },
+                    { icon: "Shield", text: "Гарантия до 365 дней" },
                     { icon: "Clock", text: "Ремонт за 1–2 часа" },
                     { icon: "Stethoscope", text: "Диагностика бесплатно" },
                     { icon: "Car", text: "Бесплатная доставка" },

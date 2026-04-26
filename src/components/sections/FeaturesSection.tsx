@@ -13,7 +13,7 @@ const brands = [
 ]
 
 const features = [
-  { icon: ShieldCheck, title: "Гарантия 365 дней", desc: "На все виды работ и запчасти. Бесплатное гарантийное обслуживание.", color: "bg-blue-50 text-blue-600" },
+  { icon: ShieldCheck, title: "Гарантия до 365 дней", desc: "На все виды работ и запчасти. Бесплатное гарантийное обслуживание.", color: "bg-blue-50 text-blue-600" },
   { icon: Zap, title: "Ремонт за 1–2 часа", desc: "Большинство поломок устраняем пока вы ждёте. Срочный ремонт в приоритете.", color: "bg-orange-50 text-orange-600" },
   { icon: BadgeCheck, title: "Оригинальные запчасти", desc: "Только сертифицированные комплектующие от проверенных поставщиков.", color: "bg-green-50 text-green-600" },
   { icon: Car, title: "Бесплатная доставка", desc: "Бесплатно привезём и вернём отремонтированное устройство по Барнаулу.", color: "bg-purple-50 text-purple-600" },

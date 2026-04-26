@@ -28,9 +28,9 @@ export function HeroSection() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-blue-100 shadow-sm mb-8"
         >
           <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="text-sm text-gray-600">Работаем · Пн–Вс 09:00–20:00</span>
+          <span className="text-sm text-gray-600">Пн–Пт 11–20 · Сб 12–18</span>
           <Shield className="w-3.5 h-3.5 text-blue-500" />
-          <span className="text-sm text-gray-600">Гарантия 365 дней</span>
+          <span className="text-sm text-gray-600">Гарантия до 365 дней</span>
         </motion.div>
 
         {/* Headline */}

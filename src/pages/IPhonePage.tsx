@@ -73,7 +73,7 @@ export default function IPhonePage() {
     <div className="min-h-screen bg-white">
       <SEOHead
         title="Ремонт iPhone в Барнауле — цены на все модели | iPro"
-        description="Ремонт iPhone всех моделей в Барнауле. Замена экрана, аккумулятора, ремонт после воды. Гарантия 365 дней. Бесплатная диагностика."
+        description="Ремонт iPhone всех моделей в Барнауле. Замена экрана, аккумулятора, ремонт после воды. Гарантия до 365 дней. Бесплатная диагностика."
       />
       <Navbar />
       <main className="pt-20 pb-20 px-6">
@@ -107,7 +107,7 @@ export default function IPhonePage() {
             {/* Badges */}
             <div className="flex flex-wrap gap-3 mt-6">
               {[
-                { icon: Shield, text: "Гарантия 365 дней" },
+                { icon: Shield, text: "Гарантия до 365 дней" },
                 { icon: Clock, text: "Ремонт за 1–2 часа" },
                 { icon: Phone, text: "Бесплатная диагностика" },
               ].map(({ icon: Icon, text }) => (

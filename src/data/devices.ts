@@ -28,8 +28,8 @@ export const devices: DeviceBrand[] = [
     name: "iPhone",
     icon: "Smartphone",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/c08dc48b-2e30-4193-993a-56744db25416.jpg",
-    seoTitle: "Ремонт iPhone в Барнауле — все модели, цены, гарантия 365 дней | iPro",
-    seoDescription: "Профессиональный ремонт iPhone всех моделей в Барнауле. Замена экрана, аккумулятора, ремонт после воды. Гарантия 365 дней. Бесплатная диагностика.",
+    seoTitle: "Ремонт iPhone в Барнауле — все модели, цены, гарантия до 365 дней | iPro",
+    seoDescription: "Профессиональный ремонт iPhone всех моделей в Барнауле. Замена экрана, аккумулятора, ремонт после воды. Гарантия до 365 дней. Бесплатная диагностика.",
     models: [
       {
         slug: "iphone-17-pro-max",
@@ -319,7 +319,7 @@ export const devices: DeviceBrand[] = [
     icon: "Smartphone",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/c8e591d4-a6ab-46a8-bc4a-e7ffcf85a4e7.jpg",
     seoTitle: "Ремонт Samsung в Барнауле — Galaxy S, A, Z серии | iPro",
-    seoDescription: "Ремонт Samsung Galaxy всех моделей в Барнауле. Замена экрана AMOLED, аккумулятора, восстановление после воды. Гарантия 365 дней.",
+    seoDescription: "Ремонт Samsung Galaxy всех моделей в Барнауле. Замена экрана AMOLED, аккумулятора, восстановление после воды. Гарантия до 365 дней.",
     models: [
       {
         slug: "galaxy-s25-ultra",
@@ -497,7 +497,7 @@ export const devices: DeviceBrand[] = [
     icon: "Smartphone",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bccdbeea-9c78-4e7e-b57b-92affa7d3f09.jpg",
     seoTitle: "Ремонт Xiaomi в Барнауле — Redmi, POCO, все модели | iPro",
-    seoDescription: "Ремонт Xiaomi, Redmi, POCO в Барнауле. Замена экрана, аккумулятора, восстановление после воды. Гарантия 365 дней. Цены от 800₽.",
+    seoDescription: "Ремонт Xiaomi, Redmi, POCO в Барнауле. Замена экрана, аккумулятора, восстановление после воды. Гарантия до 365 дней. Цены от 800₽.",
     models: [
       {
         slug: "xiaomi-15-pro",
@@ -619,7 +619,7 @@ export const devices: DeviceBrand[] = [
     icon: "Tablet",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/d0410ba3-f22a-46bd-bc70-896b1f2f5c2b.jpg",
     seoTitle: "Ремонт iPad в Барнауле — Pro, Air, mini, все модели | iPro",
-    seoDescription: "Ремонт iPad всех моделей в Барнауле. Замена экрана, аккумулятора, разъёма. Гарантия 365 дней. Бесплатная диагностика.",
+    seoDescription: "Ремонт iPad всех моделей в Барнауле. Замена экрана, аккумулятора, разъёма. Гарантия до 365 дней. Бесплатная диагностика.",
     models: [
       {
         slug: "ipad-pro-13-m4",
@@ -701,7 +701,7 @@ export const devices: DeviceBrand[] = [
     icon: "Laptop",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bae05299-9833-4cb6-854a-7024b8021cca.jpg",
     seoTitle: "Ремонт MacBook в Барнауле — Pro, Air, все модели | iPro",
-    seoDescription: "Ремонт MacBook Pro и Air в Барнауле. Замена экрана, аккумулятора, клавиатуры, SSD. Восстановление после залития. Гарантия 365 дней.",
+    seoDescription: "Ремонт MacBook Pro и Air в Барнауле. Замена экрана, аккумулятора, клавиатуры, SSD. Восстановление после залития. Гарантия до 365 дней.",
     models: [
       {
         slug: "macbook-pro-16-m4",
@@ -823,7 +823,7 @@ export const devices: DeviceBrand[] = [
     icon: "Watch",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/c08dc48b-2e30-4193-993a-56744db25416.jpg",
     seoTitle: "Ремонт Apple Watch в Барнауле — Ultra, Series, SE | iPro",
-    seoDescription: "Ремонт Apple Watch всех серий в Барнауле. Замена экрана, аккумулятора. Гарантия 365 дней.",
+    seoDescription: "Ремонт Apple Watch всех серий в Барнауле. Замена экрана, аккумулятора. Гарантия до 365 дней.",
     models: [
       {
         slug: "apple-watch-ultra-2",
@@ -878,7 +878,7 @@ export const devices: DeviceBrand[] = [
     icon: "Headphones",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/c08dc48b-2e30-4193-993a-56744db25416.jpg",
     seoTitle: "Ремонт AirPods в Барнауле — Pro, Max, замена аккумулятора | iPro",
-    seoDescription: "Ремонт AirPods Pro, AirPods Max в Барнауле. Замена аккумулятора, чистка, ремонт кейса. Гарантия 365 дней.",
+    seoDescription: "Ремонт AirPods Pro, AirPods Max в Барнауле. Замена аккумулятора, чистка, ремонт кейса. Гарантия до 365 дней.",
     models: [
       {
         slug: "airpods-pro-2",
@@ -933,7 +933,7 @@ export const devices: DeviceBrand[] = [
     icon: "Smartphone",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bccdbeea-9c78-4e7e-b57b-92affa7d3f09.jpg",
     seoTitle: "Ремонт Huawei и Honor в Барнауле — все модели | iPro",
-    seoDescription: "Ремонт Huawei Pura, Mate, Honor Magic в Барнауле. Замена экрана, аккумулятора, восстановление после воды. Гарантия 365 дней.",
+    seoDescription: "Ремонт Huawei Pura, Mate, Honor Magic в Барнауле. Замена экрана, аккумулятора, восстановление после воды. Гарантия до 365 дней.",
     models: [
       {
         slug: "huawei-pura-70-ultra",
@@ -1008,7 +1008,7 @@ export const devices: DeviceBrand[] = [
     icon: "Smartphone",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bccdbeea-9c78-4e7e-b57b-92affa7d3f09.jpg",
     seoTitle: "Ремонт Realme, OPPO, OnePlus в Барнауле — все модели | iPro",
-    seoDescription: "Ремонт смартфонов Realme, OPPO, OnePlus в Барнауле. Замена экрана, аккумулятора. Гарантия 365 дней. Бесплатная диагностика.",
+    seoDescription: "Ремонт смартфонов Realme, OPPO, OnePlus в Барнауле. Замена экрана, аккумулятора. Гарантия до 365 дней. Бесплатная диагностика.",
     models: [
       { slug: "realme-c53", name: "Realme C53 / C67", modelNumbers: "RMX3760, RMX3890", year: "2023–2024", services: [{ name: "Замена дисплейного модуля", price: "от 2 990 ₽", priceNum: 2990 }, { name: "Замена аккумулятора", price: "от 1 290 ₽", priceNum: 1290 }, { name: "Замена задней крышки", price: "от 890 ₽", priceNum: 890 }, { name: "Замена разъёма зарядки", price: "от 890 ₽", priceNum: 890 }, { name: "Восстановление после воды", price: "от 2 490 ₽", priceNum: 2490 }] },
       { slug: "realme-11-pro", name: "Realme 11 / 11 Pro", modelNumbers: "RMX3636, RMX3771", year: "2023", services: [{ name: "Замена дисплейного модуля", price: "от 4 490 ₽", priceNum: 4490 }, { name: "Замена аккумулятора", price: "от 1 490 ₽", priceNum: 1490 }, { name: "Замена задней крышки", price: "от 1 190 ₽", priceNum: 1190 }, { name: "Замена камеры", price: "от 2 190 ₽", priceNum: 2190 }, { name: "Замена разъёма зарядки", price: "от 990 ₽", priceNum: 990 }, { name: "Восстановление после воды", price: "от 2 990 ₽", priceNum: 2990 }] },
@@ -1024,7 +1024,7 @@ export const devices: DeviceBrand[] = [
     icon: "Smartphone",
     image: "https://cdn.poehali.dev/projects/081a6fe6-0440-47e4-833b-a4633500179a/files/bccdbeea-9c78-4e7e-b57b-92affa7d3f09.jpg",
     seoTitle: "Ремонт смартфонов и планшетов в Барнауле — любые бренды | iPro",
-    seoDescription: "Ремонт любых смартфонов и планшетов в Барнауле. Google Pixel, Nokia, Sony, Motorola и другие. Диагностика бесплатно. Гарантия 365 дней.",
+    seoDescription: "Ремонт любых смартфонов и планшетов в Барнауле. Google Pixel, Nokia, Sony, Motorola и другие. Диагностика бесплатно. Гарантия до 365 дней.",
     models: [
       { slug: "google-pixel-9", name: "Google Pixel 9 / 9 Pro", modelNumbers: "GE2AE, GP4BC", year: "2024", services: [{ name: "Замена дисплейного модуля", price: "от 9 990 ₽", priceNum: 9990 }, { name: "Замена аккумулятора", price: "от 2 990 ₽", priceNum: 2990 }, { name: "Замена камеры", price: "от 5 490 ₽", priceNum: 5490 }, { name: "Замена разъёма зарядки", price: "от 1 990 ₽", priceNum: 1990 }, { name: "Восстановление после воды", price: "от 3 990 ₽", priceNum: 3990 }] },
       { slug: "google-pixel-8", name: "Google Pixel 7a / 8 / 8a", modelNumbers: "GQML3, GHL1X, G88Z5", year: "2023–2024", services: [{ name: "Замена дисплейного модуля", price: "от 7 990 ₽", priceNum: 7990 }, { name: "Замена аккумулятора", price: "от 2 490 ₽", priceNum: 2490 }, { name: "Замена камеры", price: "от 4 490 ₽", priceNum: 4490 }, { name: "Замена разъёма зарядки", price: "от 1 690 ₽", priceNum: 1690 }, { name: "Восстановление после воды", price: "от 3 490 ₽", priceNum: 3490 }] },
@@ -1076,7 +1076,7 @@ function buildSearchIndex(): SearchItem[] {
   items.push(
     { title: "О компании iPro", description: "Сервисный центр по ремонту техники в Барнауле. 10 лет опыта, 10 000+ ремонтов", href: "/about", category: "Компания" },
     { title: "Контакты", description: "Адрес, телефон, режим работы сервисного центра iPro", href: "/contacts", category: "Компания" },
-    { title: "Гарантия 365 дней", description: "Гарантия на все виды работ и запчасти до 365 дней", href: "/warranty", category: "Компания" },
+    { title: "Гарантия до 365 дней", description: "Гарантия на все виды работ и запчасти до 365 дней", href: "/warranty", category: "Компания" },
     { title: "Привилегии и бонусы", description: "Программа лояльности, скидки, VIP-статус", href: "/privileges", category: "Компания" },
     { title: "Сотрудничество", description: "Корпоративное обслуживание, агентская программа", href: "/partnership", category: "Компания" },
     { title: "Личный кабинет", description: "Проверка статуса заказа, бонусы, история ремонтов", href: "/account", category: "Компания" },

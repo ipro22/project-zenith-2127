@@ -1,0 +1,31 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Unknown action",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "nope"},
+      "expectedStatus": 400
+    },
+    {
+      "name": "Admin without token",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "admin_stats"},
+      "expectedStatus": 403
+    },
+    {
+      "name": "Create order without phone",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "create_order"},
+      "expectedStatus": 400
+    }
+  ]
+}

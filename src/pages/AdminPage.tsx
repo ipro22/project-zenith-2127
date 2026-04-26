@@ -2,14 +2,13 @@ import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Loader2, Users, Package, Gift, TrendingUp, Plus, Search, Check, X, Edit2, ChevronDown, LogOut } from "lucide-react"
 import { SEOHead } from "@/components/SEOHead"
-
-const ADMIN_URL = "https://functions.poehali.dev/6a5b5cbf-1f49-4b4e-91cb-d3d5f6cf86ee"
+import { API } from "@/hooks/useApi"
 
 async function adminFetch(action: string, body: object = {}, token: string) {
-  const res = await fetch(ADMIN_URL, {
+  const res = await fetch(API.admin, {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Admin-Token": token },
-    body: JSON.stringify({ action, ...body }),
+    body: JSON.stringify({ action: `admin_${action}`, ...body }),
   })
   const raw = await res.json()
   return typeof raw === "string" ? JSON.parse(raw) : raw

@@ -16,7 +16,7 @@ export function ContactWidget() {
     setCbLoading(true)
     try {
       await apiPost(API.orders, {
-        action: "create",
+        action: "create_order",
         client_name: cbName || "Обратный звонок",
         client_phone: cbPhone,
         device_brand: "Обратный звонок",

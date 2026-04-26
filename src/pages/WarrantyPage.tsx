@@ -29,8 +29,8 @@ const faq = [
     a: "Просто приходите к нам с устройством и чеком об оплате ремонта. Мы бесплатно устраним гарантийный случай в течение дня.",
   },
   {
-    q: "Что такое 365 дней гарантии?",
-    a: "Это полный год — 365 календарных дней с момента получения устройства после ремонта. Гарантия распространяется на выполненную работу и установленные запчасти.",
+    q: "Что такое до 365 дней гарантии?",
+    a: "Это полный год — до 365 календарных дней с момента получения устройства после ремонта. Гарантия распространяется на выполненную работу и установленные запчасти.",
   },
   {
     q: "Можно ли продлить гарантию?",
@@ -71,7 +71,7 @@ export default function WarrantyPage() {
             <p className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Условия</p>
             <h1 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">Гарантия</h1>
             <p className="text-gray-500 text-lg max-w-2xl">
-              Мы уверены в качестве своей работы — поэтому даём гарантию 365 дней на все виды ремонта и используемые запчасти.
+              Мы уверены в качестве своей работы — поэтому даём гарантию до 365 дней на все виды ремонта и используемые запчасти.
             </p>
           </motion.div>
 
@@ -83,7 +83,7 @@ export default function WarrantyPage() {
             className="rounded-2xl border border-gray-300 bg-gray-50 p-8 text-center mb-12 shadow-sm"
           >
             <Shield className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <div className="font-display text-6xl font-bold text-gray-900 mb-2">365</div>
+            <div className="font-display text-6xl font-bold text-gray-900 mb-2">до 365</div>
             <div className="text-gray-600 text-xl font-medium mb-3">дней гарантии</div>
             <p className="text-gray-500 max-w-md mx-auto text-sm">
               На все виды ремонта и запасные части. Гарантийный документ выдаётся вместе с отремонтированным устройством.

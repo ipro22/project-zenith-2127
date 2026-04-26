@@ -186,7 +186,7 @@ export default function CalculatorPage() {
             <h1 className="font-display text-3xl md:text-4xl font-bold text-gray-900 mt-4 mb-2 tracking-tight">
               Выберите устройство для ремонта:
             </h1>
-            <p className="text-gray-500">Актуальные цены · Барнаул · Гарантия 365 дней</p>
+            <p className="text-gray-500">Актуальные цены · Барнаул · Гарантия до 365 дней</p>
           </div>
         </section>
 
@@ -296,7 +296,7 @@ export default function CalculatorPage() {
               {/* Guarantees */}
               <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
                 <div className="grid grid-cols-3 gap-2 text-center text-xs text-gray-500">
-                  <div><div className="text-lg mb-1">✓</div>Гарантия 365 дней</div>
+                  <div><div className="text-lg mb-1">✓</div>Гарантия до 365 дней</div>
                   <div><div className="text-lg mb-1">🎁</div>5% бонусами</div>
                   <div><div className="text-lg mb-1">🔬</div>Диагностика 0 ₽</div>
                 </div>

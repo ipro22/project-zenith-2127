@@ -36,7 +36,7 @@ export function CtaSection() {
               </a>
             </div>
             <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-500">
-              {["Гарантия 365 дней", "Оригинальные запчасти", "Бесплатная диагностика", "Доставка по Барнаулу"].map((g) => (
+              {["Гарантия до 365 дней", "Оригинальные запчасти", "Бесплатная диагностика", "Доставка по Барнаулу"].map((g) => (
                 <span key={g} className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                   {g}

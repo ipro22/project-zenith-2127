@@ -530,7 +530,7 @@ export default function ShopPage() {
     setSubmitError("")
     try {
       await apiPost(API.orders, {
-        action: "create",
+        action: "create_order",
         client_name: orderName.trim(),
         client_phone: orderPhone.trim(),
         device_brand: "Магазин",

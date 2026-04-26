@@ -35,7 +35,7 @@ export function RepairRequestForm({
 
     try {
       await apiPost(API.orders, {
-        action: "create",
+        action: "create_order",
         client_name: name,
         client_phone: phone,
         device_brand: deviceBrand,

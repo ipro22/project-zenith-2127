@@ -65,8 +65,8 @@ export default function MacBookPage() {
   return (
     <div className="min-h-screen bg-white">
       <SEOHead
-        title="Ремонт MacBook и iMac в Барнауле — цены, гарантия 365 дней | iPro"
-        description="Ремонт MacBook Pro, MacBook Air, iMac в Барнауле. Замена экрана, аккумулятора, SSD. Восстановление после залития. Гарантия 365 дней."
+        title="Ремонт MacBook и iMac в Барнауле — цены, гарантия до 365 дней | iPro"
+        description="Ремонт MacBook Pro, MacBook Air, iMac в Барнауле. Замена экрана, аккумулятора, SSD. Восстановление после залития. Гарантия до 365 дней."
       />
       <Navbar />
       <main className="pt-20 pb-20 px-6">
@@ -100,7 +100,7 @@ export default function MacBookPage() {
             {/* Badges */}
             <div className="flex flex-wrap gap-3 mt-6">
               {[
-                { icon: Shield, text: "Гарантия 365 дней" },
+                { icon: Shield, text: "Гарантия до 365 дней" },
                 { icon: Clock, text: "Срочный ремонт за 1 день" },
                 { icon: Phone, text: "Бесплатная диагностика" },
               ].map(({ icon: Icon, text }) => (

@@ -3,9 +3,10 @@ import func2url from "../../backend/func2url.json"
 const URLS = func2url as Record<string, string>
 
 export const API = {
-  auth: URLS.auth,
-  orders: URLS.orders,
-  livesklad: URLS.livesklad,
+  auth: URLS.api,
+  orders: URLS.business,
+  admin: URLS.business,
+  livesklad: URLS.api,
 }
 
 export async function apiPost<T = unknown>(url: string, body: object, token?: string): Promise<T> {
