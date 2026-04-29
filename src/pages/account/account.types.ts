@@ -49,7 +49,7 @@ export const loyaltyLabels: Record<string, string> = {
 export const loyaltyColors: Record<string, string> = {
   standard: "bg-gray-100 text-gray-600",
   regular: "bg-blue-100 text-blue-700",
-  vip: "bg-yellow-100 text-yellow-700",
+  vip: "bg-amber-100 text-amber-700",
 }
 
 export const loyaltyDiscounts: Record<string, string> = {

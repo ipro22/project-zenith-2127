@@ -33,17 +33,20 @@ def gen_order_number():
 
 
 def send_max(message: str):
-    token = os.environ.get('MAX_BOT_TOKEN', '')
-    chat_id = os.environ.get('MAX_BOT_CHAT_ID', '')
-    if not token or not chat_id:
-        return
-    url = f"https://botapi.myteam.mail.ru/messages/sendText?token={token}"
-    payload = json.dumps({'chatId': str(chat_id), 'text': message}).encode('utf-8')
-    req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'}, method='POST')
-    try:
-        urllib.request.urlopen(req, timeout=8)
-    except Exception:
-        pass
+    targets = [
+        (os.environ.get('MAX_BOT_TOKEN', ''), os.environ.get('MAX_BOT_CHAT_ID', '')),
+        (os.environ.get('MAX_BOT_TOKEN1', ''), os.environ.get('MAX_BOT_CHAT_ID1', '')),
+    ]
+    for token, chat_id in targets:
+        if not token or not chat_id:
+            continue
+        url = f"https://botapi.myteam.mail.ru/messages/sendText?token={token}"
+        payload = json.dumps({'chatId': str(chat_id), 'text': message}).encode('utf-8')
+        req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'}, method='POST')
+        try:
+            urllib.request.urlopen(req, timeout=8)
+        except Exception:
+            pass
 
 
 def get_client_id(cur, token):
@@ -137,13 +140,22 @@ def handler(event: dict, context) -> dict:
                 )
             conn.commit()
 
-            send_max(
-                f"Новая заявка {order_number}\n"
-                f"Клиент: {client_name or '-'} / {client_phone}\n"
-                f"Устройство: {device_brand} {device_model}\n"
-                f"Услуга: {service_name} — {service_price} ₽\n"
-                f"Комментарий: {comment or '-'}"
+            price_fmt = f"{int(service_price):,}".replace(",", " ")
+            msg = (
+                f"📱 НОВАЯ ЗАЯВКА iPro\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"📋 Номер: {order_number}\n"
+                f"👤 Клиент: {client_name or 'Не указано'}\n"
+                f"📞 Телефон: {client_phone}\n"
+                f"📱 Устройство: {device_brand} {device_model}\n"
+                f"🔧 Услуга: {service_name}\n"
+                f"💰 Стоимость: {price_fmt} ₽\n"
+                f"💬 Комментарий: {comment or 'Нет'}\n"
+                f"🎁 Бонусов начислено: {bonus_earned}\n"
+                f"📍 Источник: {source}\n"
+                f"⏰ {datetime.now().strftime('%d.%m.%Y %H:%M')}"
             )
+            send_max(msg)
             return resp(200, {'success': True, 'order_number': order_number, 'bonus_earned': bonus_earned})
 
         elif action == 'my_orders':
