@@ -49,6 +49,27 @@ def send_max(message: str):
             pass
 
 
+def send_telegram(conn_cur, message: str):
+    cur = conn_cur
+    try:
+        cur.execute(f"SELECT value FROM {SCHEMA}.site_content WHERE section='telegram' AND key='bot_token'")
+        r = cur.fetchone()
+        tg_token = r[0] if r else ''
+        cur.execute(f"SELECT value FROM {SCHEMA}.site_content WHERE section='telegram' AND key='chat_id'")
+        r2 = cur.fetchone()
+        tg_chat = r2[0] if r2 else ''
+        tg_token = tg_token or os.environ.get('TELEGRAM_BOT_TOKEN', '')
+        tg_chat = tg_chat or os.environ.get('TELEGRAM_CHAT_ID', '')
+        if not tg_token or not tg_chat:
+            return
+        url = f"https://api.telegram.org/bot{tg_token}/sendMessage"
+        payload = json.dumps({'chat_id': tg_chat, 'text': message, 'parse_mode': 'HTML'}).encode('utf-8')
+        req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'}, method='POST')
+        urllib.request.urlopen(req, timeout=8)
+    except Exception:
+        pass
+
+
 def get_client_id(cur, token):
     if not token:
         return None
@@ -156,6 +177,19 @@ def handler(event: dict, context) -> dict:
                 f"⏰ {datetime.now().strftime('%d.%m.%Y %H:%M')}"
             )
             send_max(msg)
+            tg_msg = (
+                f"<b>📱 Новая заявка iPro</b>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"📋 <b>Номер:</b> {order_number}\n"
+                f"👤 <b>Клиент:</b> {client_name or 'Не указано'}\n"
+                f"📞 <b>Телефон:</b> {client_phone}\n"
+                f"📱 <b>Устройство:</b> {device_brand} {device_model}\n"
+                f"🔧 <b>Услуга:</b> {service_name}\n"
+                f"💰 <b>Стоимость:</b> {price_fmt} ₽\n"
+                f"💬 <b>Комментарий:</b> {comment or 'Нет'}\n"
+                f"⏰ {datetime.now().strftime('%d.%m.%Y %H:%M')}"
+            )
+            send_telegram(cur, tg_msg)
             return resp(200, {'success': True, 'order_number': order_number, 'bonus_earned': bonus_earned})
 
         elif action == 'my_orders':
@@ -446,6 +480,83 @@ def handler(event: dict, context) -> dict:
                 cur.execute(f"DELETE FROM {SCHEMA}.repair_orders WHERE order_number=%s", (order_number,))
                 conn.commit()
                 return resp(200, {'success': True})
+
+            # ── Истории ───────────────────────────────────────────────────
+            elif action == 'admin_list_stories':
+                cur.execute(f"SELECT id, title, subtitle, image_url, link_url, link_label, gradient_from, gradient_to, is_active, sort_order FROM {SCHEMA}.stories ORDER BY sort_order, id")
+                stories = [{'id': r[0], 'title': r[1], 'subtitle': r[2], 'image_url': r[3], 'link_url': r[4], 'link_label': r[5], 'gradient_from': r[6], 'gradient_to': r[7], 'is_active': r[8], 'sort_order': r[9]} for r in cur.fetchall()]
+                return resp(200, {'stories': stories})
+
+            elif action == 'admin_save_story':
+                sid = body.get('id')
+                title = body.get('title', '').strip()
+                if not title:
+                    return resp(400, {'error': 'title required'})
+                fields = (title, body.get('subtitle', ''), body.get('image_url', ''), body.get('link_url', ''), body.get('link_label', 'Подробнее'), body.get('gradient_from', '#1d4ed8'), body.get('gradient_to', '#7c3aed'), bool(body.get('is_active', True)), int(body.get('sort_order', 0)))
+                if sid:
+                    cur.execute(f"UPDATE {SCHEMA}.stories SET title=%s,subtitle=%s,image_url=%s,link_url=%s,link_label=%s,gradient_from=%s,gradient_to=%s,is_active=%s,sort_order=%s WHERE id=%s", (*fields, sid))
+                    conn.commit()
+                    return resp(200, {'success': True, 'id': sid})
+                else:
+                    cur.execute(f"INSERT INTO {SCHEMA}.stories (title,subtitle,image_url,link_url,link_label,gradient_from,gradient_to,is_active,sort_order) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id", fields)
+                    new_id = cur.fetchone()[0]
+                    conn.commit()
+                    return resp(200, {'success': True, 'id': new_id})
+
+            elif action == 'admin_delete_story':
+                cur.execute(f"DELETE FROM {SCHEMA}.stories WHERE id=%s", (body.get('id'),))
+                conn.commit()
+                return resp(200, {'success': True})
+
+            # ── Цены на услуги ────────────────────────────────────────────
+            elif action == 'admin_list_prices':
+                brand = body.get('brand_slug', '')
+                if brand:
+                    cur.execute(f"SELECT id, brand_slug, brand_name, model_slug, model_name, service_name, price_text, price_num, sort_order, is_active FROM {SCHEMA}.service_prices WHERE brand_slug=%s ORDER BY model_slug, sort_order", (brand,))
+                else:
+                    cur.execute(f"SELECT id, brand_slug, brand_name, model_slug, model_name, service_name, price_text, price_num, sort_order, is_active FROM {SCHEMA}.service_prices ORDER BY brand_slug, model_slug, sort_order LIMIT 1000")
+                prices = [{'id': r[0], 'brand_slug': r[1], 'brand_name': r[2], 'model_slug': r[3], 'model_name': r[4], 'service_name': r[5], 'price_text': r[6], 'price_num': r[7], 'sort_order': r[8], 'is_active': r[9]} for r in cur.fetchall()]
+                return resp(200, {'prices': prices})
+
+            elif action == 'admin_save_price':
+                pid = body.get('id')
+                brand_slug = body.get('brand_slug', '').strip()
+                model_slug = body.get('model_slug', '').strip()
+                service_name = body.get('service_name', '').strip()
+                price_num = int(body.get('price_num', 0))
+                price_text = body.get('price_text') or f'от {price_num:,} ₽'.replace(',', ' ')
+                if not brand_slug or not model_slug or not service_name:
+                    return resp(400, {'error': 'brand_slug, model_slug, service_name required'})
+                fields = (brand_slug, body.get('brand_name', brand_slug), model_slug, body.get('model_name', model_slug), service_name, price_text, price_num, int(body.get('sort_order', 0)), bool(body.get('is_active', True)))
+                if pid:
+                    cur.execute(f"UPDATE {SCHEMA}.service_prices SET brand_slug=%s,brand_name=%s,model_slug=%s,model_name=%s,service_name=%s,price_text=%s,price_num=%s,sort_order=%s,is_active=%s,updated_at=NOW() WHERE id=%s", (*fields, pid))
+                    conn.commit()
+                    return resp(200, {'success': True, 'id': pid})
+                else:
+                    cur.execute(f"INSERT INTO {SCHEMA}.service_prices (brand_slug,brand_name,model_slug,model_name,service_name,price_text,price_num,sort_order,is_active) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (brand_slug,model_slug,service_name) DO UPDATE SET price_text=EXCLUDED.price_text,price_num=EXCLUDED.price_num,updated_at=NOW() RETURNING id", fields)
+                    new_id = cur.fetchone()[0]
+                    conn.commit()
+                    return resp(200, {'success': True, 'id': new_id})
+
+            elif action == 'admin_delete_price':
+                cur.execute(f"DELETE FROM {SCHEMA}.service_prices WHERE id=%s", (body.get('id'),))
+                conn.commit()
+                return resp(200, {'success': True})
+
+            elif action == 'admin_bulk_import_prices':
+                items = body.get('items', [])
+                count = 0
+                for item in items:
+                    try:
+                        cur.execute(
+                            f"INSERT INTO {SCHEMA}.service_prices (brand_slug,brand_name,model_slug,model_name,service_name,price_text,price_num,sort_order) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (brand_slug,model_slug,service_name) DO UPDATE SET price_text=EXCLUDED.price_text,price_num=EXCLUDED.price_num,updated_at=NOW()",
+                            (item.get('brand_slug'), item.get('brand_name'), item.get('model_slug'), item.get('model_name'), item.get('service_name'), item.get('price_text'), int(item.get('price_num', 0)), int(item.get('sort_order', 0)))
+                        )
+                        count += 1
+                    except Exception:
+                        pass
+                conn.commit()
+                return resp(200, {'success': True, 'imported': count})
 
             # ── Список заказов с полным поиском ──────────────────────────
             elif action == 'admin_search_orders':

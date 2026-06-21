@@ -1,11 +1,12 @@
 """
-Объединённая функция: авторизация (телефон/Yandex), профиль, проверка статуса в LiveSklad.
-Действия задаются полем action в теле запроса.
+Авторизация: телефон (SMS-код), email+пароль, регистрация, смена пароля, Yandex OAuth.
+Публичные данные: истории (stories), цены на услуги.
 """
 import json
 import os
 import random
 import string
+import hashlib
 import urllib.request
 import urllib.parse
 from datetime import datetime, timedelta
@@ -24,12 +25,28 @@ def get_conn():
     return psycopg2.connect(os.environ['DATABASE_URL'])
 
 
-def generate_token():
+def gen_token():
     return ''.join(random.choices(string.ascii_letters + string.digits, k=64))
+
+
+def hash_password(password: str) -> str:
+    salt = os.environ.get('JWT_SECRET', 'ipro_salt_2026')
+    return hashlib.sha256((salt + password).encode()).hexdigest()
 
 
 def resp(status, payload):
     return {'statusCode': status, 'headers': CORS, 'body': json.dumps(payload, ensure_ascii=False)}
+
+
+def client_row_to_dict(row, phone=''):
+    return {
+        'id': row[0], 'phone': row[1] or phone, 'name': row[2], 'email': row[3],
+        'bonus_balance': row[4] or 0, 'loyalty_level': row[5] or 'standard',
+        'visits_count': row[6] or 0, 'total_spent': row[7] or 0,
+        'yandex_login': row[8] if len(row) > 8 else None,
+        'yandex_avatar_url': row[9] if len(row) > 9 else None,
+        'has_password': bool(row[10]) if len(row) > 10 else False,
+    }
 
 
 def handler(event: dict, context) -> dict:
@@ -41,9 +58,9 @@ def handler(event: dict, context) -> dict:
     action = body.get('action') or params.get('action', '')
     headers = event.get('headers') or {}
 
-    # LiveSklad — без БД
+    # ── Без БД ────────────────────────────────────────────────────────────────
     if action == 'livesklad_status':
-        api_key = os.environ.get('LIVESKLAD_API_KEY', 'jjBMBhbeTaVfnHkD2YMU')
+        api_key = os.environ.get('LIVESKLAD_API_KEY', '')
         order_id = (body.get('order_id') or params.get('order_id') or '').strip()
         if not order_id:
             return resp(400, {'error': 'order_id required'})
@@ -61,8 +78,27 @@ def handler(event: dict, context) -> dict:
     conn = get_conn()
     cur = conn.cursor()
     try:
-        # Отправка кода
-        if action == 'send_code':
+        # ── Истории (публичные) ───────────────────────────────────────────────
+        if action == 'get_stories':
+            cur.execute(f"SELECT id, title, subtitle, image_url, link_url, link_label, gradient_from, gradient_to FROM {SCHEMA}.stories WHERE is_active=TRUE ORDER BY sort_order, id LIMIT 10")
+            stories = [{'id': r[0], 'title': r[1], 'subtitle': r[2], 'image_url': r[3], 'link_url': r[4], 'link_label': r[5], 'gradient_from': r[6], 'gradient_to': r[7]} for r in cur.fetchall()]
+            return resp(200, {'stories': stories})
+
+        # ── Цены на услуги (публичные) ────────────────────────────────────────
+        elif action == 'get_prices':
+            brand = body.get('brand_slug') or params.get('brand_slug', '')
+            model = body.get('model_slug') or params.get('model_slug', '')
+            if brand and model:
+                cur.execute(f"SELECT service_name, price_text, price_num FROM {SCHEMA}.service_prices WHERE brand_slug=%s AND model_slug=%s AND is_active=TRUE ORDER BY sort_order", (brand, model))
+            elif brand:
+                cur.execute(f"SELECT model_slug, model_name, service_name, price_text, price_num FROM {SCHEMA}.service_prices WHERE brand_slug=%s AND is_active=TRUE ORDER BY model_slug, sort_order", (brand,))
+            else:
+                cur.execute(f"SELECT brand_slug, model_slug, service_name, price_text, price_num FROM {SCHEMA}.service_prices WHERE is_active=TRUE ORDER BY brand_slug, model_slug, sort_order LIMIT 500")
+            rows = cur.fetchall()
+            return resp(200, {'prices': [list(r) for r in rows]})
+
+        # ── Авторизация по телефону ───────────────────────────────────────────
+        elif action == 'send_code':
             phone = body.get('phone', '').strip()
             if not phone:
                 return resp(400, {'error': 'phone required'})
@@ -70,89 +106,147 @@ def handler(event: dict, context) -> dict:
             expires = datetime.now() + timedelta(minutes=10)
             cur.execute(f"INSERT INTO {SCHEMA}.sms_codes (phone, code, expires_at) VALUES (%s, %s, %s)", (phone, code, expires))
             conn.commit()
-            return resp(200, {'success': True, 'dev_code': code, 'message': 'Код отправлен'})
+            return resp(200, {'success': True, 'dev_code': code})
 
-        # Верификация
         elif action == 'verify_code':
             phone = body.get('phone', '').strip()
             code = body.get('code', '').strip()
-            cur.execute(
-                f"SELECT id FROM {SCHEMA}.sms_codes WHERE phone=%s AND code=%s AND expires_at > NOW() AND used=FALSE ORDER BY created_at DESC LIMIT 1",
-                (phone, code)
-            )
+            cur.execute(f"SELECT id FROM {SCHEMA}.sms_codes WHERE phone=%s AND code=%s AND expires_at > NOW() AND used=FALSE ORDER BY created_at DESC LIMIT 1", (phone, code))
             row = cur.fetchone()
             if not row:
                 return resp(401, {'error': 'Неверный или просроченный код'})
             cur.execute(f"UPDATE {SCHEMA}.sms_codes SET used=TRUE WHERE id=%s", (row[0],))
-            cur.execute(f"SELECT id, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_id, yandex_login, yandex_avatar_url FROM {SCHEMA}.clients WHERE phone=%s", (phone,))
+            cur.execute(f"SELECT id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_login, yandex_avatar_url, has_password FROM {SCHEMA}.clients WHERE phone=%s", (phone,))
             client = cur.fetchone()
             if not client:
-                cur.execute(
-                    f"INSERT INTO {SCHEMA}.clients (phone) VALUES (%s) RETURNING id, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_id, yandex_login, yandex_avatar_url",
-                    (phone,)
-                )
+                cur.execute(f"INSERT INTO {SCHEMA}.clients (phone) VALUES (%s) RETURNING id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_login, yandex_avatar_url, has_password", (phone,))
                 client = cur.fetchone()
-            token = generate_token()
-            expires = datetime.now() + timedelta(days=30)
-            cur.execute(f"INSERT INTO {SCHEMA}.sessions (client_id, token, expires_at) VALUES (%s, %s, %s)", (client[0], token, expires))
+            token = gen_token()
+            cur.execute(f"INSERT INTO {SCHEMA}.sessions (client_id, token, expires_at) VALUES (%s, %s, %s)", (client[0], token, datetime.now() + timedelta(days=30)))
             conn.commit()
-            return resp(200, {
-                'success': True, 'token': token,
-                'client': {
-                    'id': client[0], 'phone': phone, 'name': client[1], 'email': client[2],
-                    'bonus_balance': client[3] or 0, 'loyalty_level': client[4] or 'standard',
-                    'visits_count': client[5] or 0, 'total_spent': client[6] or 0,
-                    'yandex_id': client[7], 'yandex_login': client[8], 'yandex_avatar_url': client[9],
-                }
-            })
+            return resp(200, {'success': True, 'token': token, 'client': client_row_to_dict(client)})
 
-        # Регистрация по email/паролю (упрощённо: храним email в clients, пароль не храним, отправляем код на email — заглушка через dev_code)
-        elif action == 'email_register' or action == 'email_login':
+        # ── Регистрация email+пароль ──────────────────────────────────────────
+        elif action == 'register_password':
+            email = body.get('email', '').strip().lower()
+            password = body.get('password', '').strip()
+            name = body.get('name', '').strip()
+            if not email or '@' not in email:
+                return resp(400, {'error': 'Введите корректный email'})
+            if len(password) < 6:
+                return resp(400, {'error': 'Пароль должен быть не менее 6 символов'})
+            cur.execute(f"SELECT id FROM {SCHEMA}.clients WHERE email=%s", (email,))
+            if cur.fetchone():
+                return resp(409, {'error': 'Email уже зарегистрирован'})
+            pw_hash = hash_password(password)
+            cur.execute(
+                f"INSERT INTO {SCHEMA}.clients (phone, email, name, password_hash, has_password) VALUES (%s, %s, %s, %s, TRUE) RETURNING id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_login, yandex_avatar_url, has_password",
+                (email, email, name or None, pw_hash)
+            )
+            client = cur.fetchone()
+            token = gen_token()
+            cur.execute(f"INSERT INTO {SCHEMA}.sessions (client_id, token, expires_at) VALUES (%s, %s, %s)", (client[0], token, datetime.now() + timedelta(days=30)))
+            conn.commit()
+            return resp(200, {'success': True, 'token': token, 'client': client_row_to_dict(client)})
+
+        # ── Вход email+пароль ─────────────────────────────────────────────────
+        elif action == 'login_password':
+            email = body.get('email', '').strip().lower()
+            password = body.get('password', '').strip()
+            if not email or not password:
+                return resp(400, {'error': 'Введите email и пароль'})
+            pw_hash = hash_password(password)
+            cur.execute(f"SELECT id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_login, yandex_avatar_url, has_password FROM {SCHEMA}.clients WHERE email=%s AND password_hash=%s", (email, pw_hash))
+            client = cur.fetchone()
+            if not client:
+                return resp(401, {'error': 'Неверный email или пароль'})
+            token = gen_token()
+            cur.execute(f"INSERT INTO {SCHEMA}.sessions (client_id, token, expires_at) VALUES (%s, %s, %s)", (client[0], token, datetime.now() + timedelta(days=30)))
+            conn.commit()
+            return resp(200, {'success': True, 'token': token, 'client': client_row_to_dict(client)})
+
+        # ── Смена пароля ──────────────────────────────────────────────────────
+        elif action == 'change_password':
+            auth_token = headers.get('X-Auth-Token', '')
+            cur.execute(f"SELECT client_id FROM {SCHEMA}.sessions WHERE token=%s AND expires_at > NOW()", (auth_token,))
+            row = cur.fetchone()
+            if not row:
+                return resp(401, {'error': 'unauthorized'})
+            cid = row[0]
+            old_pw = body.get('old_password', '').strip()
+            new_pw = body.get('new_password', '').strip()
+            if len(new_pw) < 6:
+                return resp(400, {'error': 'Пароль должен быть не менее 6 символов'})
+            # Проверяем старый пароль (если уже есть пароль)
+            cur.execute(f"SELECT has_password, password_hash FROM {SCHEMA}.clients WHERE id=%s", (cid,))
+            c = cur.fetchone()
+            if c and c[0]:  # has_password
+                if hash_password(old_pw) != c[1]:
+                    return resp(400, {'error': 'Неверный текущий пароль'})
+            new_hash = hash_password(new_pw)
+            cur.execute(f"UPDATE {SCHEMA}.clients SET password_hash=%s, has_password=TRUE, updated_at=NOW() WHERE id=%s", (new_hash, cid))
+            conn.commit()
+            return resp(200, {'success': True})
+
+        # ── Сброс пароля (по email — отправляем код) ──────────────────────────
+        elif action == 'reset_password_send':
+            email = body.get('email', '').strip().lower()
+            cur.execute(f"SELECT id FROM {SCHEMA}.clients WHERE email=%s", (email,))
+            if not cur.fetchone():
+                return resp(404, {'error': 'Email не найден'})
+            code = ''.join(random.choices(string.digits, k=4))
+            expires = datetime.now() + timedelta(minutes=15)
+            cur.execute(f"INSERT INTO {SCHEMA}.sms_codes (phone, code, expires_at) VALUES (%s, %s, %s)", (email, code, expires))
+            conn.commit()
+            return resp(200, {'success': True, 'dev_code': code})
+
+        elif action == 'reset_password_confirm':
+            email = body.get('email', '').strip().lower()
+            code = body.get('code', '').strip()
+            new_pw = body.get('new_password', '').strip()
+            if len(new_pw) < 6:
+                return resp(400, {'error': 'Пароль минимум 6 символов'})
+            cur.execute(f"SELECT id FROM {SCHEMA}.sms_codes WHERE phone=%s AND code=%s AND expires_at > NOW() AND used=FALSE ORDER BY created_at DESC LIMIT 1", (email, code))
+            row = cur.fetchone()
+            if not row:
+                return resp(401, {'error': 'Неверный или просроченный код'})
+            cur.execute(f"UPDATE {SCHEMA}.sms_codes SET used=TRUE WHERE id=%s", (row[0],))
+            new_hash = hash_password(new_pw)
+            cur.execute(f"UPDATE {SCHEMA}.clients SET password_hash=%s, has_password=TRUE, updated_at=NOW() WHERE email=%s", (new_hash, email))
+            conn.commit()
+            return resp(200, {'success': True})
+
+        # ── email_register/email_login (код без пароля, старый способ) ────────
+        elif action in ('email_register', 'email_login'):
             email = body.get('email', '').strip().lower()
             if not email or '@' not in email:
                 return resp(400, {'error': 'invalid email'})
             code = ''.join(random.choices(string.digits, k=4))
             expires = datetime.now() + timedelta(minutes=10)
-            # используем sms_codes как универсальную таблицу кодов
             cur.execute(f"INSERT INTO {SCHEMA}.sms_codes (phone, code, expires_at) VALUES (%s, %s, %s)", (email, code, expires))
             conn.commit()
-            return resp(200, {'success': True, 'dev_code': code, 'message': 'Код отправлен на email'})
+            return resp(200, {'success': True, 'dev_code': code})
 
         elif action == 'email_verify':
             email = body.get('email', '').strip().lower()
             code = body.get('code', '').strip()
             name = body.get('name', '').strip()
-            cur.execute(
-                f"SELECT id FROM {SCHEMA}.sms_codes WHERE phone=%s AND code=%s AND expires_at > NOW() AND used=FALSE ORDER BY created_at DESC LIMIT 1",
-                (email, code)
-            )
+            cur.execute(f"SELECT id FROM {SCHEMA}.sms_codes WHERE phone=%s AND code=%s AND expires_at > NOW() AND used=FALSE ORDER BY created_at DESC LIMIT 1", (email, code))
             row = cur.fetchone()
             if not row:
                 return resp(401, {'error': 'Неверный или просроченный код'})
             cur.execute(f"UPDATE {SCHEMA}.sms_codes SET used=TRUE WHERE id=%s", (row[0],))
-            cur.execute(f"SELECT id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent FROM {SCHEMA}.clients WHERE email=%s", (email,))
+            cur.execute(f"SELECT id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_login, yandex_avatar_url, has_password FROM {SCHEMA}.clients WHERE email=%s", (email,))
             client = cur.fetchone()
             if not client:
-                cur.execute(
-                    f"INSERT INTO {SCHEMA}.clients (phone, email, name) VALUES (%s, %s, %s) RETURNING id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent",
-                    (email, email, name or None)
-                )
+                cur.execute(f"INSERT INTO {SCHEMA}.clients (phone, email, name) VALUES (%s, %s, %s) RETURNING id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_login, yandex_avatar_url, has_password", (email, email, name or None))
                 client = cur.fetchone()
-            token = generate_token()
-            expires = datetime.now() + timedelta(days=30)
-            cur.execute(f"INSERT INTO {SCHEMA}.sessions (client_id, token, expires_at) VALUES (%s, %s, %s)", (client[0], token, expires))
+            token = gen_token()
+            cur.execute(f"INSERT INTO {SCHEMA}.sessions (client_id, token, expires_at) VALUES (%s, %s, %s)", (client[0], token, datetime.now() + timedelta(days=30)))
             conn.commit()
-            return resp(200, {
-                'success': True, 'token': token,
-                'client': {
-                    'id': client[0], 'phone': client[1] or '', 'name': client[2] or name,
-                    'email': client[3] or email,
-                    'bonus_balance': client[4] or 0, 'loyalty_level': client[5] or 'standard',
-                    'visits_count': client[6] or 0, 'total_spent': client[7] or 0,
-                }
-            })
+            return resp(200, {'success': True, 'token': token, 'client': client_row_to_dict(client)})
 
-        # Yandex OAuth
+        # ── Yandex OAuth ──────────────────────────────────────────────────────
         elif action == 'yandex_auth':
             yandex_token = body.get('yandex_token', '')
             if not yandex_token:
@@ -160,56 +254,34 @@ def handler(event: dict, context) -> dict:
             req = urllib.request.Request('https://login.yandex.ru/info?format=json', headers={'Authorization': f'OAuth {yandex_token}'})
             with urllib.request.urlopen(req) as r:
                 yd = json.loads(r.read())
-            yandex_id = str(yd.get('id'))
-            yandex_login = yd.get('login', '')
-            yandex_name = yd.get('real_name') or yd.get('display_name', '')
-            yandex_email = yd.get('default_email', '')
-            avatar_id = yd.get('default_avatar_id')
-            avatar_url = f"https://avatars.yandex.net/get-yapic/{avatar_id}/islands-200" if avatar_id else None
-
-            cur.execute(f"SELECT id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent FROM {SCHEMA}.clients WHERE yandex_id=%s", (yandex_id,))
+            yid = str(yd.get('id'))
+            ylogin = yd.get('login', '')
+            yname = yd.get('real_name') or yd.get('display_name', '')
+            yemail = yd.get('default_email', '')
+            aid = yd.get('default_avatar_id')
+            avatar = f"https://avatars.yandex.net/get-yapic/{aid}/islands-200" if aid else None
+            cur.execute(f"SELECT id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_login, yandex_avatar_url, has_password FROM {SCHEMA}.clients WHERE yandex_id=%s", (yid,))
             client = cur.fetchone()
             if not client:
-                cur.execute(
-                    f"INSERT INTO {SCHEMA}.clients (phone, name, email, yandex_id, yandex_login, yandex_avatar_url) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent",
-                    (yandex_email, yandex_name, yandex_email, yandex_id, yandex_login, avatar_url)
-                )
+                cur.execute(f"INSERT INTO {SCHEMA}.clients (phone, name, email, yandex_id, yandex_login, yandex_avatar_url) VALUES (%s,%s,%s,%s,%s,%s) RETURNING id, phone, name, email, bonus_balance, loyalty_level, visits_count, total_spent, yandex_login, yandex_avatar_url, has_password", (yemail, yname, yemail, yid, ylogin, avatar))
                 client = cur.fetchone()
             else:
-                cur.execute(f"UPDATE {SCHEMA}.clients SET yandex_login=%s, yandex_avatar_url=%s, updated_at=NOW() WHERE id=%s", (yandex_login, avatar_url, client[0]))
-
-            token = generate_token()
-            expires = datetime.now() + timedelta(days=30)
-            cur.execute(f"INSERT INTO {SCHEMA}.sessions (client_id, token, expires_at) VALUES (%s, %s, %s)", (client[0], token, expires))
+                cur.execute(f"UPDATE {SCHEMA}.clients SET yandex_login=%s, yandex_avatar_url=%s, updated_at=NOW() WHERE id=%s", (ylogin, avatar, client[0]))
+            token = gen_token()
+            cur.execute(f"INSERT INTO {SCHEMA}.sessions (client_id, token, expires_at) VALUES (%s,%s,%s)", (client[0], token, datetime.now() + timedelta(days=30)))
             conn.commit()
-            return resp(200, {
-                'success': True, 'token': token,
-                'client': {
-                    'id': client[0], 'phone': client[1] or '', 'name': client[2] or yandex_name,
-                    'email': client[3] or yandex_email,
-                    'bonus_balance': client[4] or 0, 'loyalty_level': client[5] or 'standard',
-                    'visits_count': client[6] or 0, 'total_spent': client[7] or 0,
-                    'yandex_login': yandex_login, 'yandex_avatar_url': avatar_url,
-                }
-            })
+            return resp(200, {'success': True, 'token': token, 'client': client_row_to_dict(client)})
 
+        # ── Профиль ───────────────────────────────────────────────────────────
         elif action == 'get_profile':
             token = headers.get('X-Auth-Token', '')
             if not token:
                 return resp(401, {'error': 'unauthorized'})
-            cur.execute(
-                f"SELECT c.id, c.phone, c.name, c.email, c.bonus_balance, c.loyalty_level, c.visits_count, c.total_spent, c.yandex_login, c.yandex_avatar_url FROM {SCHEMA}.sessions s JOIN {SCHEMA}.clients c ON s.client_id=c.id WHERE s.token=%s AND s.expires_at > NOW()",
-                (token,)
-            )
+            cur.execute(f"SELECT c.id, c.phone, c.name, c.email, c.bonus_balance, c.loyalty_level, c.visits_count, c.total_spent, c.yandex_login, c.yandex_avatar_url, c.has_password FROM {SCHEMA}.sessions s JOIN {SCHEMA}.clients c ON s.client_id=c.id WHERE s.token=%s AND s.expires_at > NOW()", (token,))
             row = cur.fetchone()
             if not row:
                 return resp(401, {'error': 'session expired'})
-            return resp(200, {'client': {
-                'id': row[0], 'phone': row[1], 'name': row[2], 'email': row[3],
-                'bonus_balance': row[4] or 0, 'loyalty_level': row[5] or 'standard',
-                'visits_count': row[6] or 0, 'total_spent': row[7] or 0,
-                'yandex_login': row[8], 'yandex_avatar_url': row[9],
-            }})
+            return resp(200, {'client': client_row_to_dict(row)})
 
         elif action == 'update_profile':
             token = headers.get('X-Auth-Token', '')

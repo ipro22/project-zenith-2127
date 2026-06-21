@@ -8,6 +8,7 @@ import { SEOHead } from "@/components/SEOHead"
 import { ReviewsMapSection } from "@/components/sections/ReviewsMapSection"
 import { AppPromoSection } from "@/components/sections/AppPromoSection"
 import { VideoSection } from "@/components/sections/VideoSection"
+import { StoriesBar } from "@/components/StoriesBar"
 
 const Index = () => {
   return (
@@ -17,6 +18,7 @@ const Index = () => {
         description="Сервисный центр iPro в Барнауле. Профессиональный ремонт iPhone, Samsung, Xiaomi, MacBook, iPad. Бесплатная диагностика, ремонт за 1-2 часа, гарантия до 365 дней."
       />
       <Navbar />
+      <StoriesBar />
       <main>
         <HeroSection />
         <FeaturesSection />

@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import {
   Loader2, Users, Package, Gift, TrendingUp, Plus, Search,
   Check, X, Edit2, LogOut, LayoutDashboard, ShoppingBag,
-  FileText, ChevronDown, Trash2, Save, RefreshCw, AlertCircle,
-  Eye, Star, Phone, Mail, Calendar
+  FileText, Trash2, Save, RefreshCw, AlertCircle,
+  Eye, Layers, DollarSign, Send, Toggle
 } from "lucide-react"
 import { SEOHead } from "@/components/SEOHead"
 import { API } from "@/hooks/useApi"
@@ -17,6 +17,8 @@ interface ContentItem { key: string; value: string; type: string; label: string 
 interface ContentMap { [section: string]: ContentItem[] }
 interface Product { id?: number; name: string; brand: string; category: string; description: string; price: number; old_price?: number; image_url: string; badge: string; in_stock: boolean; sort_order: number; created_at?: string }
 interface BonusTx { type: string; amount: number; description: string; created_at: string }
+interface Story { id?: number; title: string; subtitle: string; image_url: string; link_url: string; link_label: string; gradient_from: string; gradient_to: string; is_active: boolean; sort_order: number }
+interface Price { id?: number; brand_slug: string; brand_name: string; model_slug: string; model_name: string; service_name: string; price_text: string; price_num: number; sort_order: number; is_active: boolean }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const loyaltyOptions = ["standard", "regular", "vip"]
@@ -26,6 +28,8 @@ const statusLabels: Record<string, string> = { received: "Принят", diagnos
 const statusColors: Record<string, string> = { received: "bg-blue-100 text-blue-700", diagnostics: "bg-yellow-100 text-yellow-700", repair: "bg-orange-100 text-orange-700", ready: "bg-green-100 text-green-700", completed: "bg-gray-100 text-gray-500" }
 
 const EMPTY_PRODUCT: Product = { name: "", brand: "", category: "", description: "", price: 0, image_url: "", badge: "", in_stock: true, sort_order: 0 }
+const EMPTY_STORY: Story = { title: "", subtitle: "", image_url: "", link_url: "", link_label: "Подробнее", gradient_from: "#1d4ed8", gradient_to: "#7c3aed", is_active: true, sort_order: 0 }
+const EMPTY_PRICE: Price = { brand_slug: "", brand_name: "", model_slug: "", model_name: "", service_name: "", price_text: "", price_num: 0, sort_order: 0, is_active: true }
 
 // ─── API helper ───────────────────────────────────────────────────────────────
 async function adminFetch(action: string, body: object = {}, token: string) {
@@ -55,7 +59,7 @@ export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
   const [authLoading, setAuthLoading] = useState(false)
   const [authError, setAuthError] = useState("")
-  const [tab, setTab] = useState<"dashboard" | "orders" | "clients" | "shop" | "editor">("dashboard")
+  const [tab, setTab] = useState<"dashboard" | "orders" | "clients" | "shop" | "stories" | "prices" | "editor">("dashboard")
 
   // Dashboard
   const [stats, setStats] = useState<Stats | null>(null)
@@ -92,6 +96,20 @@ export default function AdminPage() {
   const [editProduct, setEditProduct] = useState<Product | null>(null)
   const [productSaving, setProductSaving] = useState(false)
 
+  // Stories
+  const [stories, setStories] = useState<Story[]>([])
+  const [storiesLoading, setStoriesLoading] = useState(false)
+  const [editStory, setEditStory] = useState<Story | null>(null)
+  const [storySaving, setStorySaving] = useState(false)
+
+  // Prices
+  const [prices, setPrices] = useState<Price[]>([])
+  const [pricesLoading, setPricesLoading] = useState(false)
+  const [editPrice, setEditPrice] = useState<Price | null>(null)
+  const [priceSaving, setPriceSaving] = useState(false)
+  const [pricesBrand, setPricesBrand] = useState("")
+  const [pricesSearch, setPricesSearch] = useState("")
+
   // Editor
   const [content, setContent] = useState<ContentMap>({})
   const [contentLoading, setContentLoading] = useState(false)
@@ -99,6 +117,11 @@ export default function AdminPage() {
   const [contentSaving, setContentSaving] = useState(false)
   const [contentSaved, setContentSaved] = useState(false)
   const [editorSection, setEditorSection] = useState("hero")
+
+  // Telegram test
+  const [tgTestMsg, setTgTestMsg] = useState("")
+  const [tgSending, setTgSending] = useState(false)
+  const [tgResult, setTgResult] = useState("")
 
   // ── Auth ──────────────────────────────────────────────────────────────────
   const handleLogin = async () => {
@@ -157,6 +180,20 @@ export default function AdminPage() {
     setContentLoading(false)
   }, [token])
 
+  const loadStories = useCallback(async () => {
+    setStoriesLoading(true)
+    const data = await adminFetch("list_stories", {}, token)
+    setStories(data.stories || [])
+    setStoriesLoading(false)
+  }, [token])
+
+  const loadPrices = useCallback(async () => {
+    setPricesLoading(true)
+    const data = await adminFetch("list_prices", { brand_slug: pricesBrand }, token)
+    setPrices(data.prices || [])
+    setPricesLoading(false)
+  }, [token, pricesBrand])
+
   const loadClientDetail = async (c: Client) => {
     setSelectedClient(c); setEditClientData({ ...c })
     setClientDetailLoading(true)
@@ -172,6 +209,8 @@ export default function AdminPage() {
     if (tab === "orders") loadOrders()
     if (tab === "clients") loadClients()
     if (tab === "shop") loadProducts()
+    if (tab === "stories") loadStories()
+    if (tab === "prices") loadPrices()
     if (tab === "editor") loadContent()
   }, [tab, authed])
 
@@ -254,10 +293,63 @@ export default function AdminPage() {
     setContentDirty((prev) => ({ ...prev, [`${section}:${key}`]: true }))
   }
 
+  // Stories actions
+  const handleSaveStory = async () => {
+    if (!editStory) return
+    setStorySaving(true)
+    await adminFetch("save_story", editStory, token)
+    setStorySaving(false); setEditStory(null); loadStories()
+  }
+  const handleDeleteStory = async (id: number) => {
+    if (!confirm("Удалить историю?")) return
+    await adminFetch("delete_story", { id }, token)
+    loadStories()
+  }
+
+  // Prices actions
+  const handleSavePrice = async () => {
+    if (!editPrice) return
+    setPriceSaving(true)
+    if (!editPrice.price_text) {
+      editPrice.price_text = `от ${editPrice.price_num.toLocaleString("ru")} ₽`
+    }
+    await adminFetch("save_price", editPrice, token)
+    setPriceSaving(false); setEditPrice(null); loadPrices()
+  }
+  const handleDeletePrice = async (id: number) => {
+    if (!confirm("Удалить цену?")) return
+    await adminFetch("delete_price", { id }, token)
+    loadPrices()
+  }
+
+  // Telegram test send
+  const handleTelegramTest = async () => {
+    setTgSending(true); setTgResult("")
+    try {
+      await adminFetch("create_order", {
+        client_name: "Тест Telegram",
+        client_phone: "+70000000000",
+        device_brand: "TEST",
+        device_model: "Test",
+        service_name: tgTestMsg || "Тестовое уведомление из админки",
+        service_price: 0,
+        source: "admin_test",
+      }, token)
+      setTgResult("✓ Уведомление отправлено")
+    } catch { setTgResult("✗ Ошибка отправки") }
+    setTgSending(false)
+  }
+
+  const filteredPrices = prices.filter((p) =>
+    !pricesSearch || p.model_name.toLowerCase().includes(pricesSearch.toLowerCase()) ||
+    p.service_name.toLowerCase().includes(pricesSearch.toLowerCase()) ||
+    p.brand_name.toLowerCase().includes(pricesSearch.toLowerCase())
+  )
+
   const handleLogout = () => { localStorage.removeItem("ipro_admin_token"); setToken(""); setAuthed(false) }
 
   const sectionLabels: Record<string, string> = {
-    hero: "Главный экран", contacts: "Контакты", loyalty: "Лояльность", seo: "SEO", about: "О компании",
+    hero: "Главный экран", contacts: "Контакты", loyalty: "Лояльность", seo: "SEO", about: "О компании", telegram: "Telegram уведомления",
   }
 
   // ── Login Screen ─────────────────────────────────────────────────────────
@@ -289,6 +381,8 @@ export default function AdminPage() {
     { key: "orders", label: "Заказы", icon: Package },
     { key: "clients", label: "Клиенты", icon: Users },
     { key: "shop", label: "Магазин", icon: ShoppingBag },
+    { key: "stories", label: "Истории", icon: Layers },
+    { key: "prices", label: "Прайс-лист", icon: DollarSign },
     { key: "editor", label: "Редактор", icon: FileText },
   ] as const
 
@@ -916,9 +1010,272 @@ export default function AdminPage() {
                     {(content[editorSection] || []).length === 0 && (
                       <p className="text-gray-400 text-sm">Нет полей для редактирования</p>
                     )}
+
+                    {/* Telegram test block */}
+                    {editorSection === "telegram" && (
+                      <div className="pt-4 border-t border-gray-100">
+                        <p className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+                          <Send className="w-4 h-4 text-blue-500" />Тестовое уведомление
+                        </p>
+                        <p className="text-xs text-gray-400 mb-3">Сохраните токен и chat_id выше, затем проверьте доставку тестового сообщения в Telegram.</p>
+                        <div className="flex gap-2">
+                          <input value={tgTestMsg} onChange={(e) => setTgTestMsg(e.target.value)}
+                            placeholder="Текст тестового сообщения (необязательно)"
+                            className="flex-1 px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                          <button onClick={handleTelegramTest} disabled={tgSending}
+                            className="px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-60 flex items-center gap-2">
+                            {tgSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                          </button>
+                        </div>
+                        {tgResult && <p className={`text-xs mt-2 ${tgResult.startsWith("✓") ? "text-green-600" : "text-red-500"}`}>{tgResult}</p>}
+                        <div className="mt-4 p-3 bg-blue-50 rounded-xl text-xs text-blue-700 space-y-1">
+                          <p className="font-semibold">Как подключить Telegram:</p>
+                          <p>1. Создайте бота через @BotFather → получите токен</p>
+                          <p>2. Добавьте бота в группу/канал и сделайте его администратором</p>
+                          <p>3. Chat ID для группы: запустите бота, напишите сообщение, откройте <code className="bg-blue-100 px-1 rounded">api.telegram.org/bot{"<token>"}/getUpdates</code></p>
+                          <p>4. Вставьте токен и chat_id в поля выше, сохраните, затем проверьте тестом</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
+            </motion.div>
+          )}
+
+          {/* ═══════════════════════════════ STORIES ════════════════════════ */}
+          {tab === "stories" && (
+            <motion.div key="stories" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <h1 className="text-xl font-bold text-gray-900">Истории (Stories)</h1>
+                <Pill onClick={() => setEditStory({ ...EMPTY_STORY })}>
+                  <Plus className="w-3.5 h-3.5 inline mr-1" />Добавить историю
+                </Pill>
+              </div>
+              <p className="text-sm text-gray-400">Истории отображаются на главной странице в виде кружков, как в Instagram. Нажатие открывает полноэкранный баннер.</p>
+
+              {storiesLoading ? (
+                <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-blue-500" /></div>
+              ) : (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {stories.map((s) => (
+                    <div key={s.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                      <div className="h-28 relative" style={{ background: `linear-gradient(135deg, ${s.gradient_from}, ${s.gradient_to})` }}>
+                        {s.image_url && <img src={s.image_url} alt={s.title} className="w-full h-full object-cover opacity-60" />}
+                        <div className="absolute inset-0 flex items-end p-3">
+                          <div>
+                            <p className="text-white font-bold text-sm drop-shadow">{s.title}</p>
+                            {s.subtitle && <p className="text-white/80 text-xs">{s.subtitle}</p>}
+                          </div>
+                        </div>
+                        {!s.is_active && (
+                          <div className="absolute top-2 right-2 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded-full">Скрыто</div>
+                        )}
+                      </div>
+                      <div className="p-3 flex items-center justify-between">
+                        <div className="text-xs text-gray-400">
+                          {s.link_url ? <span className="text-blue-500 truncate max-w-[140px] block">{s.link_url}</span> : "Без ссылки"}
+                        </div>
+                        <div className="flex gap-1">
+                          <button onClick={() => setEditStory({ ...s })} className="p-1.5 rounded-lg text-gray-400 hover:bg-blue-50 hover:text-blue-600 transition-colors"><Edit2 className="w-3.5 h-3.5" /></button>
+                          <button onClick={() => handleDeleteStory(s.id!)} className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors"><Trash2 className="w-3.5 h-3.5" /></button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {stories.length === 0 && (
+                    <div className="col-span-3 py-12 text-center text-gray-400">
+                      <Layers className="w-10 h-10 mx-auto mb-2 text-gray-200" />
+                      <p>Историй нет. Добавьте первую!</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Story modal */}
+              <AnimatePresence>
+                {editStory && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
+                    onClick={() => setEditStory(null)}>
+                    <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }}
+                      className="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto"
+                      onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-between mb-5">
+                        <h3 className="font-bold text-gray-900">{editStory.id ? "Редактировать историю" : "Новая история"}</h3>
+                        <button onClick={() => setEditStory(null)}><X className="w-5 h-5 text-gray-400" /></button>
+                      </div>
+                      <div className="space-y-3">
+                        {[
+                          { field: "title", label: "Заголовок *", placeholder: "Розыгрыш iPhone 17" },
+                          { field: "subtitle", label: "Подзаголовок", placeholder: "Участвуй и выигрывай!" },
+                          { field: "image_url", label: "URL картинки", placeholder: "https://..." },
+                          { field: "link_url", label: "Ссылка при нажатии", placeholder: "/giveaway" },
+                          { field: "link_label", label: "Текст кнопки", placeholder: "Подробнее" },
+                          { field: "gradient_from", label: "Цвет фона (начало)", placeholder: "#1d4ed8" },
+                          { field: "gradient_to", label: "Цвет фона (конец)", placeholder: "#7c3aed" },
+                          { field: "sort_order", label: "Порядок (0 = первый)", placeholder: "0" },
+                        ].map(({ field, label, placeholder }) => (
+                          <div key={field}>
+                            <label className="block text-xs text-gray-500 mb-1">{label}</label>
+                            <input type={field === "sort_order" ? "number" : "text"}
+                              value={(editStory as Record<string, string | number | boolean>)[field] as string || ""}
+                              onChange={(e) => setEditStory((p) => ({ ...p!, [field]: field === "sort_order" ? Number(e.target.value) : e.target.value }))}
+                              placeholder={placeholder}
+                              className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                          </div>
+                        ))}
+                        <div className="flex items-center gap-3 pt-1">
+                          <label className="text-sm text-gray-700 font-medium">Показывать на сайте</label>
+                          <button onClick={() => setEditStory((p) => ({ ...p!, is_active: !p!.is_active }))}
+                            className={`w-10 h-6 rounded-full transition-colors relative ${editStory.is_active ? "bg-blue-500" : "bg-gray-300"}`}>
+                            <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ${editStory.is_active ? "left-4" : "left-0.5"}`} />
+                          </button>
+                        </div>
+                        {/* Preview */}
+                        <div className="mt-2 h-20 rounded-2xl overflow-hidden relative"
+                          style={{ background: `linear-gradient(135deg, ${editStory.gradient_from || "#1d4ed8"}, ${editStory.gradient_to || "#7c3aed"})` }}>
+                          {editStory.image_url && <img src={editStory.image_url} className="w-full h-full object-cover opacity-50" alt="" />}
+                          <div className="absolute inset-0 flex items-end p-3">
+                            <p className="text-white font-bold text-sm drop-shadow">{editStory.title || "Предпросмотр"}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 mt-5">
+                        <button onClick={handleSaveStory} disabled={storySaving}
+                          className="flex-1 py-3 rounded-xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 disabled:opacity-60 flex items-center justify-center gap-2">
+                          {storySaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}Сохранить
+                        </button>
+                        <button onClick={() => setEditStory(null)} className="px-5 py-3 rounded-xl bg-gray-100 text-gray-600 text-sm">Отмена</button>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
+
+          {/* ═══════════════════════════════ PRICES ══════════════════════════ */}
+          {tab === "prices" && (
+            <motion.div key="prices" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <h1 className="text-xl font-bold text-gray-900">Прайс-лист услуг</h1>
+                <Pill onClick={() => setEditPrice({ ...EMPTY_PRICE })}>
+                  <Plus className="w-3.5 h-3.5 inline mr-1" />Добавить цену
+                </Pill>
+              </div>
+
+              {/* Filters */}
+              <div className="flex flex-wrap gap-2">
+                <select value={pricesBrand} onChange={(e) => { setPricesBrand(e.target.value) }}
+                  className="px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none">
+                  <option value="">Все бренды</option>
+                  {["iphone", "samsung", "macbook", "ipad", "xiaomi", "realme", "other"].map((b) => (
+                    <option key={b} value={b}>{b.charAt(0).toUpperCase() + b.slice(1)}</option>
+                  ))}
+                </select>
+                <div className="relative flex-1 min-w-[200px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                  <input value={pricesSearch} onChange={(e) => setPricesSearch(e.target.value)}
+                    placeholder="Поиск по модели, услуге..."
+                    className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <button onClick={loadPrices} className="px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors">
+                  <RefreshCw className="w-4 h-4" />
+                </button>
+              </div>
+
+              {pricesLoading ? (
+                <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-blue-500" /></div>
+              ) : (
+                <div className="bg-white rounded-2xl border border-gray-100 overflow-x-auto">
+                  <table className="w-full text-sm min-w-[700px]">
+                    <thead className="bg-gray-50 border-b border-gray-100">
+                      <tr>
+                        {["Бренд", "Модель", "Услуга", "Цена", "Числовая цена", ""].map((h) => (
+                          <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                      {filteredPrices.map((p) => (
+                        <tr key={p.id} className={`hover:bg-gray-50 transition-colors ${!p.is_active ? "opacity-50" : ""}`}>
+                          <td className="px-4 py-3 font-medium text-gray-700">{p.brand_name}</td>
+                          <td className="px-4 py-3 text-gray-700">{p.model_name}</td>
+                          <td className="px-4 py-3 text-gray-600">{p.service_name}</td>
+                          <td className="px-4 py-3 font-semibold text-gray-900">{p.price_text}</td>
+                          <td className="px-4 py-3 text-gray-500">{p.price_num.toLocaleString("ru")} ₽</td>
+                          <td className="px-4 py-3">
+                            <div className="flex gap-1">
+                              <button onClick={() => setEditPrice({ ...p })} className="p-1.5 rounded-lg text-gray-400 hover:bg-blue-50 hover:text-blue-600 transition-colors"><Edit2 className="w-3.5 h-3.5" /></button>
+                              <button onClick={() => handleDeletePrice(p.id!)} className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors"><Trash2 className="w-3.5 h-3.5" /></button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {filteredPrices.length === 0 && (
+                    <div className="py-12 text-center text-gray-400">
+                      <DollarSign className="w-10 h-10 mx-auto mb-2 text-gray-200" />
+                      <p>Цен нет. Добавьте первую или выберите другой бренд.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Price edit modal */}
+              <AnimatePresence>
+                {editPrice && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
+                    onClick={() => setEditPrice(null)}>
+                    <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }}
+                      className="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl"
+                      onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-between mb-5">
+                        <h3 className="font-bold text-gray-900">{editPrice.id ? "Редактировать цену" : "Новая цена"}</h3>
+                        <button onClick={() => setEditPrice(null)}><X className="w-5 h-5 text-gray-400" /></button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        {[
+                          { field: "brand_slug", label: "Slug бренда *", placeholder: "iphone" },
+                          { field: "brand_name", label: "Название бренда *", placeholder: "iPhone" },
+                          { field: "model_slug", label: "Slug модели *", placeholder: "iphone-15-pro" },
+                          { field: "model_name", label: "Название модели *", placeholder: "iPhone 15 Pro" },
+                          { field: "service_name", label: "Услуга *", placeholder: "Замена экрана" },
+                          { field: "price_text", label: "Текст цены", placeholder: "от 8 500 ₽" },
+                          { field: "price_num", label: "Цена (число) *", placeholder: "8500" },
+                          { field: "sort_order", label: "Порядок", placeholder: "0" },
+                        ].map(({ field, label, placeholder }) => (
+                          <div key={field} className={field === "service_name" || field === "price_text" ? "col-span-2" : ""}>
+                            <label className="block text-xs text-gray-500 mb-1">{label}</label>
+                            <input type={["price_num", "sort_order"].includes(field) ? "number" : "text"}
+                              value={(editPrice as Record<string, string | number | boolean>)[field] as string || ""}
+                              onChange={(e) => setEditPrice((p) => ({ ...p!, [field]: ["price_num", "sort_order"].includes(field) ? Number(e.target.value) : e.target.value }))}
+                              placeholder={placeholder}
+                              className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                          </div>
+                        ))}
+                        <div className="col-span-2 flex items-center gap-3">
+                          <label className="text-sm text-gray-700 font-medium">Активна</label>
+                          <button onClick={() => setEditPrice((p) => ({ ...p!, is_active: !p!.is_active }))}
+                            className={`w-10 h-6 rounded-full transition-colors relative ${editPrice.is_active ? "bg-blue-500" : "bg-gray-300"}`}>
+                            <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ${editPrice.is_active ? "left-4" : "left-0.5"}`} />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 mt-5">
+                        <button onClick={handleSavePrice} disabled={priceSaving}
+                          className="flex-1 py-3 rounded-xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 disabled:opacity-60 flex items-center justify-center gap-2">
+                          {priceSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}Сохранить
+                        </button>
+                        <button onClick={() => setEditPrice(null)} className="px-5 py-3 rounded-xl bg-gray-100 text-gray-600 text-sm">Отмена</button>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )}
 

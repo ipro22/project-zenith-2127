@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect, useCallback } from "react"
 import {
   Loader2, LogOut, User, Phone, Mail, AlertCircle,
-  Package, Gift, Settings, ChevronRight, Star,
-  TrendingUp, Check, Search, Shield, Zap
+  Package, Gift, Settings, Star, Lock,
+  TrendingUp, Check, Search, Shield, Zap, Eye, EyeOff
 } from "lucide-react"
 import {
   statusLabels, statusColors, statusSteps,
@@ -34,12 +34,21 @@ export default function AccountPage() {
   const [authLoading, setAuthLoading] = useState(false)
   const [authError, setAuthError] = useState("")
 
-  // Email login
+  // Email login / register / reset
   const [emailValue, setEmailValue] = useState("")
   const [emailName, setEmailName] = useState("")
   const [emailCode, setEmailCode] = useState("")
   const [emailCodeSent, setEmailCodeSent] = useState(false)
   const [emailDevCode, setEmailDevCode] = useState("")
+  const [emailMode, setEmailMode] = useState<"login" | "register" | "reset">("login")
+  // Password fields (register & reset)
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  // Reset password
+  const [resetStep, setResetStep] = useState<"email" | "code">("email")
+  const [resetCode, setResetCode] = useState("")
+  const [resetDevCode, setResetDevCode] = useState("")
 
   // Dashboard
   const [tab, setTab] = useState<"orders" | "bonuses" | "profile">("orders")
@@ -52,6 +61,14 @@ export default function AccountPage() {
   const [profileEmail, setProfileEmail] = useState("")
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  // Password change
+  const [oldPassword, setOldPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmNewPassword, setConfirmNewPassword] = useState("")
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [passwordSaving, setPasswordSaving] = useState(false)
+  const [passwordSaved, setPasswordSaved] = useState(false)
+  const [passwordError, setPasswordError] = useState("")
 
   // Track order (public)
   const [trackNumber, setTrackNumber] = useState("")
@@ -160,6 +177,90 @@ export default function AccountPage() {
       setProfileName(data.client.name || ""); setProfileEmail(data.client.email || "")
     } catch { setAuthError("Неверный код") }
     setAuthLoading(false)
+  }
+
+  // Регистрация с паролем
+  const handleRegisterPassword = async () => {
+    if (!emailValue.includes("@")) { setAuthError("Введите корректный email"); return }
+    if (password.length < 6) { setAuthError("Пароль — минимум 6 символов"); return }
+    if (password !== confirmPassword) { setAuthError("Пароли не совпадают"); return }
+    setAuthError(""); setAuthLoading(true)
+    try {
+      const data = await apiPost<{ success: boolean; token: string; client: ClientData; error?: string }>(API.auth, {
+        action: "register_password", email: emailValue, password, name: emailName,
+      })
+      if (data.error) { setAuthError(data.error); setAuthLoading(false); return }
+      setAuthToken(data.token); setToken(data.token)
+      setClient(data.client); storeClient(data.client)
+      setProfileName(data.client.name || ""); setProfileEmail(data.client.email || "")
+    } catch { setAuthError("Ошибка регистрации. Попробуйте позже.") }
+    setAuthLoading(false)
+  }
+
+  // Вход с паролем
+  const handleLoginPassword = async () => {
+    if (!emailValue.includes("@")) { setAuthError("Введите корректный email"); return }
+    if (!password) { setAuthError("Введите пароль"); return }
+    setAuthError(""); setAuthLoading(true)
+    try {
+      const data = await apiPost<{ success: boolean; token: string; client: ClientData; error?: string }>(API.auth, {
+        action: "login_password", email: emailValue, password,
+      })
+      if (data.error) { setAuthError(data.error); setAuthLoading(false); return }
+      setAuthToken(data.token); setToken(data.token)
+      setClient(data.client); storeClient(data.client)
+      setProfileName(data.client.name || ""); setProfileEmail(data.client.email || "")
+    } catch { setAuthError("Неверный email или пароль") }
+    setAuthLoading(false)
+  }
+
+  // Сброс пароля — шаг 1: отправить код
+  const handleResetSend = async () => {
+    if (!emailValue.includes("@")) { setAuthError("Введите email"); return }
+    setAuthError(""); setAuthLoading(true)
+    try {
+      const data = await apiPost<{ success: boolean; dev_code?: string; error?: string }>(API.auth, {
+        action: "reset_password_send", email: emailValue,
+      })
+      if (data.error) { setAuthError(data.error); setAuthLoading(false); return }
+      setResetStep("code")
+      if (data.dev_code) setResetDevCode(data.dev_code)
+    } catch { setAuthError("Email не найден") }
+    setAuthLoading(false)
+  }
+
+  // Сброс пароля — шаг 2: подтвердить
+  const handleResetConfirm = async () => {
+    if (resetCode.length < 4) { setAuthError("Введите код"); return }
+    if (password.length < 6) { setAuthError("Пароль — минимум 6 символов"); return }
+    if (password !== confirmPassword) { setAuthError("Пароли не совпадают"); return }
+    setAuthError(""); setAuthLoading(true)
+    try {
+      await apiPost(API.auth, { action: "reset_password_confirm", email: emailValue, code: resetCode, new_password: password })
+      setEmailMode("login"); setResetStep("email"); setPassword(""); setConfirmPassword(""); setResetCode("")
+      setAuthError("")
+      // После сброса сразу входим
+      await handleLoginPassword()
+    } catch { setAuthError("Неверный код или ошибка сервера") }
+    setAuthLoading(false)
+  }
+
+  // Смена пароля в профиле
+  const handleChangePassword = async () => {
+    setPasswordError("")
+    if (newPassword.length < 6) { setPasswordError("Минимум 6 символов"); return }
+    if (newPassword !== confirmNewPassword) { setPasswordError("Пароли не совпадают"); return }
+    setPasswordSaving(true)
+    try {
+      const data = await apiPost<{ success: boolean; error?: string }>(API.auth, {
+        action: "change_password", old_password: oldPassword, new_password: newPassword,
+      }, token)
+      if (data.error) { setPasswordError(data.error); setPasswordSaving(false); return }
+      setPasswordSaved(true); setOldPassword(""); setNewPassword(""); setConfirmNewPassword("")
+      setClient((c) => c ? { ...c, has_password: true } : c)
+      setTimeout(() => setPasswordSaved(false), 2500)
+    } catch { setPasswordError("Ошибка. Попробуйте позже.") }
+    setPasswordSaving(false)
   }
 
   const handleLogout = async () => {
@@ -275,45 +376,135 @@ export default function AccountPage() {
 
                 {loginTab === "email" && (
                   <motion.div key="email" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-3">
-                    {!emailCodeSent ? (
-                      <>
+                    {/* Email mode switcher */}
+                    <div className="flex gap-1 p-1 rounded-xl bg-gray-100 mb-1">
+                      {([{ key: "login", label: "Вход" }, { key: "register", label: "Регистрация" }, { key: "reset", label: "Сброс пароля" }] as const).map(({ key, label }) => (
+                        <button key={key} onClick={() => { setEmailMode(key); setAuthError(""); setPassword(""); setConfirmPassword(""); setResetStep("email") }}
+                          className={`flex-1 py-1.5 text-xs rounded-lg font-medium transition-all ${emailMode === key ? "bg-white text-gray-900 shadow-sm" : "text-gray-400 hover:text-gray-600"}`}>
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* ── ВХОД с паролем ── */}
+                    {emailMode === "login" && (
+                      <div className="space-y-3">
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                          <input type="email" placeholder="email@example.com" value={emailValue}
+                            onChange={(e) => setEmailValue(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleLoginPassword()}
+                            className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
+                        </div>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                          <input type={showPassword ? "text" : "password"} placeholder="Пароль" value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleLoginPassword()}
+                            className="w-full pl-10 pr-10 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
+                          <button type="button" onClick={() => setShowPassword((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                          </button>
+                        </div>
+                        {authError && <p className="text-red-500 text-xs flex items-center gap-1"><AlertCircle className="w-3.5 h-3.5" />{authError}</p>}
+                        <button onClick={handleLoginPassword} disabled={authLoading}
+                          className="w-full py-3 rounded-2xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-all disabled:opacity-60 flex items-center justify-center gap-2">
+                          {authLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Войти"}
+                        </button>
+                        <p className="text-center text-xs text-gray-400">
+                          Нет аккаунта?{" "}
+                          <button className="text-blue-600 hover:underline" onClick={() => { setEmailMode("register"); setAuthError("") }}>Зарегистрироваться</button>
+                        </p>
+                      </div>
+                    )}
+
+                    {/* ── РЕГИСТРАЦИЯ с паролем ── */}
+                    {emailMode === "register" && (
+                      <div className="space-y-3">
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                           <input type="email" placeholder="email@example.com" value={emailValue}
                             onChange={(e) => setEmailValue(e.target.value)}
                             className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
                         </div>
-                        <input type="text" placeholder="Ваше имя (необязательно)" value={emailName}
+                        <input type="text" placeholder="Ваше имя" value={emailName}
                           onChange={(e) => setEmailName(e.target.value)}
                           className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
-                        {authError && <p className="text-red-500 text-xs">{authError}</p>}
-                        <button onClick={handleEmailSend} disabled={authLoading}
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                          <input type={showPassword ? "text" : "password"} placeholder="Пароль (мин. 6 символов)" value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full pl-10 pr-10 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
+                          <button type="button" onClick={() => setShowPassword((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                          </button>
+                        </div>
+                        <input type={showPassword ? "text" : "password"} placeholder="Повторите пароль" value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
+                        {authError && <p className="text-red-500 text-xs flex items-center gap-1"><AlertCircle className="w-3.5 h-3.5" />{authError}</p>}
+                        <button onClick={handleRegisterPassword} disabled={authLoading}
                           className="w-full py-3 rounded-2xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-all disabled:opacity-60 flex items-center justify-center gap-2">
-                          {authLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Получить код на email"}
+                          {authLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Создать аккаунт"}
                         </button>
-                      </>
-                    ) : (
-                      <>
-                        <p className="text-sm text-gray-600">Код отправлен на <strong>{emailValue}</strong></p>
-                        {emailDevCode && (
-                          <div className="flex items-center gap-2 p-3 bg-amber-50 rounded-xl border border-amber-100">
-                            <AlertCircle className="w-4 h-4 text-amber-500 shrink-0" />
-                            <p className="text-xs text-amber-700">Тестовый код: <strong>{emailDevCode}</strong></p>
-                          </div>
+                        <p className="text-center text-xs text-gray-400">
+                          Уже есть аккаунт?{" "}
+                          <button className="text-blue-600 hover:underline" onClick={() => { setEmailMode("login"); setAuthError("") }}>Войти</button>
+                        </p>
+                      </div>
+                    )}
+
+                    {/* ── СБРОС ПАРОЛЯ ── */}
+                    {emailMode === "reset" && (
+                      <div className="space-y-3">
+                        {resetStep === "email" ? (
+                          <>
+                            <p className="text-xs text-gray-500">Введите email — пришлём код для сброса пароля</p>
+                            <div className="relative">
+                              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                              <input type="email" placeholder="email@example.com" value={emailValue}
+                                onChange={(e) => setEmailValue(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleResetSend()}
+                                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all" />
+                            </div>
+                            {authError && <p className="text-red-500 text-xs">{authError}</p>}
+                            <button onClick={handleResetSend} disabled={authLoading}
+                              className="w-full py-3 rounded-2xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-all disabled:opacity-60 flex items-center justify-center gap-2">
+                              {authLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Получить код"}
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-sm text-gray-600">Код отправлен на <strong>{emailValue}</strong></p>
+                            {resetDevCode && (
+                              <div className="flex items-center gap-2 p-3 bg-amber-50 rounded-xl border border-amber-100">
+                                <AlertCircle className="w-4 h-4 text-amber-500 shrink-0" />
+                                <p className="text-xs text-amber-700">Тестовый код: <strong>{resetDevCode}</strong></p>
+                              </div>
+                            )}
+                            <input type="text" inputMode="numeric" maxLength={4} placeholder="Код из письма"
+                              value={resetCode} onChange={(e) => setResetCode(e.target.value.replace(/\D/g, ""))}
+                              className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-xl font-bold text-center tracking-[1em] focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            <div className="relative">
+                              <input type={showPassword ? "text" : "password"} placeholder="Новый пароль (мин. 6 символов)"
+                                value={password} onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 transition-all" />
+                              <button type="button" onClick={() => setShowPassword((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                              </button>
+                            </div>
+                            <input type={showPassword ? "text" : "password"} placeholder="Повторите новый пароль"
+                              value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+                              className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                            {authError && <p className="text-red-500 text-xs">{authError}</p>}
+                            <button onClick={handleResetConfirm} disabled={authLoading}
+                              className="w-full py-3 rounded-2xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-all disabled:opacity-60 flex items-center justify-center gap-2">
+                              {authLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Сменить пароль"}
+                            </button>
+                            <button onClick={() => setResetStep("email")} className="w-full text-xs text-gray-400 hover:text-gray-600 text-center py-1">← Назад</button>
+                          </>
                         )}
-                        <input type="text" inputMode="numeric" maxLength={4} placeholder="0 0 0 0"
-                          value={emailCode} onChange={(e) => setEmailCode(e.target.value.replace(/\D/g, ""))}
-                          className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-xl font-bold text-center tracking-[1em] focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                        {authError && <p className="text-red-500 text-xs">{authError}</p>}
-                        <button onClick={handleEmailVerify} disabled={authLoading}
-                          className="w-full py-3 rounded-2xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-all disabled:opacity-60 flex items-center justify-center gap-2">
-                          {authLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Войти"}
-                        </button>
-                        <button onClick={() => { setEmailCodeSent(false); setEmailCode(""); setEmailDevCode("") }}
-                          className="w-full text-xs text-gray-400 hover:text-gray-600 transition-colors text-center py-1">
-                          Изменить email
-                        </button>
-                      </>
+                      </div>
                     )}
                   </motion.div>
                 )}
@@ -643,6 +834,12 @@ export default function AccountPage() {
               <motion.div key="profile" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
                 <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                   <h3 className="font-semibold text-gray-900 mb-5">Личные данные</h3>
+                  {/* Badge: has password */}
+                  {client.has_password && (
+                    <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-green-50 rounded-xl border border-green-100 text-xs text-green-700 w-fit">
+                      <Shield className="w-3.5 h-3.5" /> Аккаунт защищён паролем
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs text-gray-500 mb-1.5 font-medium">Имя</label>
@@ -665,8 +862,54 @@ export default function AccountPage() {
                   <button onClick={handleSaveProfile} disabled={saving}
                     className="mt-5 flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-medium text-sm hover:bg-blue-700 transition-all disabled:opacity-60">
                     {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : saved ? <Check className="w-4 h-4" /> : null}
-                    {saved ? "Сохранено!" : "Сохранить"}
+                    {saved ? "Сохранено!" : "Сохранить данные"}
                   </button>
+                </div>
+
+                {/* Смена пароля */}
+                <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                  <div className="flex items-center gap-2 mb-5">
+                    <Lock className="w-4 h-4 text-gray-400" />
+                    <h3 className="font-semibold text-gray-900">{client.has_password ? "Сменить пароль" : "Установить пароль"}</h3>
+                  </div>
+                  {!client.has_password && (
+                    <p className="text-xs text-gray-400 mb-4">Добавьте пароль, чтобы входить по email и паролю (удобнее без SMS-кодов)</p>
+                  )}
+                  <div className="space-y-3">
+                    {client.has_password && (
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1.5 font-medium">Текущий пароль</label>
+                        <input type="password" placeholder="Введите текущий пароль" value={oldPassword}
+                          onChange={(e) => setOldPassword(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                      </div>
+                    )}
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1.5 font-medium">Новый пароль</label>
+                      <div className="relative">
+                        <input type={showNewPassword ? "text" : "password"} placeholder="Минимум 6 символов" value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all pr-10" />
+                        <button type="button" onClick={() => setShowNewPassword((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                          {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1.5 font-medium">Повторите новый пароль</label>
+                      <input type={showNewPassword ? "text" : "password"} placeholder="Повторите пароль" value={confirmNewPassword}
+                        onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                    </div>
+                    {passwordError && (
+                      <p className="text-red-500 text-xs flex items-center gap-1"><AlertCircle className="w-3.5 h-3.5" />{passwordError}</p>
+                    )}
+                    <button onClick={handleChangePassword} disabled={passwordSaving}
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gray-900 text-white font-medium text-sm hover:bg-gray-800 transition-all disabled:opacity-60">
+                      {passwordSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : passwordSaved ? <Check className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                      {passwordSaved ? "Пароль сохранён!" : client.has_password ? "Сменить пароль" : "Установить пароль"}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">

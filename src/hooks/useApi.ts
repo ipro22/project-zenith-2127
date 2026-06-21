@@ -62,4 +62,5 @@ export interface ClientData {
   yandex_id?: string | null
   yandex_login?: string | null
   yandex_avatar_url?: string | null
+  has_password?: boolean
 }
