@@ -17,8 +17,8 @@ const Index = () => {
         title="iPro Барнаул — ремонт iPhone, Samsung, MacBook, iPad | Гарантия до 365 дней"
         description="Сервисный центр iPro в Барнауле. Профессиональный ремонт iPhone, Samsung, Xiaomi, MacBook, iPad. Бесплатная диагностика, ремонт за 1-2 часа, гарантия до 365 дней."
       />
-      <Navbar />
       <StoriesBar />
+      <Navbar />
       <main>
         <HeroSection />
         <FeaturesSection />

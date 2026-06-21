@@ -11,7 +11,7 @@ import psycopg2
 import urllib.request
 
 SCHEMA = os.environ.get('MAIN_DB_SCHEMA', 't_p35950310_project_zenith_2127')
-ADMIN_TOKEN = os.environ.get('ADMIN_TOKEN', 'ipro_admin_2026_secret')
+ADMIN_TOKEN = os.environ.get('ADMIN_TOKEN', '12233445')
 
 CORS = {
     'Access-Control-Allow-Origin': '*',
