@@ -337,6 +337,143 @@ def handler(event: dict, context) -> dict:
                 conn.commit()
                 return resp(200, {'success': True, 'bonus_earned': bonus})
 
+            # ── Редактор контента сайта ──────────────────────────────────
+            elif action == 'admin_get_content':
+                section = body.get('section', '')
+                if section:
+                    cur.execute(f"SELECT section, key, value, type, label FROM {SCHEMA}.site_content WHERE section=%s ORDER BY key", (section,))
+                else:
+                    cur.execute(f"SELECT section, key, value, type, label FROM {SCHEMA}.site_content ORDER BY section, key")
+                rows = cur.fetchall()
+                content = {}
+                for r in rows:
+                    sec = r[0]
+                    if sec not in content:
+                        content[sec] = []
+                    content[sec].append({'key': r[1], 'value': r[2], 'type': r[3], 'label': r[4]})
+                return resp(200, {'content': content})
+
+            elif action == 'admin_update_content':
+                updates = body.get('updates', [])
+                for item in updates:
+                    sec = item.get('section', '')
+                    key = item.get('key', '')
+                    value = item.get('value', '')
+                    if sec and key:
+                        cur.execute(
+                            f"INSERT INTO {SCHEMA}.site_content (section, key, value, updated_at) VALUES (%s, %s, %s, NOW()) ON CONFLICT (section, key) DO UPDATE SET value=EXCLUDED.value, updated_at=NOW()",
+                            (sec, key, value)
+                        )
+                conn.commit()
+                return resp(200, {'success': True, 'updated': len(updates)})
+
+            # ── Магазин ──────────────────────────────────────────────────
+            elif action == 'admin_list_products':
+                cur.execute(f"SELECT id, name, brand, category, description, price, old_price, image_url, badge, in_stock, sort_order, created_at FROM {SCHEMA}.shop_products ORDER BY sort_order, id")
+                products = [{
+                    'id': r[0], 'name': r[1], 'brand': r[2], 'category': r[3], 'description': r[4],
+                    'price': r[5], 'old_price': r[6], 'image_url': r[7], 'badge': r[8],
+                    'in_stock': r[9], 'sort_order': r[10], 'created_at': r[11].isoformat() if r[11] else None,
+                } for r in cur.fetchall()]
+                return resp(200, {'products': products})
+
+            elif action == 'admin_save_product':
+                pid = body.get('id')
+                name = body.get('name', '').strip()
+                if not name:
+                    return resp(400, {'error': 'name required'})
+                fields = {
+                    'name': name, 'brand': body.get('brand', ''), 'category': body.get('category', ''),
+                    'description': body.get('description', ''), 'price': int(body.get('price', 0)),
+                    'old_price': body.get('old_price') or None, 'image_url': body.get('image_url', ''),
+                    'badge': body.get('badge', '') or None, 'in_stock': bool(body.get('in_stock', True)),
+                    'sort_order': int(body.get('sort_order', 0)),
+                }
+                if pid:
+                    cur.execute(
+                        f"UPDATE {SCHEMA}.shop_products SET name=%s,brand=%s,category=%s,description=%s,price=%s,old_price=%s,image_url=%s,badge=%s,in_stock=%s,sort_order=%s,updated_at=NOW() WHERE id=%s",
+                        (fields['name'], fields['brand'], fields['category'], fields['description'], fields['price'], fields['old_price'], fields['image_url'], fields['badge'], fields['in_stock'], fields['sort_order'], pid)
+                    )
+                    conn.commit()
+                    return resp(200, {'success': True, 'id': pid})
+                else:
+                    cur.execute(
+                        f"INSERT INTO {SCHEMA}.shop_products (name,brand,category,description,price,old_price,image_url,badge,in_stock,sort_order) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id",
+                        (fields['name'], fields['brand'], fields['category'], fields['description'], fields['price'], fields['old_price'], fields['image_url'], fields['badge'], fields['in_stock'], fields['sort_order'])
+                    )
+                    new_id = cur.fetchone()[0]
+                    conn.commit()
+                    return resp(200, {'success': True, 'id': new_id})
+
+            elif action == 'admin_delete_product':
+                pid = body.get('id')
+                if not pid:
+                    return resp(400, {'error': 'id required'})
+                cur.execute(f"DELETE FROM {SCHEMA}.shop_products WHERE id=%s", (pid,))
+                conn.commit()
+                return resp(200, {'success': True})
+
+            # ── Получить бонус-историю клиента (для CRM) ─────────────────
+            elif action == 'admin_client_bonus_history':
+                cid = body.get('client_id')
+                if not cid:
+                    return resp(400, {'error': 'client_id required'})
+                cur.execute(
+                    f"SELECT type, amount, description, created_at FROM {SCHEMA}.bonus_transactions WHERE client_id=%s ORDER BY created_at DESC LIMIT 50",
+                    (cid,)
+                )
+                tx = [{'type': r[0], 'amount': r[1], 'description': r[2], 'created_at': r[3].isoformat()} for r in cur.fetchall()]
+                cur.execute(f"SELECT order_number, device_brand, device_model, service_name, service_price, status, created_at FROM {SCHEMA}.repair_orders WHERE client_id=%s ORDER BY created_at DESC LIMIT 30", (cid,))
+                orders = [{'order_number': r[0], 'device_brand': r[1], 'device_model': r[2], 'service_name': r[3], 'service_price': r[4], 'status': r[5], 'created_at': r[6].isoformat() if r[6] else None} for r in cur.fetchall()]
+                return resp(200, {'transactions': tx, 'orders': orders})
+
+            # ── Удалить клиента ───────────────────────────────────────────
+            elif action == 'admin_delete_client':
+                cid = body.get('client_id')
+                if not cid:
+                    return resp(400, {'error': 'client_id required'})
+                cur.execute(f"DELETE FROM {SCHEMA}.bonus_transactions WHERE client_id=%s", (cid,))
+                cur.execute(f"DELETE FROM {SCHEMA}.sessions WHERE client_id=%s", (cid,))
+                cur.execute(f"UPDATE {SCHEMA}.repair_orders SET client_id=NULL WHERE client_id=%s", (cid,))
+                cur.execute(f"DELETE FROM {SCHEMA}.clients WHERE id=%s", (cid,))
+                conn.commit()
+                return resp(200, {'success': True})
+
+            # ── Удалить заказ ─────────────────────────────────────────────
+            elif action == 'admin_delete_order':
+                order_number = body.get('order_number', '')
+                cur.execute(f"DELETE FROM {SCHEMA}.bonus_transactions WHERE order_id=(SELECT id FROM {SCHEMA}.repair_orders WHERE order_number=%s)", (order_number,))
+                cur.execute(f"DELETE FROM {SCHEMA}.repair_orders WHERE order_number=%s", (order_number,))
+                conn.commit()
+                return resp(200, {'success': True})
+
+            # ── Список заказов с полным поиском ──────────────────────────
+            elif action == 'admin_search_orders':
+                q = body.get('query', '').strip()
+                status_filter = body.get('status', '')
+                limit = int(body.get('limit', 50))
+                conditions = []
+                args = []
+                if q:
+                    conditions.append("(client_name ILIKE %s OR client_phone ILIKE %s OR order_number ILIKE %s OR device_brand ILIKE %s OR device_model ILIKE %s)")
+                    args += [f'%{q}%', f'%{q}%', f'%{q}%', f'%{q}%', f'%{q}%']
+                if status_filter:
+                    conditions.append("status=%s")
+                    args.append(status_filter)
+                where = ("WHERE " + " AND ".join(conditions)) if conditions else ""
+                cur.execute(
+                    f"""SELECT order_number, client_name, client_phone, device_brand, device_model, service_name, service_price, status, bonus_earned, created_at, comment
+                    FROM {SCHEMA}.repair_orders {where} ORDER BY created_at DESC LIMIT %s""",
+                    args + [limit]
+                )
+                orders = [{
+                    'order_number': r[0], 'client_name': r[1], 'client_phone': r[2],
+                    'device_brand': r[3], 'device_model': r[4], 'service_name': r[5],
+                    'service_price': r[6], 'status': r[7], 'bonus_earned': r[8],
+                    'created_at': r[9].isoformat() if r[9] else None, 'comment': r[10],
+                } for r in cur.fetchall()]
+                return resp(200, {'orders': orders, 'total': len(orders)})
+
         return resp(400, {'error': 'unknown action'})
     finally:
         cur.close()
