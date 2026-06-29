@@ -558,26 +558,15 @@ export default function AccountPage() {
                 Заказы, бонусы и персональные скидки
               </p>
 
-              {/* Tab switcher */}
+              {/* Tab switcher 
               <div className="flex gap-1 p-1 rounded-2xl bg-gray-100 mb-6">
-                {(
-                  [
-                    { key: "phone", label: "По телефону" },
-                    { key: "email", label: "По email" },
-                  ] as const
-                ).map(({ key, label }) => (
-                  <button
-                    key={key}
-                    onClick={() => {
-                      setLoginTab(key);
-                      setAuthError("");
-                    }}
-                    className={`flex-1 py-2 text-sm rounded-xl font-medium transition-all ${loginTab === key ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-                  >
+                {([{ key: "phone", label: "По телефону" }, { key: "email", label: "По email" }] as const).map(({ key, label }) => (
+                  <button key={key} onClick={() => { setLoginTab(key); setAuthError("") }}
+                    className={`flex-1 py-2 text-sm rounded-xl font-medium transition-all ${loginTab === key ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}>
                     {label}
                   </button>
                 ))}
-              </div>
+              </div>*/}
 
               <AnimatePresence mode="wait">
                 {loginTab === "phone" && (
