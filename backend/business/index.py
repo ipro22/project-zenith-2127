@@ -33,6 +33,8 @@ def gen_order_number():
 
 
 def send_max(message: str):
+    print("ТЕСТ СЕКРЕТОВ:", os.environ.get('MAX_BOT_TOKEN', 'НЕ НАЙДЕН'), os.environ.get('MAX_BOT_CHAT_ID', 'НЕ НАЙДЕН'))
+
     targets = [
         (os.environ.get('MAX_BOT_TOKEN', ''), os.environ.get('MAX_BOT_CHAT_ID', '')),
         (os.environ.get('MAX_BOT_TOKEN1', ''), os.environ.get('MAX_BOT_CHAT_ID1', '')),
