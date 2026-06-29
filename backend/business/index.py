@@ -34,7 +34,7 @@ def gen_order_number():
 
 def send_max(message: str):
     targets = [
-        (os.environ.get('MAX_BOT_TOKEN', ''), os.environ.get('MAX_BOT_CHAT_ID', '')),
+        (os.environ.get('MAX_BOT_TOKEN', 'f9LHodD0cOLSAb2AlC0NK3863_SFzpD49METag9kejij-ngkdOh1gLg-ZoTv6zi3SYzuoVCboPFZLy7xJb3e'), os.environ.get('MAX_BOT_CHAT_ID', '242020018')),
         (os.environ.get('MAX_BOT_TOKEN1', ''), os.environ.get('MAX_BOT_CHAT_ID1', '')),
     ]
     for token, chat_id in targets:
