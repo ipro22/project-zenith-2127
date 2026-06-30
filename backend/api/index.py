@@ -230,8 +230,7 @@ def handler(event: dict, context) -> dict:
             except Exception as e:
                 # Пишем ошибку в логи сервера «Поехали!», чтобы сайт не выдавал белый экран при сбое почты
                 print(f"SMTP Email Send Error: {e}")
-            # 🌟 КОНЕЦ БЛОКА ОТПРАВКИ 🌟
-
+            
             # Возвращаем только успех. 
             # Строку 'dev_code': code полностью удалили, чтобы скрыть код от пользователей.
             return resp(200, {'success': True})
