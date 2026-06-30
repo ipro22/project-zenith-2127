@@ -11,6 +11,9 @@ import urllib.request
 import urllib.parse
 from datetime import datetime, timedelta
 import psycopg2
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
 
 SCHEMA = os.environ.get('MAIN_DB_SCHEMA', 't_p35950310_project_zenith_2127')
 
@@ -190,15 +193,48 @@ def handler(event: dict, context) -> dict:
 
         # ── Сброс пароля (по email — отправляем код) ──────────────────────────
         elif action == 'reset_password_send':
+            elif action == 'reset_password_send':
             email = body.get('email', '').strip().lower()
             cur.execute(f"SELECT id FROM {SCHEMA}.clients WHERE email=%s", (email,))
             if not cur.fetchone():
                 return resp(404, {'error': 'Email не найден'})
+            
             code = ''.join(random.choices(string.digits, k=4))
             expires = datetime.now() + timedelta(minutes=15)
+            
+            # Сохраняем код в базу данных для последующей проверки на сайте
             cur.execute(f"INSERT INTO {SCHEMA}.sms_codes (phone, code, expires_at) VALUES (%s, %s, %s)", (email, code, expires))
             conn.commit()
-            return resp(200, {'success': True, 'dev_code': code})
+            
+            # Впишите сюда ваши данные SMTP
+            SMTP_SERVER = "smtp.yandex.ru"    # например: smtp.yandex.ru или smtp.mail.ru
+            SMTP_PORT = 465                                # стандартный защищенный порт SSL
+            SMTP_USER = "ov@e1media.ru"      # ваша почта, с которой уходят письма
+            SMTP_PASSWORD = "krgqrexjkekurngq"    # пароль приложения (не обычный пароль от ящика!)
+            
+            # Текст и тема письма
+            mail_subject = "Восстановление пароля"
+            mail_body = f"Ваш код для сброса пароля: {code}\nКод действует 15 минут."
+            
+            # Собираем письмо в правильной кодировке UTF-8, чтобы не было «кракозябр»
+            msg = MIMEText(mail_body, "plain", "utf-8")
+            msg["Subject"] = Header(mail_subject, "utf-8")
+            msg["From"] = SMTP_USER
+            msg["To"] = email
+            
+            try:
+                # Подключаемся к почтовому серверу по защищенному протоколу SSL
+                with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, timeout=8) as server:
+                    server.login(SMTP_USER, SMTP_PASSWORD)
+                    server.sendmail(SMTP_USER, [email], msg.as_string())
+            except Exception as e:
+                # Пишем ошибку в логи сервера «Поехали!», чтобы сайт не выдавал белый экран при сбое почты
+                print(f"SMTP Email Send Error: {e}")
+            # 🌟 КОНЕЦ БЛОКА ОТПРАВКИ 🌟
+
+            # Возвращаем только успех. 
+            # Строку 'dev_code': code полностью удалили, чтобы скрыть код от пользователей.
+            return resp(200, {'success': True})
 
         elif action == 'reset_password_confirm':
             email = body.get('email', '').strip().lower()
