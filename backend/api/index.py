@@ -206,7 +206,7 @@ def handler(event: dict, context) -> dict:
             SMTP_USER = os.getenv("SMTP_USER_TEST")     
             SMTP_PASSWORD = os.getenv("SMTP_PASSWORD_TEST")
             if not SMTP_USER or not SMTP_PASSWORD:
-                print("SMTP Error: Переменные SMTP_USER_TEXT или SMTP_PASSWORD_TEXT не найдены в Секретах!")
+                print("SMTP Error: Переменные SMTP_USER_TEST или SMTP_PASSWORD_TEST не найдены в Секретах!")
                 return resp(500, {'error': 'Внутренняя ошибка конфигурации почты'})
             mail_subject = "Восстановление пароля"
             mail_body = f"Ваш код для сброса пароля: {code}\nКод действует 15 минут."
