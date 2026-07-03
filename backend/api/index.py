@@ -197,29 +197,15 @@ def handler(event: dict, context) -> dict:
             cur.execute(f"SELECT id FROM {SCHEMA}.clients WHERE email=%s", (email,))
             if not cur.fetchone():
                 return resp(404, {'error': 'Email не найден'})
+                
             code = ''.join(random.choices(string.digits, k=4))
             expires = datetime.now() + timedelta(minutes=15)
             cur.execute(f"INSERT INTO {SCHEMA}.sms_codes (phone, code, expires_at) VALUES (%s, %s, %s)", (email, code, expires))
             conn.commit()
-            SMTP_SERVER = "smtp.yandex.ru"    
-            SMTP_PORT = 465                                
-            SMTP_USER = os.getenv("SMTP_USER_TEST")     
-            SMTP_PASSWORD = os.getenv("SMTP_PASSWORD_TEST")
-            mail_subject = "Восстановление пароля"
-            mail_body = f"Ваш код для сброса пароля: {code}\nКод действует 15 минут."
-            msg = MIMEText(mail_body, "plain", "utf-8")
-            msg["Subject"] = Header(mail_subject, "utf-8")
-            msg["From"] = SMTP_USER
-            msg["To"] = email
-            print("LOG: Шаг 4 — Пытаюсь подключиться к SMTP Яндекса...")
-            try:
-                with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, timeout=8) as server:
-                    server.login(SMTP_USER, SMTP_PASSWORD)
-                    server.sendmail(SMTP_USER, [email], msg.as_string())
-            except Exception as e:
-                print(f"SMTP Email Send Error: {e}")
-                return resp(500, {'error': 'Ошибка отправки письма'})
-            return resp(200, {'success': True, 'dev_code': '1234'})
+            
+            # ВРЕМЕННО: Полностью отключаем SMTP для теста сборки
+            # Просто возвращаем код на фронтенд, чтобы проверить, обновился ли сайт
+            return resp(200, {'success': True, 'bypass_code_for_test': code})
 
         elif action == 'reset_password_confirm':
             email = body.get('email', '').strip().lower()
