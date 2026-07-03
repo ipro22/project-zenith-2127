@@ -204,8 +204,8 @@ def handler(event: dict, context) -> dict:
             
             SMTP_SERVER = "smtp.yandex.ru"    
             SMTP_PORT = 465                                
-            SMTP_USER = os.getenv("SMTP_USER_TEXT")     
-            SMTP_PASSWORD = os.getenv("SMTP_PASSWORD_TEXT")
+            SMTP_USER = os.getenv("SMTP_USER_TEST")     
+            SMTP_PASSWORD = os.getenv("SMTP_PASSWORD_TEST")
             
             mail_subject = "Восстановление пароля"
             mail_body = f"Ваш код для сброса пароля: {code}\nКод действует 15 минут."
