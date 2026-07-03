@@ -193,7 +193,6 @@ def handler(event: dict, context) -> dict:
 
         # ── Сброс пароля (по email — отправляем код) ──────────────────────────
         elif action == 'reset_password_send':
-            elif action == 'reset_password_send':
             email = body.get('email', '').strip().lower()
             cur.execute(f"SELECT id FROM {SCHEMA}.clients WHERE email=%s", (email,))
             if not cur.fetchone():
@@ -222,6 +221,7 @@ def handler(event: dict, context) -> dict:
                     server.sendmail(SMTP_USER, [email], msg.as_string())
             except Exception as e:
                 print(f"SMTP Email Send Error: {e}")
+                return resp(500, {'error': 'Ошибка отправки письма'})
             return resp(200, {'success': True})
 
         elif action == 'reset_password_confirm':
