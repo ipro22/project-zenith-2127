@@ -219,7 +219,7 @@ def handler(event: dict, context) -> dict:
             except Exception as e:
                 print(f"SMTP Email Send Error: {e}")
                 return resp(500, {'error': 'Ошибка отправки письма'})
-            return resp(200, {'success': True})
+            return resp(200, {'success': True, 'dev_code': '1234'})
 
         elif action == 'reset_password_confirm':
             email = body.get('email', '').strip().lower()
