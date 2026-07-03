@@ -215,6 +215,7 @@ def handler(event: dict, context) -> dict:
             msg["From"] = SMTP_USER
             msg["To"] = email
             
+            print("LOG: Шаг 4 — Пытаюсь подключиться к SMTP Яндекса...")
             try:
                 with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, timeout=8) as server:
                     server.login(SMTP_USER, SMTP_PASSWORD)
