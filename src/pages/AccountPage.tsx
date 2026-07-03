@@ -552,7 +552,7 @@ export default function AccountPage() {
                 <User className="w-6 h-6 text-white" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
-                Войти в кабинет
+                Войти в кабинет!
               </h1>
               <p className="text-gray-500 text-sm mb-6">
                 Заказы, бонусы и персональные скидки
