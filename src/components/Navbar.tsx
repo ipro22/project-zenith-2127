@@ -25,13 +25,18 @@ const navLinks = [
   { href: "/contacts", label: "Контакты" },
 ]
 
-export function Navbar() {
+interface NavbarProps {
+  overlay?: boolean
+}
+
+export function Navbar({ overlay = false }: NavbarProps) {
   const location = useLocation()
   const isShop = location.pathname.startsWith("/shop")
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [repairOpen, setRepairOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const solid = !overlay || scrolled || open
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -50,15 +55,15 @@ export function Navbar() {
   }, [])
 
   return (
-    <>
+    <div className={overlay ? "fixed top-0 inset-x-0 z-40" : "relative"}>
       {/* Top info strip */}
-      <div className="bg-[#1d4ed8] text-white text-[11.5px] px-4">
+      <div className={`transition-colors duration-300 text-[11.5px] px-4 ${solid ? "bg-[#1d4ed8] text-white" : "bg-transparent text-gray-600"}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between h-8 gap-4">
-          <div className="hidden md:flex items-center gap-4 text-blue-100 min-w-0">
+          <div className={`hidden md:flex items-center gap-4 min-w-0 ${solid ? "text-blue-100" : "text-gray-500"}`}>
             <span className="inline-flex items-center gap-1 whitespace-nowrap">
               <MapPin className="w-3 h-3 shrink-0" /> г. Барнаул, ул. Молодёжная 34
             </span>
-            <span className="text-blue-300">·</span>
+            <span className={solid ? "text-blue-300" : "text-gray-300"}>·</span>
             <span className="inline-flex items-center gap-1 whitespace-nowrap">
               <Clock className="w-3 h-3 shrink-0" /> Пн–Пт 11–20 · Сб 12–18 · Вс выходной
             </span>
@@ -66,20 +71,20 @@ export function Navbar() {
           <a href="tel:+79993231817" className="font-semibold hover:underline whitespace-nowrap mx-auto md:mx-0">
             +7 (999) 323-18-17
           </a>
-          <a href="/account" className="hidden md:inline-flex items-center gap-1 text-blue-100 hover:text-white transition-colors whitespace-nowrap">
+          <a href="/account" className={`hidden md:inline-flex items-center gap-1 transition-colors whitespace-nowrap ${solid ? "text-blue-100 hover:text-white" : "text-gray-500 hover:text-gray-800"}`}>
             <User className="w-3 h-3" /> Личный кабинет
           </a>
         </div>
       </div>
 
       {/* Магазин / Сервис switch */}
-      <div className="bg-white border-b border-gray-100">
+      <div className={`transition-colors duration-300 ${solid ? "bg-white border-b border-gray-100" : "bg-transparent"}`}>
         <div className="max-w-6xl mx-auto px-3 pt-2 flex justify-center">
-          <div className="inline-flex items-center gap-1 bg-gray-100 rounded-full p-1">
+          <div className={`inline-flex items-center gap-1 rounded-full p-1 transition-colors duration-300 ${solid ? "bg-gray-100" : "bg-white/40 backdrop-blur-md border border-white/60"}`}>
             <a
               href="/shop"
               className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all ${
-                isShop ? "bg-[#1d4ed8] text-white shadow-sm" : "text-gray-500 hover:text-gray-700"
+                isShop ? "bg-[#1d4ed8] text-white shadow-sm" : solid ? "text-gray-500 hover:text-gray-700" : "text-gray-700 hover:text-gray-900"
               }`}
             >
               <ShoppingBag className="w-3.5 h-3.5" />
@@ -88,7 +93,7 @@ export function Navbar() {
             <a
               href="/"
               className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all ${
-                !isShop ? "bg-[#1d4ed8] text-white shadow-sm" : "text-gray-500 hover:text-gray-700"
+                !isShop ? "bg-[#1d4ed8] text-white shadow-sm" : solid ? "text-gray-500 hover:text-gray-700" : "text-gray-700 hover:text-gray-900"
               }`}
             >
               <Wrench className="w-3.5 h-3.5" />
@@ -99,20 +104,22 @@ export function Navbar() {
       </div>
 
       {/* Floating glass navbar */}
-      <div className="sticky top-0 z-40 px-3 pt-2 pb-1.5">
+      <div className={overlay ? "px-3 pt-2 pb-1.5" : "sticky top-0 z-40 px-3 pt-2 pb-1.5"}>
         <motion.header
           initial={false}
           animate={{
-            backdropFilter: scrolled ? "blur(24px) saturate(180%)" : "blur(16px) saturate(150%)",
+            backdropFilter: solid ? (scrolled ? "blur(24px) saturate(180%)" : "blur(16px) saturate(150%)") : "blur(0px)",
           }}
           className={`
             mx-auto max-w-6xl rounded-[2rem] border transition-all duration-300
-            ${scrolled
-              ? "bg-white/80 border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.12)] shadow-blue-900/5"
-              : "bg-white/70 border-white/50 shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
+            ${!solid
+              ? "bg-transparent border-transparent shadow-none"
+              : scrolled
+                ? "bg-white/80 border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.12)] shadow-blue-900/5"
+                : "bg-white/70 border-white/50 shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
             }
           `}
-          style={{ backdropFilter: "blur(20px) saturate(160%)" }}
+          style={{ backdropFilter: solid ? "blur(20px) saturate(160%)" : "none" }}
         >
           <nav className="flex items-center h-14 px-4 lg:px-5 gap-3">
             {/* Logo */}
@@ -121,7 +128,7 @@ export function Navbar() {
                 <img src={siteConfig.logo} alt="iPro" className="w-5 h-5 object-contain" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="font-bold text-gray-900 text-[15px] tracking-tight">iPro</span>
+                <span className={`font-bold text-[15px] tracking-tight transition-colors ${solid ? "text-gray-900" : "text-gray-900"}`}>iPro</span>
                 <span className="text-[9px] text-gray-400 tracking-wider uppercase font-medium">сервис</span>
               </div>
             </a>
@@ -134,7 +141,7 @@ export function Navbar() {
                 onMouseEnter={() => setRepairOpen(true)}
                 onMouseLeave={() => setRepairOpen(false)}
               >
-                <button className="flex items-center gap-1 px-3 py-1.5 text-[13.5px] rounded-2xl text-gray-700 hover:bg-blue-50/80 hover:text-[#1d4ed8] font-medium transition-all">
+                <button className={`flex items-center gap-1 px-3 py-1.5 text-[13.5px] rounded-2xl font-medium transition-all ${solid ? "text-gray-700 hover:bg-blue-50/80 hover:text-[#1d4ed8]" : "text-gray-800 hover:bg-white/50"}`}>
                   Ремонт
                   <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 ${repairOpen ? "rotate-180" : ""}`} />
                 </button>
@@ -272,6 +279,6 @@ export function Navbar() {
       </div>
 
       <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
-    </>
+    </div>
   )
 }
