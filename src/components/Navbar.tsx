@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
-import { Menu, X, Search, User, ChevronDown, Phone, MapPin, Clock, ShoppingBag, Gift } from "lucide-react"
+import { useLocation } from "react-router-dom"
+import { Menu, X, Search, User, ChevronDown, Phone, MapPin, Clock, ShoppingBag, Gift, Wrench } from "lucide-react"
 import { SearchDialog } from "@/components/SearchDialog"
 import { siteConfig } from "@/config/siteConfig"
 import { motion, AnimatePresence } from "framer-motion"
@@ -25,6 +26,8 @@ const navLinks = [
 ]
 
 export function Navbar() {
+  const location = useLocation()
+  const isShop = location.pathname.startsWith("/shop")
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [repairOpen, setRepairOpen] = useState(false)
@@ -66,6 +69,32 @@ export function Navbar() {
           <a href="/account" className="hidden md:inline-flex items-center gap-1 text-blue-100 hover:text-white transition-colors whitespace-nowrap">
             <User className="w-3 h-3" /> Личный кабинет
           </a>
+        </div>
+      </div>
+
+      {/* Магазин / Сервис switch */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-3 pt-2 flex justify-center">
+          <div className="inline-flex items-center gap-1 bg-gray-100 rounded-full p-1">
+            <a
+              href="/shop"
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all ${
+                isShop ? "bg-[#1d4ed8] text-white shadow-sm" : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              <ShoppingBag className="w-3.5 h-3.5" />
+              Магазин
+            </a>
+            <a
+              href="/"
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all ${
+                !isShop ? "bg-[#1d4ed8] text-white shadow-sm" : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              <Wrench className="w-3.5 h-3.5" />
+              Сервис
+            </a>
+          </div>
         </div>
       </div>
 

@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom"
 import { devices } from "@/data/devices"
 import { Navbar } from "@/components/Navbar"
 import { FooterSection } from "@/components/sections/FooterSection"
+import { AdvantagesSection } from "@/components/sections/AdvantagesSection"
+import { RepairStepsSection } from "@/components/sections/RepairStepsSection"
 import { SEOHead } from "@/components/SEOHead"
 import { Breadcrumb } from "@/components/Breadcrumb"
 import { RepairRequestForm } from "@/components/RepairRequestForm"
@@ -31,14 +33,14 @@ export default function DeviceModelPage() {
   const otherModels = brand.models.filter((m) => m.slug !== model.slug).slice(0, 6)
 
   const allServices = [
-    ...model.services,
-    { name: "Замена динамика / микрофона", price: "от 1 490 ₽", priceNum: 1490 },
-    { name: "Замена кнопки питания / громкости", price: "от 890 ₽", priceNum: 890 },
-    { name: "Ремонт Face ID / Touch ID", price: "от 2 490 ₽", priceNum: 2490 },
-    { name: "Замена SIM-лотка", price: "от 490 ₽", priceNum: 490 },
-    { name: "Восстановление данных", price: "от 2 990 ₽", priceNum: 2990 },
-    { name: "Пайка материнской платы", price: "от 3 990 ₽", priceNum: 3990 },
-    { name: "Бесплатная диагностика", price: "0 ₽ (бесплатно)", priceNum: 0 },
+    { name: "Диагностика", price: "Бесплатно", priceNum: 0, time: "от 20 минут" },
+    ...model.services.map((s) => ({ ...s, time: "от 45 минут" })),
+    { name: "Замена динамика / микрофона", price: "от 1 490 ₽", priceNum: 1490, time: "от 45 минут" },
+    { name: "Замена кнопки питания / громкости", price: "от 890 ₽", priceNum: 890, time: "от 45 минут" },
+    { name: "Ремонт Face ID / Touch ID", price: "от 2 490 ₽", priceNum: 2490, time: "от 60 минут" },
+    { name: "Замена SIM-лотка", price: "от 490 ₽", priceNum: 490, time: "от 20 минут" },
+    { name: "Восстановление данных", price: "от 2 990 ₽", priceNum: 2990, time: "от 90 минут" },
+    { name: "Пайка материнской платы", price: "от 3 990 ₽", priceNum: 3990, time: "от 120 минут" },
   ]
 
   return (
@@ -47,37 +49,42 @@ export default function DeviceModelPage() {
       <Navbar />
 
       <main>
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-12 px-6">
+        {/* Breadcrumb strip */}
+        <div className="bg-gray-50 border-b border-gray-100 py-3 px-6">
           <div className="max-w-6xl mx-auto">
             <Breadcrumb items={[
               { label: "Ремонт", href: `/device/${brand.slug}` },
               { label: brand.name, href: `/device/${brand.slug}` },
-              { label: model.name },
+              { label: model.name, href: `/device/${brand.slug}/${model.slug}` },
+              { label: `Диагностика ${model.name}` },
             ]} />
-            <div className="mt-8 grid md:grid-cols-2 gap-10 items-center">
+          </div>
+        </div>
+
+        {/* Dark hero */}
+        <section className="bg-gray-900 py-14 px-6 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_70%_30%,white,transparent_60%)]" />
+          <div className="max-w-6xl mx-auto relative">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">{brand.name} · {model.year}</span>
-                <h1 className="font-display text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-3 tracking-tight">
-                  Ремонт {model.name}
+                <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">{brand.name} · {model.year}</span>
+                <h1 className="font-display text-3xl md:text-4xl font-bold text-white mt-2 mb-3 tracking-tight leading-tight">
+                  Ремонт {model.name} с гарантией
                 </h1>
-                <p className="text-gray-500 text-sm mb-5">Модели: {model.modelNumbers}</p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {[
-                    { icon: "Shield", text: "Гарантия до 365 дней" },
-                    { icon: "Clock", text: "Ремонт за 1–2 часа" },
-                    { icon: "Stethoscope", text: "Диагностика бесплатно" },
-                    { icon: "Car", text: "Бесплатная доставка" },
-                  ].map(({ icon, text }) => (
-                    <div key={text} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-600 shadow-sm">
-                      <Icon name={icon} size={13} className="text-blue-500" />
-                      {text}
-                    </div>
-                  ))}
-                </div>
-                <div className="flex items-baseline gap-3">
-                  <span className="text-3xl font-bold text-blue-600">от {model.services[0]?.priceNum?.toLocaleString("ru")} ₽</span>
-                  <span className="text-gray-400 text-sm">за {model.services[0]?.name?.toLowerCase()}</span>
+                <p className="text-gray-400 text-sm mb-6 leading-relaxed max-w-md">
+                  Бесплатная диагностика, согласование стоимости до ремонта и оригинальные запчасти. Восстановим ваше устройство сегодня!
+                </p>
+                <div className="flex items-center gap-4">
+                  <div>
+                    <p className="text-gray-500 text-[11px] uppercase tracking-wide mb-0.5">Цена</p>
+                    <p className="text-2xl font-bold text-white">от {model.services[0]?.priceNum?.toLocaleString("ru")} ₽</p>
+                  </div>
+                  <a
+                    href="#request-form"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors"
+                  >
+                    Записаться
+                  </a>
                 </div>
               </motion.div>
 
@@ -85,7 +92,7 @@ export default function DeviceModelPage() {
                 <img
                   src={brand.image}
                   alt={`Ремонт ${model.name}`}
-                  className="w-full h-64 md:h-80 object-cover rounded-3xl shadow-lg"
+                  className="w-full h-64 md:h-80 object-cover rounded-3xl shadow-2xl"
                 />
               </motion.div>
             </div>
@@ -98,59 +105,39 @@ export default function DeviceModelPage() {
             <div className="grid lg:grid-cols-[1fr_380px] gap-10">
               {/* Left */}
               <div>
+                <h2 className="font-semibold text-gray-900 text-lg mb-4">Другие услуги по ремонту {model.name}</h2>
+
                 {/* Services table */}
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-8"
+                  className="flex flex-col gap-2 mb-10"
                 >
-                  <div className="px-6 py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                    <h2 className="font-semibold text-lg">Прайс-лист — {model.name}</h2>
-                    <p className="text-blue-100 text-xs mt-1">Цены под ключ: запчасть + работа · г. Барнаул 2026</p>
-                  </div>
-                  <div className="divide-y divide-gray-50">
-                    {allServices.map((item, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 + i * 0.03 }}
-                        className="flex items-center justify-between px-6 py-4 hover:bg-blue-50/50 transition-colors group"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                            <Icon name="Wrench" size={14} className="text-blue-600" />
-                          </div>
-                          <span className="text-gray-800 text-sm font-medium">{item.name}</span>
-                        </div>
-                        <span className={`font-bold text-sm tabular-nums ${item.priceNum === 0 ? "text-green-600" : "text-gray-900"}`}>
+                  {allServices.map((item, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 + i * 0.03 }}
+                      className="flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border border-gray-100 bg-white hover:border-blue-200 hover:shadow-sm transition-all"
+                    >
+                      <span className="text-gray-800 text-sm font-medium">{item.name}</span>
+                      <div className="flex items-center gap-4 md:gap-8 shrink-0">
+                        <span className={`font-bold text-sm tabular-nums hidden sm:block ${item.priceNum === 0 ? "text-green-600" : "text-gray-900"}`}>
                           {item.price}
                         </span>
-                      </motion.div>
-                    ))}
-                  </div>
-                  <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
-                    <p className="text-xs text-gray-400">
-                      * Точная стоимость определяется после бесплатной диагностики. Диагностика проводится при вас.
-                    </p>
-                  </div>
-                </motion.div>
-
-                {/* Why us */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                  {[
-                    { icon: "Droplets", title: "Попала вода?", desc: "Немедленно выключите и привезите к нам. Чем быстрее — тем выше шанс спасти устройство." },
-                    { icon: "BadgeCheck", title: "Оригинальные запчасти", desc: "Сертифицированные комплектующие. Гарантия на каждую деталь до 365 дней." },
-                    { icon: "Zap", title: "Ремонт при вас", desc: "Большинство ремонтов — 1–2 часа. Ждите в нашем уютном зале с кофе." },
-                  ].map(({ icon, title, desc }) => (
-                    <div key={title} className="bg-gray-50 rounded-2xl p-5 border border-gray-100">
-                      <Icon name={icon} size={22} className="text-blue-600 mb-3" />
-                      <h3 className="font-semibold text-gray-900 text-sm mb-1.5">{title}</h3>
-                      <p className="text-gray-500 text-xs leading-relaxed">{desc}</p>
-                    </div>
+                        <span className="text-xs text-gray-400 hidden md:block whitespace-nowrap">{item.time}</span>
+                        <a
+                          href="#request-form"
+                          className="px-3.5 py-2 rounded-xl bg-gray-900 text-white text-xs font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap"
+                        >
+                          Записаться
+                        </a>
+                      </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
 
                 {/* Other models */}
                 {otherModels.length > 0 && (
@@ -176,7 +163,7 @@ export default function DeviceModelPage() {
               </div>
 
               {/* Right: Form */}
-              <div className="lg:sticky lg:top-24 self-start">
+              <div id="request-form" className="lg:sticky lg:top-24 self-start scroll-mt-24">
                 <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                   <RepairRequestForm
                     deviceBrand={brand.name}
@@ -240,6 +227,9 @@ export default function DeviceModelPage() {
             </div>
           </div>
         </section>
+
+        <AdvantagesSection />
+        <RepairStepsSection />
       </main>
       <FooterSection />
     </div>
